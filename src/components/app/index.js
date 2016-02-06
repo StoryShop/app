@@ -1,7 +1,8 @@
 import React from 'react';
+import AppBar from 'material-ui/lib/app-bar';
 
 const App = ({ name, ...props }) => (
-  <h1 {...props}>Hello, {name}!</h1>
+  <AppBar title={`Hello, ${name}!`} />
 );
 
 export default App;

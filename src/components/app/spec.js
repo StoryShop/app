@@ -1,6 +1,7 @@
 import React from 'react';
 import test from 'tape';
 import TestUtils from 'react-addons-test-utils';
+import AppBar from 'material-ui/lib/app-bar';
 import App from './';
 
 function getShallowInstance ( Component ) {
@@ -9,14 +10,14 @@ function getShallowInstance ( Component ) {
   return renderer.getRenderOutput();
 }
 
-test( 'App renders an h1', t => {
+test( 'App Render Method', t => {
   t.plan( 1 );
 
   const instance = getShallowInstance( <App /> );
   
-  const expected = 'h1';
+  const expected = AppBar;
   const actual = instance.type;
 
-  t.equals( actual, expected, 'rendered an h1 tag' );
+  t.equals( actual, expected, 'rendered an AppBar' );
 });
 
