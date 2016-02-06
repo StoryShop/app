@@ -1,9 +1,15 @@
 import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
+import WithFalcor from '../../with-falcor';
 
-const App = ({ name, ...props }) => (
-  <AppBar title={`Hello, ${name}!`} />
+export const App = ({ names }) => (
+  <AppBar title={`Hello, ${names || 'Loading...'}!`} />
 );
 
-export default App;
+export const resolve = json => {
+  const names = [0, 1].map( p => json.people[p].name ).join( ' and ');
+  return { names };
+};
+
+export default WithFalcor( App, resolve, 'people[0..1]["name"]' );
 

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "test": "tape -r babel-register src/components/app/spec.js | faucet",
+    "test": "tape -r babel-register 'src/**/spec.js' | faucet",
     "preci": "npm run build",
     "ci": "npm run test"
   },
@@ -32,6 +32,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "babel-register": "^6.4.3",
+    "falcor": "^0.1.16",
     "faucet": "0.0.1",
     "material-ui": "^0.14.4",
     "react": "^0.14.7",
