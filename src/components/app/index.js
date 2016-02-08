@@ -2,8 +2,11 @@ import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
 import WithFalcor from '../../with-falcor';
 
-export const App = ({ names }) => (
-  <AppBar title={`Hello, ${names || 'Loading...'}!`} />
+export const App = ({ names, children }) => (
+  <div>
+    <AppBar title={`Hello, ${names || 'Loading...'}!`} />
+    <div>{children}</div>
+  </div>
 );
 
 export const resolve = json => {

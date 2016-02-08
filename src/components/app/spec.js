@@ -1,6 +1,5 @@
 import React from 'react';
 import test from 'tape';
-import AppBar from 'material-ui/lib/app-bar';
 import { App, resolve } from './';
 import getShallowInstance from '../../../utils/shallow';
 
@@ -9,10 +8,10 @@ test( 'App Render Method', t => {
 
   const instance = getShallowInstance( <App /> );
   
-  const expected = AppBar;
+  const expected = 'div';
   const actual = instance.type;
 
-  t.equals( actual, expected, 'rendered an AppBar' );
+  t.equals( actual, expected, 'rendered a div' );
 });
 
 test( 'App Falcor Resolve', t => {

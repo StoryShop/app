@@ -1,16 +1,15 @@
 import React from 'react';
+import model from '../model';
 
 const WithFalcor = ( Component, resolve, ...paths ) => React.createClass({
   componentDidMount () {
-    const { model } = this.props;
-
     model.get( ...paths ).subscribe( ({ json }) => {
       this.setState( resolve( json ) );
     });
   },
 
   render () {
-    return <Component {...this.state} />;
+    return <Component {...this.state} {...this.props} />;
   },
 });
 
