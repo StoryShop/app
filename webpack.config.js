@@ -30,6 +30,10 @@ module.exports = {
         exclude: /(node_modules)/,
         loaders: [ 'babel-loader?presets[]=es2015&presets[]=react&presets[]=stage-0' ],
       },
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
+      },
     ],
   },
 };
