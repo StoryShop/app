@@ -95,11 +95,11 @@ const cache = {
   sectionsById: {
     [ids.section1]: {
       title: 'Scene 1',
-      cards: [
-        $ref( `cardsById["${ids.card1}"]` ),
+      beats: [
+        $ref( `beatsById["${ids.beat1}"]` ),
       ],
 
-      // references used within this section's cards
+      // references used within this section's beats
       characters: [
         $ref( `charactersById["${ids.character1}"]` ),
       ],
@@ -110,11 +110,11 @@ const cache = {
 
     [ids.section2]: {
       title: 'Big Bird Hatched',
-      cards: [
-        $ref( `cardsById["${ids.card2}"]` ),
+      beats: [
+        $ref( `beatsById["${ids.beat2}"]` ),
       ],
 
-      // references used within this section's cards
+      // references used within this section's beats
       characters: [
         $ref( `charactersById["${ids.character1}"]` ),
       ],
@@ -127,8 +127,8 @@ const cache = {
   /**
    * Cards
    */
-  cardsById: {
-    [ids.card1]: {
+  beatsById: {
+    [ids.beat1]: {
       // hyperlinked with elements and characters
       content: 'Something about @BigBird and his #StuffedAnimals',
 
@@ -147,7 +147,7 @@ const cache = {
       },
     },
 
-    [ids.card2]: {
+    [ids.beat2]: {
       content: '@BigBird is born/hatched and gifted his first #StuffedAnimals.',
       refs: {
         '@BigBird': $ref( `charactersById["${ids.character1}"]` ),
@@ -206,6 +206,15 @@ const cache = {
         {
           description: 'Friend',
           character: $ref( `charactersById["${ids.character2}"]` ),
+
+          /**
+           * Query for beats:
+           *   - character bio beats where this character appears
+           *   - character bio beats of this character where the above character is referenced
+           *   - story beat beats where both characters are referenced
+           */
+          beats: [
+          ],
         },
       ],
 
