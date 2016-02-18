@@ -6,11 +6,13 @@
   "scripts": {
     "build:webpack": "webpack --config webpack.config.js",
     "build:model": "node utils/gen-fake-ids.js",
-    "build": "npm run build:model && npm run build:webpack",
+    "build:html": "mkdir -p build && cp index.html build/",
+    "build": "npm run build:html && npm run build:model && npm run build:webpack",
     "test:unit": "tape -r babel-register 'src/**/spec.js' | faucet",
     "test:e2e": "node wdio/run.js | faucet",
     "test": "npm run test:unit && npm run test:e2e",
     "start": "node server.js",
+    "dev": "npm run build:html && webpack-dev-server --hot --inline --config webpack.config.js --content-base build --port 8888 --host 0.0.0.0",
     "selenium:install": "selenium-standalone install",
     "selenium:start": "selenium-standalone start &> /dev/null &",
     "selenium": "npm run selenium:install && npm run selenium:start",
@@ -57,6 +59,7 @@
     "shortid": "^2.2.4",
     "tape": "^4.4.0",
     "webdriverio": "^4.0.3",
-    "webpack": "^1.12.13"
+    "webpack": "^1.12.13",
+    "webpack-dev-server": "^1.14.1"
   }
 }
