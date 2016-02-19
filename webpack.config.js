@@ -12,6 +12,10 @@ module.exports = {
 
   target: "web",
 
+  node: {
+    fs: "empty"
+  },
+
   // "externals": {
   //   "react": "React",
   //   "react-dom": "ReactDOM",
