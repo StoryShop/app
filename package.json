@@ -49,6 +49,7 @@
     "faucet": "0.0.1",
     "glob": "^6.0.4",
     "history": "^2.0.0",
+    "invariant": "^2.2.0",
     "json-loader": "^0.5.4",
     "material-ui": "^0.14.4",
     "react": "^0.14.7",
