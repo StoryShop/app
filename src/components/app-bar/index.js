@@ -1,7 +1,10 @@
 import React from 'react';
-import AppBar from 'material-ui/lib/app-bar';
+import UpstreamAppBar from 'material-ui/lib/app-bar';
 
-export default ({ title, ...props }) => (
-  <AppBar title={`${title || 'StoryShop'}`} {...props} />
+const AppBar = ({ title, ...props }) => (
+  <UpstreamAppBar title={`${title || 'StoryShop'}`} {...props} />
 );
+AppBar.displayName = 'AppBar';
+
+export default AppBar;
 

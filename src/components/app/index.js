@@ -4,6 +4,8 @@ import withTheme from '../../behaviours/with-theme';
 import defaultTheme from '../../themes';
 
 export const App = reactStamp( React ).compose({
+  displayName: 'App',
+
   render () {
     return ( <div>{this.props.children}</div> );
   }
