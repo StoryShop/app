@@ -27,8 +27,8 @@ test( 'FlexContainer', t => {
    * Default Styles
    */
   actual = result.props.style.display;
-  expected = 'flex';
-  t.equals( actual, expected, 'should use default display style' );
+  expected = [ '-webkit-box', '-webkit-flex', '-ms-flexbox', 'flex' ];
+  t.deepEquals( actual, expected, 'should use default display style' );
 
   actual = result.props.style.flexDirection;
   expected = 'row';
@@ -71,8 +71,8 @@ test( 'FlexContainer', t => {
   t.equals( actual, expected, 'should render the passed component' );
 
   actual = result.props.style.display;
-  expected = 'inline-flex';
-  t.equals( actual, expected, 'should use inline display style with flexInline prop' );
+  expected = [ '-webkit-inline-box', '-webkit-inline-flex', '-ms-inline-flexbox', 'inline-flex' ];
+  t.deepEquals( actual, expected, 'should use inline display style with flexInline prop' );
 
   actual = result.props.style.flexDirection;
   expected = 'column';
@@ -123,7 +123,7 @@ test( 'Flex', t => {
   t.equals( actual, expected, 'should render a span by default' );
 
   actual = result.props.style.order;
-  expected = 0;
+  expected = '0';
   t.equals( actual, expected, 'should use the default flex order' );
 
   actual = result.props.style.alignSelf;
@@ -131,7 +131,7 @@ test( 'Flex', t => {
   t.equals( actual, expected, 'should use the default flex align self' );
 
   actual = result.props.style.flex;
-  expected = null;
+  expected = undefined;
   t.equals( actual, expected, 'should use the default flex' );
 
   /**
@@ -152,7 +152,7 @@ test( 'Flex', t => {
   t.equals( actual, expected, 'should render the overriden component' );
 
   actual = result.props.style.order;
-  expected = 1;
+  expected = '1';
   t.equals( actual, expected, 'should use the overridden flex order' );
 
   actual = result.props.style.alignSelf;
@@ -160,7 +160,7 @@ test( 'Flex', t => {
   t.equals( actual, expected, 'should use the overridden flex align self' );
 
   actual = result.props.style.flex;
-  expected = 1;
+  expected = '1';
   t.equals( actual, expected, 'should use the overridden flex' );
 
   /**
@@ -169,7 +169,7 @@ test( 'Flex', t => {
   result = getShallowInstance( <Flex /> );
 
   actual = result.props.style.flex;
-  expected = 1;
+  expected = '1';
   t.equals( actual, expected, 'should use flex 1 for syntactic sugar' );
 
   actual = result.type;

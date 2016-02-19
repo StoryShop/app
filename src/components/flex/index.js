@@ -1,5 +1,6 @@
 import React from 'react';
 import invariant from 'invariant';
+import autoprefix from '../../autoprefix';
 
 export const FlexContainer = ({
   Component = 'div',
@@ -13,9 +14,9 @@ export const FlexContainer = ({
 
   ...props
 }) => {
-  props.style = {
+  props.style = autoprefix({
     display: flexInline ? 'inline-flex' : 'flex',
-    flexWrap: flexWrap ? 'wrap' : undefined,
+    flexWrap: flexWrap ? 'wrap' : null,
 
     flexDirection,
     flexJustifyContent,
@@ -23,7 +24,7 @@ export const FlexContainer = ({
     flexAlignContent,
 
     ...props.style
-  };
+  });
 
   return ( <Component {...props} /> );
 };
@@ -62,13 +63,13 @@ export const Flex = ({
     flex = 1;
   }
 
-  props.style = {
+  props.style = autoprefix({
     alignSelf: flexAlignSelf,
     order: flexOrder,
     flex,
 
     ...props.style
-  };
+  });
 
   return( <Component {...props} /> );
 };
