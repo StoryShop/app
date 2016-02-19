@@ -290,6 +290,6 @@ const cache = {
   },
 };
 
-const model = new Model({ cache });
+const model = new Model({ cache }).batch();
 export default model;
 
