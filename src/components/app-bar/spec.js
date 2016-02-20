@@ -2,7 +2,7 @@ import React from 'react';
 import test from 'tape';
 import AppBar from './';
 import UpstreamAppBar from 'material-ui/lib/app-bar';
-import getShallowInstance from '../../../utils/shallow';
+import getShallowInstance from 'utils/shallow';
 
 test( 'AppBar', t => {
   let expected, actual;

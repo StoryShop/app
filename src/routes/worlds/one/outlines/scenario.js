@@ -5,7 +5,7 @@ test( 'Outlines Placeholder Route', async t => {
   t.plan( 1 );
 
   await browser.url( '/worlds/123/outlines' );
-  await browser.pause( 1000 );
+  await browser.pause( 50 );
 
   const expected = 'Outlines';
   const actual = await browser.getText( '.header' );

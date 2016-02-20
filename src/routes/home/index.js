@@ -1,5 +1,5 @@
 import React from 'react';
-import AppBar from '../../components/app-bar';
+import AppBar from 'components/app-bar';
 
 const Home = ({ children }) => (
   <div>

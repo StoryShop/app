@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'tape';
 import { FlexContainer, Flex } from './';
-import getShallowInstance from '../../../utils/shallow';
+import getShallowInstance from 'utils/shallow';
 
 test( 'FlexContainer', t => {
   let actual, expected, result;

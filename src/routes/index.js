@@ -1,4 +1,4 @@
-import App from '../components/app';
+import App from 'components/app';
 import Home from './home';
 import worlds from './worlds';
 

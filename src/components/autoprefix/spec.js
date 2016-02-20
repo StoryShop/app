@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'tape';
 import Autoprefix from './';
-import getShallowInstance from '../../../utils/shallow';
+import getShallowInstance from 'utils/shallow';
 
 test( 'Autoprefix HOC', t => {
   t.plan( 1 );

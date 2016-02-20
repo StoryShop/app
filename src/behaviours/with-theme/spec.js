@@ -1,7 +1,7 @@
 import test from 'tape';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import withTheme from './';
-import sinon from 'sinon';
+import spyOn from 'utils/spy';
 
 test( 'withTheme behaviour', t => {
   let expected, actual;
@@ -18,10 +18,10 @@ test( 'withTheme behaviour', t => {
   actual = typeof result;
   t.equals( actual, expected, 'should return an object' );
 
-  const spy = sinon.spy( ThemeManager, 'getMuiTheme' );
+  const spy = spyOn( ThemeManager, 'getMuiTheme' );
   result.getChildContext();
   expected = [ theme ];
-  actual = spy.firstCall.args;
+  actual = spy.calls[0].args;
   t.deepEquals( actual, expected, 'should call ThemeManager with passed theme' );
 });
 

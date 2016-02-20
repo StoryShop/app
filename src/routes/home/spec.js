@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'tape';
 import Home from './';
-import getShallowInstance from '../../../utils/shallow';
+import getShallowInstance from 'utils/shallow';
 
 test( 'Home Render Method', t => {
   t.plan( 1 );

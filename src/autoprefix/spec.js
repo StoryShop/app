@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'tape';
 import prefix from './';
-import getShallowInstance from '../../utils/shallow';
+import getShallowInstance from 'utils/shallow';
 
 test( 'autoprefix', t => {
   t.plan( 1 );

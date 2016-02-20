@@ -1,6 +1,6 @@
 import React from 'react';
 import invariant from 'invariant';
-import autoprefix from '../../autoprefix';
+import autoprefix from 'autoprefix';
 
 export const FlexContainer = ({
   Component = 'div',

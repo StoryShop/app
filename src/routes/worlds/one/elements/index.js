@@ -1,6 +1,6 @@
 import React from 'react';
-import AppBar from '../../../../components/app-bar';
-import { FlexContainer, Flex } from '../../../../components/flex';
+import AppBar from 'components/app-bar';
+import { FlexContainer, Flex } from 'components/flex';
 
 export const Elements = ({ children }) => {
   return (

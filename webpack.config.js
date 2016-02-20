@@ -1,33 +1,14 @@
-var webpack = require( 'webpack' );
+var path = require( 'path' );
 
-module.exports = {
+var shared = {
   context: __dirname + '/src',
-  entry: './index.js',
-  devtool: 'source-map',
-  output: {
-    path: __dirname + '/build',
-    publicPath: '/assets/',
-    filename: 'app.js',
+
+  resolve: {
+    root: [
+      path.resolve( './src' ),
+    ],
   },
 
-  target: "web",
-
-  node: {
-    fs: "empty"
-  },
-
-  // "externals": {
-  //   "react": "React",
-  //   "react-dom": "ReactDOM",
-  //   "react-router": "ReactRouter",
-  //   "history": "History",
-  // },
-
-  // resolve: {
-  //   root: [
-  //     path.resolve( './src' ),
-  //   ],
-  // },
   module: {
     loaders: [
       {
@@ -42,4 +23,42 @@ module.exports = {
     ],
   },
 };
+
+module.exports = [
+  Object.assign( {}, shared, {
+    entry: './index.js',
+    devtool: 'source-map',
+
+    output: {
+      path: __dirname + '/build',
+      publicPath: '/assets/',
+      filename: 'app.js',
+    },
+
+    target: "web",
+
+    node: {
+      fs: "empty"
+    },
+
+    // "externals": {
+    //   "react": "React",
+    //   "react-dom": "ReactDOM",
+    //   "react-router": "ReactRouter",
+    //   "history": "History",
+    // },
+  }),
+
+  Object.assign( {}, shared, {
+    entry: './specs.js',
+    devtool: 'eval',
+
+    target: 'node',
+
+    output: {
+      path: __dirname + '/build',
+      filename: 'specs.js',
+    },
+  }),
+];
 
