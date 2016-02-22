@@ -5,7 +5,6 @@ import { FlexContainer, Flex } from 'components/flex';
 export const Characters = ({ children }) => {
   return (
     <div>
-      <AppBar title='Characters' />
       <h1 className="header">Characters</h1>
       { children }
     </div>

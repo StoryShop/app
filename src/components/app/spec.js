@@ -6,11 +6,12 @@ import getShallowInstance from 'utils/shallow';
 test( 'App Render Method', t => {
   t.plan( 1 );
 
-  const instance = getShallowInstance( <App /> );
+  const instance = getShallowInstance( <App />, { router: { isActive: () => true } } );
   
-  const expected = 'div';
-  const actual = instance.type;
+  // FIXME(jdm): This test requires knowing what DocumentTitle renders.
+  const expected = 'SideEffect(Component)';
+  const actual = instance.type.displayName;
 
-  t.equals( actual, expected, 'rendered a div' );
+  t.equals( actual, expected, 'rendered the DocumentTitle element' );
 });
 

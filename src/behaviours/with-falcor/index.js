@@ -1,5 +1,5 @@
 import React from 'react';
-import model from 'model';
+import model from 'stores/model';
 
 const WithFalcor = ( Component, resolve, ...paths ) => React.createClass({
   displayName: `${Component.displayName || 'UnnamedComponent'}WithFalcor`,
