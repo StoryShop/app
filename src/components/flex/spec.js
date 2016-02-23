@@ -1,24 +1,24 @@
 import React from 'react';
 import test from 'tape';
-import { FlexContainer, Flex } from './';
+import { FlexLayout, Flex } from './';
 import getShallowInstance from 'utils/shallow';
 
-test( 'FlexContainer', t => {
+test( 'FlexLayout', t => {
   let actual, expected, result;
 
-  t.plan( 16 );
+  t.plan( 24 );
 
-  result = getShallowInstance( <FlexContainer Component='div'>Hello</FlexContainer> );
-  actual = result.props.children;
-  expected = 'Hello';
+  result = getShallowInstance( <FlexLayout element={<div />}><span>Hello</span></FlexLayout> );
+  actual = result.props.children[0].type;
+  expected = 'span';
   t.equals( actual, expected, 'should pass through children' );
 
-  result = getShallowInstance( <FlexContainer style={{ color: 'red' }} Component='div'>Hello</FlexContainer> );
+  result = getShallowInstance( <FlexLayout style={{ color: 'red' }} element={<div />}>Hello</FlexLayout> );
   actual = result.props.style.color;
   expected = 'red';
   t.equals( actual, expected, 'should pass through other styles' );
 
-  result = getShallowInstance( <FlexContainer /> );
+  result = getShallowInstance( <FlexLayout><span>Hello</span></FlexLayout> );
   actual = result.type;
   expected = 'div';
   t.equals( actual, expected, 'should render a div by default' );
@@ -38,37 +38,51 @@ test( 'FlexContainer', t => {
   expected = undefined;
   t.equals( actual, expected, 'should use default flex wrap style' );
 
-  actual = result.props.style.flexJustifyContent;
+  actual = result.props.style.justifyContent;
   expected = 'flex-start';
   t.equals( actual, expected, 'should use default flex justify content style' );
 
-  actual = result.props.style.flexAlignItems;
+  actual = result.props.style.alignItems;
   expected = 'stretch';
   t.equals( actual, expected, 'should use default flex align items style' );
 
-  actual = result.props.style.flexAlignContent;
+  actual = result.props.style.alignContent;
   expected = 'stretch';
   t.equals( actual, expected, 'should use default flex align content style' );
+
+  /**
+   * Default Child Styles
+   */
+
+  actual = result.props.children[0].props.style.boxSizing;
+  expected = 'border-box';
+  t.equals( actual, expected, 'should use border-box on children' );
 
   /**
    * Style overrides through props
    */
   result = getShallowInstance(
-    <FlexContainer
-      Component='section'
+    <FlexLayout
+      element={<section />}
 
-      flexInline={true}
-      flexDirection='column'
-      flexWrap={true}
-      flexJustifyContent='flex-end'
+      inline={true}
+      direction='column'
+      wrap={true}
+      justifyContent='flex-end'
+      alignItems='flex-end'
+      alignContent='flex-end'
+      padding={8}
+      margin={8}
       >
-      Hello
-    </FlexContainer>
+      <span style={{color: 'red'}}>Zero</span>
+      <span flex>One</span>
+      <span flex='2'>Two</span>
+    </FlexLayout>
   );
 
   actual = result.type;
   expected = 'section';
-  t.equals( actual, expected, 'should render the passed component' );
+  t.equals( actual, expected, 'should render the passed element' );
 
   actual = result.props.style.display;
   expected = [ '-webkit-inline-box', '-webkit-inline-flex', '-ms-inline-flexbox', 'inline-flex' ];
@@ -82,105 +96,44 @@ test( 'FlexContainer', t => {
   expected = 'wrap';
   t.equals( actual, expected, 'should use overridden flex wrap style' );
 
-  actual = result.props.style.flexJustifyContent;
+  actual = result.props.style.justifyContent;
   expected = 'flex-end';
   t.equals( actual, expected, 'should use overridden flex justify content style' );
 
-  actual = result.props.style.flexAlignItems;
-  expected = 'stretch';
+  actual = result.props.style.alignItems;
+  expected = 'flex-end';
   t.equals( actual, expected, 'should use overridden flex align items style' );
 
-  actual = result.props.style.flexAlignContent;
-  expected = 'stretch';
+  actual = result.props.style.alignContent;
+  expected = 'flex-end';
   t.equals( actual, expected, 'should use overridden flex align content style' );
-});
 
-test( 'Flex', t => {
-  let actual, expected, result;
+  actual = result.props.children[0].props.style.margin;
+  expected = '8px';
+  t.equals( actual, expected, 'should use provided margin around children' );
 
-  t.plan( 13 );
+  actual = result.props.children[0].props.style.padding;
+  expected = '8px';
+  t.equals( actual, expected, 'should use provided padding around children' );
 
-  /**
-   * Defaults
-   */
-  result = getShallowInstance( <Flex Component='div'>Hello</Flex> );
-  actual = result.props.children;
-  expected = 'Hello';
-  t.equals( actual, expected, 'should pass through children' );
+  actual = result.props.style.padding;
+  expected = '8px';
+  t.equals( actual, expected, 'should use provided padding around the element' );
 
-  result = getShallowInstance( <Flex style={{ color: 'red' }} Component='div'>Hello</Flex> );
-  actual = result.props.style.color;
+  actual = result.props.children[0].props.style.color;
   expected = 'red';
-  t.equals( actual, expected, 'should pass through other styles' );
+  t.equals( actual, expected, 'should preserve child styles' );
 
-  /**
-   * Defaults
-   */
-  result = getShallowInstance( <Flex Component='span' /> );
-
-  actual = result.type;
-  expected = 'span';
-  t.equals( actual, expected, 'should render a span by default' );
-
-  actual = result.props.style.order;
-  expected = '0';
-  t.equals( actual, expected, 'should use the default flex order' );
-
-  actual = result.props.style.alignSelf;
-  expected = 'auto';
-  t.equals( actual, expected, 'should use the default flex align self' );
-
-  actual = result.props.style.flex;
+  actual = result.props.children[0].props.style.flex;
   expected = undefined;
-  t.equals( actual, expected, 'should use the default flex' );
+  t.equals( actual, expected, 'should not give flex styling to children without the `flex` prop' );
 
-  /**
-   * Overrides through props
-   */
-  result = getShallowInstance(
-    <Flex
-      Component='div'
-
-      flexOrder={1}
-      flexAlignSelf='flex-start'
-      flex={1}
-    />
-  );
-
-  actual = result.type;
-  expected = 'div';
-  t.equals( actual, expected, 'should render the overriden component' );
-
-  actual = result.props.style.order;
+  actual = result.props.children[1].props.style.flex;
   expected = '1';
-  t.equals( actual, expected, 'should use the overridden flex order' );
+  t.equals( actual, expected, 'should apply `flex: 1` to children with the `flex` prop' );
 
-  actual = result.props.style.alignSelf;
-  expected = 'flex-start';
-  t.equals( actual, expected, 'should use the overridden flex align self' );
-
-  actual = result.props.style.flex;
-  expected = '1';
-  t.equals( actual, expected, 'should use the overridden flex' );
-
-  /**
-   * Use syntactic sugar for stretching flex child
-   */
-  result = getShallowInstance( <Flex /> );
-
-  actual = result.props.style.flex;
-  expected = '1';
-  t.equals( actual, expected, 'should use flex 1 for syntactic sugar' );
-
-  actual = result.type;
-  expected = 'span';
-  t.equals( actual, expected, 'should use span for syntactic sugar' );
-
-  /**
-   * Allowing for sugar without requires props
-   */
-  result = () => getShallowInstance( <Flex flex={1} /> );
-
-  t.throws( result, 'should throw when flex prop is provided without a Component prop' );
+  actual = result.props.children[2].props.style.flex;
+  expected = '2';
+  t.equals( actual, expected, 'should pass on flex style to children with the `flex` prop' );
 });
 
