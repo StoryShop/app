@@ -34,5 +34,5 @@ var ids = [
   return obj;
 }, {} );
 
-fs.writeFileSync( path.join( __dirname, '..', 'ids.json' ), JSON.stringify( ids, null, 2 ) );
+fs.writeFileSync( path.join( __dirname, '..', '..', 'build', 'ids.json' ), JSON.stringify( ids, null, 2 ) );
 

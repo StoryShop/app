@@ -1,5 +1,5 @@
 import falcor, { Model } from 'falcor';
-import ids from '../ids.json';
+import ids from '../../build/ids.json';
 
 const $ref = Model.ref;
 const $atom = Model.atom;
@@ -10,6 +10,7 @@ const cache = {
    */
   worldsById: {
     [ids.world1]: {
+      id: ids.world1,
       title: 'Sesame Street',
       slug: 'sesame-street',
 
@@ -286,10 +287,22 @@ const cache = {
       worlds: [
         $ref( `worldsById["${ids.world1}"]` ),
       ],
+
+      ux: {
+        lastVisited: `/worlds/${ids.world1}`,
+      },
     },
   },
+
+  /**
+   * A reference to the currently authenticated user.
+   */
+  currentUser: $ref( `usersById["${ ids.user1 }"]` ),
 };
 
 const model = new Model({ cache }).batch();
+if ( global.window ) {
+  global.window.model = model;
+}
 export default model;
 

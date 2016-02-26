@@ -7,6 +7,9 @@ test( 'Left Nav', async t => {
   t.plan( 3 );
 
   await browser.url( '/' );
+
+  await browser.pause( 250 );
+
   await browser.click( '.app-bar > button' );
 
   await browser.pause( 250 );
@@ -16,7 +19,7 @@ test( 'Left Nav', async t => {
   t.equals( actual, expected, 'opens menu on navbar icon click' );
 
   await browser.click( '.main-menu__item-characters' );
-  await browser.pause( 250 );
+  await browser.pause( 500 );
 
   expected = 'Characters | StoryShop';
   actual = await browser.getTitle();

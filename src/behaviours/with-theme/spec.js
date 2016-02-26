@@ -5,21 +5,17 @@ import spyOn from 'utils/spy';
 
 test( 'withTheme behaviour', t => {
   let expected, actual;
-  t.plan( 3 );
-
-  expected = 'function';
-  actual = typeof withTheme;
-  t.equals( actual, expected, 'should be a function' );
+  t.plan( 2 );
 
   const theme = { palette: {} };
-  const result = withTheme( theme );
-
-  expected = 'object';
-  actual = typeof result;
-  t.equals( actual, expected, 'should return an object' );
+  const instance = { muiTheme () { return theme; }, ...withTheme };
 
   const spy = spyOn( ThemeManager, 'getMuiTheme' );
-  result.getChildContext();
+
+  expected = 'object';
+  actual = typeof instance.getChildContext();
+  t.equals( actual, expected, 'should return an object' );
+
   expected = [ theme ];
   actual = spy.calls[0].args;
   t.deepEquals( actual, expected, 'should call ThemeManager with passed theme' );

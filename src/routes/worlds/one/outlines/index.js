@@ -1,6 +1,8 @@
 import React from 'react';
 import AppBar from 'components/app-bar';
 import { FlexContainer, Flex } from 'components/flex';
+import uiStore from 'stores/ui';
+import { setTitle } from 'stores/actions/meta';
 
 export const Outlines = ({ children }) => {
   return (
@@ -14,5 +16,9 @@ export const Outlines = ({ children }) => {
 export default {
   path: 'outlines',
   component: Outlines,
+  onEnter () {
+    // TODO: move to react-side-effect implementation in route components
+    uiStore.dispatch( setTitle( 'Outlines' ) );
+  },
 };
 

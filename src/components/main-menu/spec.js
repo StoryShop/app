@@ -8,7 +8,11 @@ test( 'MainMenu', t => {
   let expected, actual;
   t.plan( 1 );
 
-  const instance = getShallowInstance( <MainMenu items={[]} /> );
+  const worlds = { 0: { id: '123' } };
+  const instance = getShallowInstance(
+    <MainMenu currentWorld={worlds[0]} worlds={worlds} />,
+    { router: { isActive: () => true } }
+  );
   
   expected = LeftNav;
   actual = instance.type;
