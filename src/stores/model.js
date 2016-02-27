@@ -17,9 +17,6 @@ const cache = {
       // user-assigned colour-coding
       colour: 'yellow',
 
-      // perhaps multiple images
-      image: '/path/to/img',
-
       owners: [
         $ref( `usersById["${ids.user1}"]` ),
       ],
@@ -30,29 +27,20 @@ const cache = {
       readers: [
       ],
 
-      elementBoards: [
-        $ref( `elementBoardsById["${ids.elementBoard1}"]` ),
-      ],
+      elements: {
+        0: $ref( `elementsById["${ids.element1}"]` ),
+        length: 1,
+      },
 
-      storyBeatBoards: [
-        $ref( `storyBeatBoardsById["${ids.storyBeatBoard1}"]` ),
-      ],
+      outlines: {
+        0: $ref( `outlinesById["${ids.outline1}"]` ),
+        length: 1,
+      },
 
-      characters: [
-        $ref( `charactersById["${ids.character1}"]` ),
-      ],
-    },
-  },
-
-  /**
-   * Element Boards
-   */
-  elementBoardsById: {
-    [ids.elementBoard1]: {
-      title: 'Big Bird\'s Nest',
-      elements: [
-        $ref( `elementsById["${ids.element1}"]` ),
-      ],
+      characters: {
+        0: $ref( `charactersById["${ids.character1}"]` ),
+        length: 1,
+      },
     },
   },
 
@@ -81,8 +69,8 @@ const cache = {
   /**
    * Story Beat Boards
    */
-  storyBeatBoardsById: {
-    [ids.storyBeatBoard1]: {
+  outlinesById: {
+    [ids.outline1]: {
       title: 'Episode 1',
       sections: [
         $ref( `sectionsById["${ids.section1}"]` ),

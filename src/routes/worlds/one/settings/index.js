@@ -1,4 +1,5 @@
 import reactStamp from 'react-stamp';
+import Jumbotron from 'components/worlds/jumbotron';
 
 export default ( React, ...behaviours ) => reactStamp( React ).compose({
   propTypes: {
@@ -14,15 +15,18 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   modelPaths () {
     return [
       [ 'worldsById', this.props.params.world_id, [
+        'id',
         'title',
         'colour',
       ]],
+      [ 'worldsById', this.props.params.world_id, 'elements', 'length' ],
+      [ 'worldsById', this.props.params.world_id, 'characters', 'length' ],
+      [ 'worldsById', this.props.params.world_id, 'outlines', 'length' ],
     ];
   },
 
   modelToState ( data ) {
     // TODO: handle errors
-    console.log("got data in settings", data);
 
     return {
       loading: false,
@@ -36,8 +40,14 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
     return world ? (
       <div>
-        <h1 className="header">{ this.state.world.title }</h1>
-        { children }
+        <Jumbotron
+          worldId={world.id}
+          colour={world.colour}
+          title={world.title}
+          outlines={world.outlines.length}
+          characters={world.characters.length}
+          elements={world.elements.length}
+        />
       </div>
     ) : null;
   },

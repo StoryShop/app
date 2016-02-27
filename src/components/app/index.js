@@ -61,9 +61,22 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     // const activeItem = menuItems.find( item => item.active );
     const title = `${this.state.title} | StoryShop`;
 
+    const styles = {
+      container: {
+        fontFamily: 'Roboto, sans-serif',
+      },
+
+      content: {
+        width: '100%',
+        maxWidth: '960px',
+        margin: '0 auto',
+        padding: '20px',
+      },
+    };
+
     return (
       <DocumentTitle title={title}>
-        <div>
+        <div style={styles.container}>
           {/* use flex for full height */}
           <AppBar
             title={this.state.title}
@@ -75,7 +88,9 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
             worlds={worlds}
             currentWorld={currentWorld}
           />
-          <div>{this.props.children}</div>
+          <div style={styles.content}>
+            {this.props.children}
+          </div>
         </div>
       </DocumentTitle>
     );

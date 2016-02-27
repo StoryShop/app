@@ -8,9 +8,9 @@ import zIndex from 'material-ui/lib/styles/zIndex';
  */
 export const defaultTheme = {
   palette: {
-    primary1Color: Colors.teal500,
-    primary2Color: Colors.teal700,
-    primary3Color: Colors.teal800,
+    primary1Color: Colors.blueGrey500,
+    primary2Color: Colors.blueGrey700,
+    primary3Color: Colors.blueGrey800,
     accent1Color: Colors.pinkA200,
     accent3Color: Colors.pink100,
     accent3Color: Colors.pink400,
@@ -26,20 +26,26 @@ export default defaultTheme;
  * Characters Theme
  */
 export const characterTheme = {
-  // ...
+  palette: {
+    primary1Color: Colors.blue500,
+  },
 };
 
 /**
  * Elements Theme
  */
 export const elementTheme = {
-  // ...
+  palette: {
+    primary1Color: Colors.green500,
+  },
 };
 
 /**
- * Story Beat Boards Theme
+ * Outlines Theme
  */
-export const beatboardTheme = {
-  // ...
+export const outlineTheme = {
+  palette: {
+    primary1Color: Colors.purple500,
+  },
 };
 

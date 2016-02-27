@@ -10,7 +10,8 @@ import ElementsIcon from 'material-ui/lib/svg-icons/action/dashboard';
 import OutlineIcon from 'material-ui/lib/svg-icons/editor/format-list-numbered';
 import { ColorManipulator } from 'material-ui/lib/utils';
 import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
-import defaultTheme from 'themes';
+import { defaultTheme, elementTheme, characterTheme, outlineTheme } from 'themes';
+import * as paths from 'utils/paths';
 
 export default reactStamp( React ).compose({
   displayName: 'MainMenu',
@@ -59,24 +60,31 @@ export default reactStamp( React ).compose({
         slug: '',
         label: 'World Settings',
         icon: <WorldIcon />,
+        uri: paths.world( currentWorld.id ),
+        colour: defaultTheme.palette.primary1Color,
       },
       {
         slug: 'elements',
         label: 'Elements',
         icon: <ElementsIcon />,
+        uri: paths.elementList( currentWorld.id ),
+        colour: elementTheme.palette.primary1Color,
       },
       {
         slug: 'characters',
         label: 'Characters',
         icon: <CharacterIcon />,
+        uri: paths.characterList( currentWorld.id ),
+        colour: characterTheme.palette.primary1Color,
       },
       {
         slug: 'outlines',
         label: 'Outlines',
         icon: <OutlineIcon />,
+        uri: paths.outlineList( currentWorld.id ),
+        colour: outlineTheme.palette.primary1Color,
       },
     ]
-    .map( item => ({ uri: `/worlds/${currentWorld.id}/${item.slug}`, ...item }) )
     .map( item => {
       const active = this._isCurrentUri( item.uri, true );
 
@@ -102,7 +110,7 @@ export default reactStamp( React ).compose({
         className={`main-menu__item-${item.slug}`}
         linkButton={true}
         insetChildren={true}
-        leftAvatar={<Avatar icon={item.icon} />}
+        leftAvatar={<Avatar backgroundColor={item.colour} icon={item.icon} />}
         primaryText={item.label}
         {...item.props}
       />

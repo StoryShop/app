@@ -1,12 +1,12 @@
 import React from 'react';
 import test from 'tape';
-import { FlexLayout, Flex } from './';
+import { FlexLayout } from './';
 import getShallowInstance from 'utils/shallow';
 
 test( 'FlexLayout', t => {
   let actual, expected, result;
 
-  t.plan( 24 );
+  t.plan( 25 );
 
   result = getShallowInstance( <FlexLayout element={<div />}><span>Hello</span></FlexLayout> );
   actual = result.props.children[0].type;
@@ -27,7 +27,8 @@ test( 'FlexLayout', t => {
    * Default Styles
    */
   actual = result.props.style.display;
-  expected = [ '-webkit-box', '-webkit-flex', '-ms-flexbox', 'flex' ];
+  // expected = [ '-webkit-box', '-webkit-flex', '-ms-flexbox', 'flex' ];
+  expected = 'flex';
   t.deepEquals( actual, expected, 'should use default display style' );
 
   actual = result.props.style.flexDirection;
@@ -35,7 +36,7 @@ test( 'FlexLayout', t => {
   t.equals( actual, expected, 'should use default flex direction style' );
 
   actual = result.props.style.flexWrap;
-  expected = undefined;
+  expected = null;
   t.equals( actual, expected, 'should use default flex wrap style' );
 
   actual = result.props.style.justifyContent;
@@ -63,7 +64,7 @@ test( 'FlexLayout', t => {
    */
   result = getShallowInstance(
     <FlexLayout
-      element={<section />}
+      element={<section style={{color: 'blue'}} />}
 
       inline={true}
       direction='column'
@@ -85,7 +86,8 @@ test( 'FlexLayout', t => {
   t.equals( actual, expected, 'should render the passed element' );
 
   actual = result.props.style.display;
-  expected = [ '-webkit-inline-box', '-webkit-inline-flex', '-ms-inline-flexbox', 'inline-flex' ];
+  // expected = [ '-webkit-inline-box', '-webkit-inline-flex', '-ms-inline-flexbox', 'inline-flex' ];
+  expected = 'inline-flex';
   t.deepEquals( actual, expected, 'should use inline display style with flexInline prop' );
 
   actual = result.props.style.flexDirection;
@@ -109,23 +111,27 @@ test( 'FlexLayout', t => {
   t.equals( actual, expected, 'should use overridden flex align content style' );
 
   actual = result.props.children[0].props.style.margin;
-  expected = '8px';
+  expected = 8;
   t.equals( actual, expected, 'should use provided margin around children' );
 
   actual = result.props.children[0].props.style.padding;
-  expected = '8px';
+  expected = 8;
   t.equals( actual, expected, 'should use provided padding around children' );
 
   actual = result.props.style.padding;
-  expected = '8px';
+  expected = 8;
   t.equals( actual, expected, 'should use provided padding around the element' );
+
+  actual = result.props.style.color;
+  expected = 'blue';
+  t.equals( actual, expected, 'should preserve element styles' );
 
   actual = result.props.children[0].props.style.color;
   expected = 'red';
   t.equals( actual, expected, 'should preserve child styles' );
 
   actual = result.props.children[0].props.style.flex;
-  expected = undefined;
+  expected = null;
   t.equals( actual, expected, 'should not give flex styling to children without the `flex` prop' );
 
   actual = result.props.children[1].props.style.flex;

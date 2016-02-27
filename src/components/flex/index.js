@@ -1,6 +1,6 @@
 import React from 'react';
 import invariant from 'invariant';
-import autoprefix from 'utils/autoprefix';
+// import autoprefix from 'utils/autoprefix';
 
 export const FlexLayout = ({
   element = <div />,
@@ -35,6 +35,7 @@ export const FlexLayout = ({
     alignItems,
     alignContent,
 
+    ...element.props.style,
     ...style
   };
 
@@ -70,10 +71,12 @@ export const FlexLayout = ({
       }
     }
 
-    return React.cloneElement( child, { style: autoprefix( style ) } );
+    // return React.cloneElement( child, { style: autoprefix( style ) } );
+    return React.cloneElement( child, { style } );
   });
 
-  return React.cloneElement( element, { style: autoprefix( style ), children } );
+  // return React.cloneElement( element, { style: autoprefix( style ), children } );
+  return React.cloneElement( element, { style, children } );
 };
 FlexLayout.propTypes = {
   element: React.PropTypes.oneOfType([
