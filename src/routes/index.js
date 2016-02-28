@@ -1,7 +1,7 @@
 import React from 'react';
 import AppFactory from 'components/app';
 import worlds from './worlds';
-import model from 'stores/model';
+import { model } from 'stores/model';
 import withModel from 'behaviours/with-model';
 import withUiStore from 'behaviours/with-ui-store';
 import withTheme from 'behaviours/with-theme';

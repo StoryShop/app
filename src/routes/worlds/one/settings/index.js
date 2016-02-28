@@ -34,6 +34,10 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     };
   },
 
+  _onTitleChange ( title ) {
+    this.modelSetValue( [ 'worldsById', this.props.params.world_id, 'title' ], title );
+  },
+
   render () {
     const { children } = this.props;
     const { world } = this.state;
@@ -47,6 +51,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
           outlines={world.outlines.length}
           characters={world.characters.length}
           elements={world.elements.length}
+          onTitleChange={title => this._onTitleChange( title )}
         />
       </div>
     ) : null;

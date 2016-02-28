@@ -1,3 +1,4 @@
+var webpack = require( 'webpack' );
 var path = require( 'path' );
 
 var shared = {
@@ -54,6 +55,10 @@ module.exports = [
     devtool: 'eval',
 
     target: 'node',
+
+    plugins: [
+      new webpack.IgnorePlugin( /ReactContext/ ),
+    ],
 
     output: {
       path: __dirname + '/build',

@@ -8,9 +8,10 @@ export const Circle = ({
   fillColour,
   style,
   children,
+  className = '',
 }) => (
   <div
-    className='component-summary--circle'
+    className={`component-summary--circle ${className}`}
     style={{
       borderRadius: '50%',
       backgroundColor: fillColour,
@@ -70,7 +71,11 @@ export default ({
       style={styles.container}
       >
 
-      <Link style={{textDecoration: 'none'}} to={paths.outlineList( worldId )}>
+      <Link
+        className='component-summary--link outlines'
+        style={{textDecoration: 'none'}}
+        to={paths.outlineList( worldId )}
+        >
         <Circle fillColour={outlineTheme.palette.primary1Color} style={styles.circle3}>
           {outlines}
         </Circle>
@@ -81,12 +86,20 @@ export default ({
         alignItems='center'
         justifyContent='center'
         >
-        <Link style={{textDecoration: 'none'}} to={paths.elementList( worldId )}>
+        <Link
+          className='component-summary--link elements'
+          style={{textDecoration: 'none'}}
+          to={paths.elementList( worldId )}
+          >
           <Circle fillColour={elementTheme.palette.primary1Color} style={styles.circle1}>
             {elements}
           </Circle>
         </Link>
-        <Link style={{textDecoration: 'none'}} to={paths.characterList( worldId )}>
+        <Link
+          className='component-summary--link characters'
+          style={{textDecoration: 'none'}}
+          to={paths.characterList( worldId )}
+          >
           <Circle fillColour={characterTheme.palette.primary1Color} style={styles.circle2}>
             {characters}
           </Circle>

@@ -1,4 +1,4 @@
-import model from 'stores/model';
+import { model } from 'stores/model';
 import historyStore from 'stores/history';
 import Logger from 'utils/logger';
 

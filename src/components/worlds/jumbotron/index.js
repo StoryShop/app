@@ -1,5 +1,6 @@
 import React from 'react';
 import * as colours from 'material-ui/lib/styles/colors';
+import InlineEdit from 'components/inline-edit';
 import { FlexLayout } from 'components/flex';
 import ComponentSummary from 'components/worlds/component-summary';
 
@@ -11,6 +12,7 @@ const Jumbotron = ({
   characters,
   elements,
 
+  onTitleChange = () => true,
   style = {},
 
   ...props
@@ -31,6 +33,11 @@ const Jumbotron = ({
     header: {
       margin: 0,
       fontWeight: 400,
+      width: '100%',
+    },
+
+    edit: {
+      textAlign: 'center',
     },
   };
 
@@ -49,7 +56,9 @@ const Jumbotron = ({
         style={{ marginBottom: '20px' }}
       />
       <div flex />
-      <h1 style={styles.header}>{title}</h1>
+      <h1 style={styles.header}>
+        <InlineEdit value={title} style={styles.edit} onChange={onTitleChange} />
+      </h1>
     </FlexLayout>
   );
 };
@@ -60,6 +69,7 @@ Jumbotron.propTypes = {
   outlines: React.PropTypes.number.isRequired,
   characters: React.PropTypes.number.isRequired,
   elements: React.PropTypes.number.isRequired,
+  onTitleChange: React.PropTypes.func,
   colour: React.PropTypes.string,
   style: React.PropTypes.object,
 };
