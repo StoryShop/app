@@ -188,16 +188,33 @@ export default {
       },
 
       // Questions that have been answered.
-      genes: [
-        {
-          question: $ref( `dna.questionsById["${ids.dnaq1}"]` ),
-          answer: 'A freak of nature, yet somehow beloved.',
+      genes: {
+        0: {
+          gene: $ref( `dna.questionsById["${ids.dnaq1}"]` ),
+          allele: 'A freak of nature, yet somehow beloved.',
         },
-        {
-          question: $ref( `dna.questionsById["${ids.dnaq2}"]` ),
-          answer: 'When everyone acknowledged @Snuffy was real.',
+        1: {
+          gene: $ref( `dna.questionsById["${ids.dnaq2}"]` ),
+          allele: 'When everyone acknowledged @Snuffy was real.',
         },
-      ],
+        2: {
+          gene: $atom({ label: 'What do you think about Donald Trump?' }),
+          allele: 'I think he is just terrific.',
+        },
+        3: {
+          gene: $atom({ label: 'What is your favourite pastime?' }),
+          allele: 'Writing poems',
+        },
+        4: {
+          gene: $atom({ label: 'What is average windspeed velocity of an unlaiden swallow?' }),
+          allele: 'African or European?',
+        },
+        5: {
+          gene: $atom({ label: 'What is your favourite insult?' }),
+          allele: 'Your mother was a hamster and your father smelled of elderberries!',
+        },
+        length: 6,
+      },
 
       relationships: [
         {
@@ -247,12 +264,12 @@ export default {
   dna: {
     questionsById: {
       [ids.dnaq1]: {
-        question: 'What is your social status?',
+        label: 'What is your social status?',
         category: $ref( `dna.categoresById["${ids.dcat1}"]` ),
       },
 
       [ids.dnaq2]: {
-        question: 'What is your happiest memory?',
+        label: 'What is your happiest memory?',
         category: $ref( `dna.categoresById["${ids.dcat1}"]` ),
       },
     },

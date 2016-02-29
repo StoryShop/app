@@ -54,8 +54,9 @@ export default {
      * component. For initial render of components that need non-cached data, the callback will be
      * called twice, though the render should only happen once.
      */
-    log.debug( 'Fetching initial data' );
-    model.get( ...this.modelPaths() ).subscribe(
+    const paths = this.modelPaths();
+    log.debug( 'Fetching initial data', paths );
+    model.get( ...paths ).subscribe(
       data => this._onModelChangeSuccess( data, 'initial' ),
       err => this._onModelChangeError( err )
     );

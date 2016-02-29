@@ -14,7 +14,7 @@ export default {
   },
 
   _checkPagination ( length ) {
-    const disabled = length <= this.state.pagination.to;
+    const disabled = length <= this.state.pagination.to + 1;
     this.setState({ pagination: { ...this.state.pagination, disabled }});
   },
 

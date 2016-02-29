@@ -2,6 +2,7 @@ import reactStamp from 'react-stamp';
 import { FlexLayout } from 'components/flex';
 import Avatar from 'components/characters/avatar';
 import Attributes from 'components/characters/attributes';
+import Dna from 'components/characters/dna';
 
 export default ( React, ...behaviours ) => reactStamp( React ).compose({
   propTypes: {
@@ -24,6 +25,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         'aliases',
       ]],
       [ ...path, 'attributes', 'length' ],
+      [ ...path, 'genes', 'length' ],
     ];
   },
 
@@ -60,6 +62,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
     const { id, name, aliases } = character;
     const numAttributes = character.attributes.length;
+    const numGenes = character.genes.length;
 
     const styles = {
       avatar: {
@@ -86,7 +89,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         </div>
 
         <div flex="66">
-          Right
+          <Dna id={id} style={styles.dna} count={numGenes} />
         </div>
       </FlexLayout>
     );
