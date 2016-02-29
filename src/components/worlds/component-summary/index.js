@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FlexLayout } from 'components/flex';
-import { elementTheme, characterTheme, outlineTheme } from 'themes';
+import * as themes from 'themes';
 import * as paths from 'utils/paths';
 
 export const Circle = ({
@@ -76,7 +76,7 @@ export default ({
         style={{textDecoration: 'none'}}
         to={paths.outlineList( worldId )}
         >
-        <Circle fillColour={outlineTheme.palette.primary1Color} style={styles.circle3}>
+        <Circle fillColour={themes.outlines.palette.primary1Color} style={styles.circle3}>
           {outlines}
         </Circle>
       </Link>
@@ -91,7 +91,7 @@ export default ({
           style={{textDecoration: 'none'}}
           to={paths.elementList( worldId )}
           >
-          <Circle fillColour={elementTheme.palette.primary1Color} style={styles.circle1}>
+          <Circle fillColour={themes.elements.palette.primary1Color} style={styles.circle1}>
             {elements}
           </Circle>
         </Link>
@@ -100,7 +100,7 @@ export default ({
           style={{textDecoration: 'none'}}
           to={paths.characterList( worldId )}
           >
-          <Circle fillColour={characterTheme.palette.primary1Color} style={styles.circle2}>
+          <Circle fillColour={themes.characters.palette.primary1Color} style={styles.circle2}>
             {characters}
           </Circle>
         </Link>

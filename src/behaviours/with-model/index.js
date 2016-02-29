@@ -19,8 +19,14 @@ export default {
     );
   },
 
-  _onModelChangeSuccess ( data ) {
-    log.debug( 'onChange Success', data );
+  _onModelChangeSuccess ( data, type ) {
+    log.debug( `onChange from ${type}`, data );
+
+    if ( ! data ) {
+      log.warn( 'No data returned for paths', this.modelPaths() );
+      return;
+    }
+
     this.setState( this.modelToState( data.json ) );
   },
 
@@ -30,8 +36,8 @@ export default {
 
   _onModelChange () {
     store.get( ...this.modelPaths() ).then(
-      () => this._onModelChangeSuccess(),
-      () => this._onModelChangeError()
+      data => this._onModelChangeSuccess( data, 'change' ),
+      err => this._onModelChangeError( err )
     );
   },
 
@@ -50,7 +56,7 @@ export default {
      */
     log.debug( 'Fetching initial data' );
     model.get( ...this.modelPaths() ).subscribe(
-      data => this._onModelChangeSuccess( data ),
+      data => this._onModelChangeSuccess( data, 'initial' ),
       err => this._onModelChangeError( err )
     );
   },

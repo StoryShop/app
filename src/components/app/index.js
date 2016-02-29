@@ -2,7 +2,7 @@ import reactStamp from 'react-stamp';
 import DocumentTitle from 'react-document-title';
 import MainMenu from 'components/main-menu';
 import AppBar from 'components/app-bar';
-import defaultTheme from 'themes';
+import * as themes from 'themes';
 
 export default ( React, ...behaviours ) => reactStamp( React ).compose({
   displayName: 'App',
@@ -10,10 +10,11 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   state: {
     mainMenuVisible: false,
     loading: true,
+    theme: themes.main,
   },
 
   muiTheme () {
-    return defaultTheme;
+    return this.state.theme;
   },
 
   modelPaths () {
@@ -43,6 +44,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   mapUiState ( uiState ) {
     return {
       title: uiState.meta.title,
+      theme: themes[ `${uiState.meta.theme}` ] || themes.main,
     };
   },
 

@@ -2,7 +2,7 @@ import React from 'react';
 import AppBar from 'components/app-bar';
 import { FlexContainer, Flex } from 'components/flex';
 import uiStore from 'stores/ui';
-import { setTitle } from 'stores/actions/meta';
+import { setTitle, setTheme } from 'stores/actions/meta';
 
 export const Elements = ({ children }) => {
   return (
@@ -18,6 +18,7 @@ export default {
   component: Elements,
   onEnter () {
     // TODO: move to react-side-effect implementation in route components
+    uiStore.dispatch( setTheme( 'elements' ) );
     uiStore.dispatch( setTitle( 'Elements' ) );
   },
 };

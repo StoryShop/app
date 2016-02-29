@@ -6,7 +6,7 @@ import zIndex from 'material-ui/lib/styles/zIndex';
 /**
  * Default theme
  */
-export const defaultTheme = {
+export const main = {
   palette: {
     primary1Color: Colors.blueGrey500,
     primary2Color: Colors.blueGrey700,
@@ -20,12 +20,12 @@ export const defaultTheme = {
     borderColor: Colors.grey300,
   },
 };
-export default defaultTheme;
+export default main;
 
 /**
  * Characters Theme
  */
-export const characterTheme = {
+export const characters = {
   palette: {
     primary1Color: Colors.blue500,
   },
@@ -34,7 +34,7 @@ export const characterTheme = {
 /**
  * Elements Theme
  */
-export const elementTheme = {
+export const elements = {
   palette: {
     primary1Color: Colors.green500,
   },
@@ -43,7 +43,7 @@ export const elementTheme = {
 /**
  * Outlines Theme
  */
-export const outlineTheme = {
+export const outlines = {
   palette: {
     primary1Color: Colors.purple500,
   },

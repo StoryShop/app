@@ -10,7 +10,7 @@ import ElementsIcon from 'material-ui/lib/svg-icons/action/dashboard';
 import OutlineIcon from 'material-ui/lib/svg-icons/editor/format-list-numbered';
 import { ColorManipulator } from 'material-ui/lib/utils';
 import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
-import { defaultTheme, elementTheme, characterTheme, outlineTheme } from 'themes';
+import * as themes from 'themes';
 import * as paths from 'utils/paths';
 
 export default reactStamp( React ).compose({
@@ -52,7 +52,7 @@ export default reactStamp( React ).compose({
       return null;
     }
 
-    const theme = getMuiTheme( defaultTheme );
+    const theme = getMuiTheme( themes.main );
     const activeColour = ColorManipulator.fade( theme.rawTheme.palette.textColor, 0.2 );
 
     const menuItems = [
@@ -61,28 +61,28 @@ export default reactStamp( React ).compose({
         label: 'World Settings',
         icon: <WorldIcon />,
         uri: paths.world( currentWorld.id ),
-        colour: defaultTheme.palette.primary1Color,
+        colour: themes.main.palette.primary1Color,
       },
       {
         slug: 'elements',
         label: 'Elements',
         icon: <ElementsIcon />,
         uri: paths.elementList( currentWorld.id ),
-        colour: elementTheme.palette.primary1Color,
+        colour: themes.elements.palette.primary1Color,
       },
       {
         slug: 'characters',
         label: 'Characters',
         icon: <CharacterIcon />,
         uri: paths.characterList( currentWorld.id ),
-        colour: characterTheme.palette.primary1Color,
+        colour: themes.characters.palette.primary1Color,
       },
       {
         slug: 'outlines',
         label: 'Outlines',
         icon: <OutlineIcon />,
         uri: paths.outlineList( currentWorld.id ),
-        colour: outlineTheme.palette.primary1Color,
+        colour: themes.outlines.palette.primary1Color,
       },
     ]
     .map( item => {

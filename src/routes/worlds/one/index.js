@@ -4,7 +4,7 @@ import elements from './elements';
 import characters from './characters';
 import outlines from './outlines';
 import uiStore from 'stores/ui';
-import { setTitle } from 'stores/actions/meta';
+import { setTitle, setTheme } from 'stores/actions/meta';
 import withShallowCompare from 'behaviours/with-shallow-compare';
 import withModel from 'behaviours/with-model';
 import withLocationPersistence from 'behaviours/with-location-persistence';
@@ -25,6 +25,7 @@ export default {
     component: WorldSettings,
     onEnter () {
       // TODO: move to react-side-effect implementation in route components
+      uiStore.dispatch( setTheme( 'main' ) );
       uiStore.dispatch( setTitle( 'World Settings' ) );
     },
   },

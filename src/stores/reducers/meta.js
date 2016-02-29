@@ -6,6 +6,12 @@ export default ( state = {}, action ) => {
         title: action.title,
       };
       break;
+    case 'SET_THEME':
+      return {
+        ...state,
+        theme: action.theme,
+      };
+      break;
     default:
       return state;
   }

@@ -150,6 +150,7 @@ export default {
    */
   charactersById: {
     [ids.character1]: {
+      id: ids.character1,
       name: 'Big Bird',
       coverImage: '/path/to/image',
       avatarImage: '/path/to/image',
