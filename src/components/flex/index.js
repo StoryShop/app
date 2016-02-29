@@ -55,6 +55,10 @@ export const FlexLayout = ({
   }
 
   children = React.Children.map( children, child => {
+    if ( ! child ) {
+      return child;
+    }
+
     const oldStyle = child.props && child.props.style ? child.props.style : {};
 
     const style = {

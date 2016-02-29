@@ -1,4 +1,7 @@
 import reactStamp from 'react-stamp';
+import { FlexLayout } from 'components/flex';
+import Avatar from 'components/characters/avatar';
+import Attributes from 'components/characters/attributes';
 
 export default ( React, ...behaviours ) => reactStamp( React ).compose({
   propTypes: {
@@ -13,11 +16,14 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   },
 
   modelPaths () {
+    const path = [ 'charactersById', this.props.params.character_id ];
     return [
-      [ 'charactersById', this.props.params.character_id, [
+      [ ...path, [
         'id',
         'name',
+        'aliases',
       ]],
+      [ ...path, 'attributes', 'length' ],
     ];
   },
 
@@ -30,6 +36,21 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     };
   },
 
+  _onNameChange ( name ) {
+    this.modelSetValue([ 'charactersById', this.props.params.character_id, 'name' ], name );
+  },
+
+  _onAliasChange ( alias ) {
+    let aliases = [];
+
+    if ( alias !== '' ) {
+      aliases = alias.split( ',' ).map( a => a.trim() );
+    }
+
+    const ref = { $type: 'atom', value: aliases };
+    this.modelSetValue([ 'charactersById', this.props.params.character_id, 'aliases' ], ref );
+  },
+
   render () {
     const { character } = this.state;
 
@@ -37,10 +58,37 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       return null;
     }
 
+    const { id, name, aliases } = character;
+    const numAttributes = character.attributes.length;
+
+    const styles = {
+      avatar: {
+        marginBottom: '20px',
+      },
+
+      attributes: {
+        //
+      },
+    };
+
     return (
-      <div>
-        <h1>{character.name}</h1>
-      </div>
+      <FlexLayout direction="row" margin={16}>
+        <div flex="33">
+          <Avatar
+            name={name}
+            aliases={aliases.join(', ')}
+            onNameChange={name => this._onNameChange( name )}
+            onAliasChange={alias => this._onAliasChange( alias )}
+            style={styles.avatar}
+          />
+
+          <Attributes id={id} style={styles.attributes} count={numAttributes} />
+        </div>
+
+        <div flex="66">
+          Right
+        </div>
+      </FlexLayout>
     );
   },
 }, ...behaviours );

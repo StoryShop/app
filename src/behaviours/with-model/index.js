@@ -61,6 +61,13 @@ export default {
     );
   },
 
+  modelRefetch () {
+    model.get( ...this.modelPaths() ).subscribe(
+      data => this._onModelChangeSuccess( data, 'refresh' ),
+      err => this._onModelChangeError( err )
+    );
+  },
+
   componentWillUnmount () {
     this._modelStoreListener();
   },

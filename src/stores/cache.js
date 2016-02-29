@@ -176,9 +176,16 @@ export default {
       ],
 
       // user-added k/v pairs; system-wide autocomplete
-      attributes: [
-        $atom([ 'feather colour', 'yellow' ]),
-      ],
+      attributes: {
+        0: $atom([ 'feather colour', 'yellow' ]),
+        1: $atom([ 'height', '249cm' ]),
+        2: $atom([ 'temperament', 'easygoing' ]),
+        3: $atom([ 'address', '123 Sesame Street' ]),
+        4: $atom([ 'talents', 'roller skating, ice skating, drawing' ]),
+        5: $atom([ 'actor', 'Caroll Spinney' ]),
+        6: $atom([ 'debut', '1969' ]),
+        length: 7,
+      },
 
       // Questions that have been answered.
       genes: [
