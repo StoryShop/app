@@ -1,5 +1,6 @@
 import React from 'react';
 import reactStamp from 'react-stamp';
+import Paper from 'material-ui/lib/paper';
 import FlatButton from 'material-ui/lib/flat-button';
 import IconButton from 'material-ui/lib/icon-button';
 import AddIcon from 'material-ui/lib/svg-icons/content/add';
@@ -60,10 +61,7 @@ export default reactStamp( React ).compose({
 
     const styles = {
       container: {
-        border: `1px solid ${colours.blue100}`,
         padding: '16px',
-        backgroundColor: colours.blue50,
-        borderRadius: '4px',
       },
 
       header: {
@@ -75,11 +73,14 @@ export default reactStamp( React ).compose({
       },
 
       row: {
-        margin: '5px 0',
+        margin: '0 0 16px 0',
       },
 
       gene: {
-        fontWeight: 600,
+        marginBottom: '4px',
+        // fontWeight: 600,
+        color: '#999',
+        fontSize: '0.85em',
       },
 
       allele: {
@@ -93,10 +94,10 @@ export default reactStamp( React ).compose({
       .filter( k => k.match( /^\d+$/ ) )
       .map( k => ({ idx: k, gene: this.state.genes[ k ] }) )
       .map( ({ idx, gene }) => (
-        <FlexLayout key={idx} style={styles.row} direction="column">
-          <span style={styles.gene} flex="40">
+        <div key={idx} style={styles.row} direction="column">
+          <div style={styles.gene} flex="40">
             {gene.gene.label}
-          </span>
+          </div>
 
           <InlineEdit
             style={styles.allele}
@@ -104,7 +105,7 @@ export default reactStamp( React ).compose({
             value={gene.allele}
             onChange={val => this._onChangeGene( idx, val )}
           />
-        </FlexLayout>
+        </div>
       ))
       ;
 
@@ -113,8 +114,8 @@ export default reactStamp( React ).compose({
 
     return (
       <FlexLayout
+        element={<Paper style={styles.container} />}
         direction="column"
-        style={styles.container}
         >
 
         <FlexLayout style={styles.header}>

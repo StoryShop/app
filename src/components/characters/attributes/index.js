@@ -1,5 +1,6 @@
 import React from 'react';
 import reactStamp from 'react-stamp';
+import Paper from 'material-ui/lib/paper';
 import FlatButton from 'material-ui/lib/flat-button';
 import IconButton from 'material-ui/lib/icon-button';
 import AddIcon from 'material-ui/lib/svg-icons/content/add';
@@ -51,8 +52,13 @@ export default reactStamp( React ).compose({
     }
 
     const styles = {
+      container: {
+        padding: '8px',
+      },
+
       key: {
         color: '#999',
+        fontSize: '12px',
       },
 
       value: {
@@ -75,17 +81,15 @@ export default reactStamp( React ).compose({
       .filter( k => k.match( /^\d+$/ ) )
       .map( k => ({ idx: k, attr: this.state.attributes[ k ] }) )
       .map( ({ idx, attr }) => (
-        <FlexLayout key={idx} style={styles.row}>
+        <FlexLayout direction="column" key={idx} style={styles.row}>
           <InlineEdit
             style={styles.key}
-            flex="40"
             value={attr[0]}
             onChange={val => this._onChangeAttribute( idx, val, attr[1])}
           />
 
           <InlineEdit
             style={styles.value}
-            flex="60"
             value={attr[1]}
             onChange={val => this._onChangeAttribute( idx, attr[0], val)}
           />
@@ -98,10 +102,11 @@ export default reactStamp( React ).compose({
 
     return (
       <FlexLayout
+        element={<Paper style={styles.container} />}
         direction="column"
         >
 
-        <h2 style={{textAlign: 'center'}}>
+        <h2 style={{marginTop: 0}}>
           Attributes
         </h2>
 

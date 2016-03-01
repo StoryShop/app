@@ -39,6 +39,7 @@ export default {
 
       characters: {
         0: $ref( `charactersById["${ids.character1}"]` ),
+        1: $ref( `charactersById["${ids.character2}"]` ),
         length: 23,
       },
     },
@@ -239,7 +240,17 @@ export default {
     },
 
     [ids.character2]: {
+      id: ids.character2,
       name: 'Snuffy',
+      aliases: $atom([]),
+      
+      genes: {
+        length: 0
+      },
+
+      attributes: {
+        length: 0
+      },
 
       relationships: [
         {
