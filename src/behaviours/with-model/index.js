@@ -19,7 +19,7 @@ export default {
     );
   },
 
-  _onModelChangeSuccess ( data, type ) {
+  _onModelChangeSuccess ( data, type, onChange ) {
     log.debug( `onChange from ${type}`, data );
 
     if ( ! data ) {
@@ -27,16 +27,16 @@ export default {
       return;
     }
 
-    this.setState( this.modelToState( data.json ) );
+    this.setState( this.modelToState( data.json, onChange ) );
   },
 
   _onModelChangeError ( err ) {
     log.error( 'onChange Error', err );
   },
 
-  _onModelChange () {
-    store.get( ...this.modelPaths() ).then(
-      data => this._onModelChangeSuccess( data, 'change' ),
+  _onModelChange ( onChange ) {
+    store.get( ...this.modelPaths() ).subscribe(
+      data => this._onModelChangeSuccess( data, 'change', onChange ),
       err => this._onModelChangeError( err )
     );
   },
@@ -46,7 +46,7 @@ export default {
       return log.warn( 'No model paths specified. Skipping...' );
     }
 
-    this._modelStoreListener = store.subscribe( () => this._onModelChange() );
+    this._modelStoreListener = store.subscribe( () => this._onModelChange( true ) );
 
     /**
      * For initial data, we must manually call the callbacks rather than waiting for a change of the

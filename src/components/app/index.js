@@ -24,7 +24,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         'worlds',
         { from: 0, to: 10 },
         [
-          'id',
+          '_id',
           'title',
           'slug',
         ]

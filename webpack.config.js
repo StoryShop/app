@@ -28,7 +28,7 @@ var shared = {
 module.exports = [
   Object.assign( {}, shared, {
     entry: './index.js',
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
 
     output: {
       path: __dirname + '/build',

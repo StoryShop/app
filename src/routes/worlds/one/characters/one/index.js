@@ -20,7 +20,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     const path = [ 'charactersById', this.props.params.character_id ];
     return [
       [ ...path, [
-        'id',
+        '_id',
         'name',
         'aliases',
       ]],
@@ -29,11 +29,11 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     ];
   },
 
-  modelToState ( data ) {
+  modelToState ( data, onChange ) {
     // TODO: handle errors
 
     return {
-      loading: false,
+      loading: onChange ? this.state.loading : false,
       character: data.charactersById[ this.props.params.character_id ],
     };
   },
@@ -54,13 +54,13 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   },
 
   render () {
-    const { character } = this.state;
+    const { character, loading } = this.state;
 
-    if ( ! character ) {
+    if ( loading ) {
       return null;
     }
 
-    const { id, name, aliases } = character;
+    const { _id, name, aliases } = character;
     const numAttributes = character.attributes.length;
     const numGenes = character.genes.length;
 
@@ -85,11 +85,11 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
             style={styles.avatar}
           />
 
-          <Attributes id={id} style={styles.attributes} count={numAttributes} />
+          <Attributes id={_id} style={styles.attributes} count={numAttributes} />
         </div>
 
         <div flex="66">
-          <Dna id={id} style={styles.dna} count={numGenes} />
+          <Dna id={_id} style={styles.dna} count={numGenes} />
         </div>
       </FlexLayout>
     );

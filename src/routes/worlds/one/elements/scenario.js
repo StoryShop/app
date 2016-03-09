@@ -1,6 +1,6 @@
 import test from 'tape';
 import browser from '../../../../../wdio';
-import ids from '../../../../../build/ids.json';
+import ids from '../../../../utils/ids.json';
 
 test( 'Elements Placeholder Route', async t => {
   t.plan( 1 );

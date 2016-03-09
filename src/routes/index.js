@@ -21,10 +21,15 @@ export default {
   path: '/',
   component: App,
   indexRoute: {
-    onEnter ( nextState, replace ) {
+    onEnter ( nextState, replace, callback ) {
       // TODO: move to react-side-effect to allow nesting
       uiStore.dispatch( setTheme( 'main' ) );
-      model.getValue( 'currentUser.ux.lastVisited' ).subscribe( path => replace( path ) );
+      model.getValue( 'currentUser.ux.lastVisited' )
+        .subscribe( path => {
+          replace( path );
+          callback()
+        })
+        ;
     },
   },
   childRoutes: [

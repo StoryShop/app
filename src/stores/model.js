@@ -1,6 +1,6 @@
 import falcor, { Model } from 'falcor';
+import HttpDataSource from 'falcor-http-datasource';
 import Logger from 'utils/logger';
-import cache from './cache';
 
 const log = Logger( 'ModelStore' );
 
@@ -34,12 +34,13 @@ const store = {
 const ModelFactory = ( onChange, cache ) => new Model({
   onChange,
   cache,
+  source: new HttpDataSource( 'http://localhost:9999/api/model.json' ),
 });
 
 /**
  * Create a new instance of the model
  */
-export const model = ModelFactory( () => store.onNext(), cache ).batch();
+export const model = ModelFactory( () => store.onNext(), {} ).batch();
 
 /**
  * Store a copy of the model on the window object for troubleshooting.

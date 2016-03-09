@@ -16,7 +16,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   modelPaths () {
     return [
       [ 'worldsById', this.props.params.world_id, 'characters', 0, [
-        'id',
+        '_id',
         'name',
       ]],
     ];
@@ -43,7 +43,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     return (
       <ul>
         <li>
-          <Link to={`/worlds/${params.world_id}/characters/${character.id}`}>
+          <Link to={`/worlds/${params.world_id}/characters/${character._id}`}>
             {character.name}
           </Link>
         </li>

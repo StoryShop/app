@@ -4,7 +4,7 @@ import Paper from 'material-ui/lib/paper';
 import FlatButton from 'material-ui/lib/flat-button';
 import IconButton from 'material-ui/lib/icon-button';
 import AddIcon from 'material-ui/lib/svg-icons/content/add';
-import PlayIcon from 'material-ui/lib/svg-icons/av/play-arrow';
+import PlayIcon from 'material-ui/lib/svg-icons/av/skip-next';
 import * as colours from 'material-ui/lib/styles/colors';
 import withShallowCompare from 'behaviours/with-shallow-compare';
 import withModel from 'behaviours/with-model';
@@ -32,8 +32,7 @@ export default reactStamp( React ).compose({
     const pagination = { from: this.state.pagination.from, to: this.state.pagination.to };
     const path = [ 'charactersById', this.props.id, 'genes', pagination ];
     return [
-      [ ...path, 'allele' ],
-      [ ...path, 'gene', 'label' ],
+      [ ...path, [ 'gene', 'allele' ] ],
     ];
   },
 
@@ -44,14 +43,14 @@ export default reactStamp( React ).compose({
     };
   },
 
-  _onChangeGene ( idx, allele ) {
+  _onChangeGene ( idx, field, value ) {
     this.modelSetValue([
       'charactersById',
       this.props.id,
       'genes',
       idx,
-      'allele',
-    ], allele );
+      field,
+    ], value );
   },
 
   render () {
@@ -77,8 +76,7 @@ export default reactStamp( React ).compose({
       },
 
       gene: {
-        marginBottom: '4px',
-        // fontWeight: 600,
+        marginBottom: 0,
         color: '#999',
         fontSize: '0.85em',
       },
@@ -95,15 +93,18 @@ export default reactStamp( React ).compose({
       .map( k => ({ idx: k, gene: this.state.genes[ k ] }) )
       .map( ({ idx, gene }) => (
         <div key={idx} style={styles.row} direction="column">
-          <div style={styles.gene} flex="40">
-            {gene.gene.label}
-          </div>
+          <InlineEdit
+            style={styles.gene}
+            flex="40"
+            value={gene.gene}
+            onChange={val => this._onChangeGene( idx, 'gene', val )}
+          />
 
           <InlineEdit
             style={styles.allele}
             flex="60"
             value={gene.allele}
-            onChange={val => this._onChangeGene( idx, val )}
+            onChange={val => this._onChangeGene( idx, 'allele', val )}
           />
         </div>
       ))

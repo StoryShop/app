@@ -15,7 +15,6 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   modelPaths () {
     return [
       [ 'worldsById', this.props.params.world_id, [
-        'id',
         'title',
         'colour',
       ]],
@@ -39,13 +38,13 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   },
 
   render () {
-    const { children } = this.props;
+    const { params, children } = this.props;
     const { world } = this.state;
 
     return world ? (
       <div>
         <Jumbotron
-          worldId={world.id}
+          worldId={params.world_id}
           colour={world.colour}
           title={world.title}
           outlines={world.outlines.length}

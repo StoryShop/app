@@ -1,6 +1,6 @@
 import test from 'tape';
 import browser from '../../../../../wdio';
-import ids from '../../../../../build/ids.json';
+import ids from '../../../../utils/ids.json';
 import SettingsPage from './po';
 
 test( 'World Settings Route', async t => {
@@ -21,15 +21,15 @@ test( 'World Settings Route', async t => {
   actual = circles.length;
   t.equals( actual, expected, 'shows three circles in the component summary' );
 
-  expected = '4';
+  expected = '1';
   actual = await browser.getText( page.outlinesLinkSelector );
   t.equals( actual, expected, 'should show the correct number of outlines' );
 
-  expected = '23';
+  expected = '2';
   actual = await browser.getText( page.elementsLinkSelector );
   t.equals( actual, expected, 'should show the correct number of elements' );
 
-  expected = '54';
+  expected = '1';
   actual = await browser.getText( page.charactersLinkSelector );
   t.equals( actual, expected, 'should show the correct number of characters' );
 
