@@ -1,6 +1,7 @@
 import falcor, { Model } from 'falcor';
-import HttpDataSource from 'falcor-http-datasource';
+import DataSource from 'stores/data-source';
 import Logger from 'utils/logger';
+import uiStore from 'stores/ui';
 
 const log = Logger( 'ModelStore' );
 
@@ -34,7 +35,7 @@ const store = {
 const ModelFactory = ( onChange, cache ) => new Model({
   onChange,
   cache,
-  source: new HttpDataSource( 'http://localhost:9999/api/model.json' ),
+  source: new DataSource( 'http://localhost:9999/api/model.json', uiStore ),
 });
 
 /**

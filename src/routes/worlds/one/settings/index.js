@@ -40,8 +40,9 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   render () {
     const { params, children } = this.props;
     const { world } = this.state;
+    const isLoaded = world && world.outlines && world.characters && world.elements;
 
-    return world ? (
+    return isLoaded ? (
       <div>
         <Jumbotron
           worldId={params.world_id}
