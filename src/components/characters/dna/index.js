@@ -43,14 +43,13 @@ export default reactStamp( React ).compose({
     };
   },
 
-  _onChangeGene ( idx, field, value ) {
+  _onChangeGene ( idx, gene, field, val ) {
     this.modelSetValue([
       'charactersById',
       this.props.id,
       'genes',
-      idx,
-      field,
-    ], value );
+      idx
+    ], { $type: 'atom', value: { ...gene, [field]: val } } );
   },
 
   render () {
@@ -97,14 +96,14 @@ export default reactStamp( React ).compose({
             style={styles.gene}
             flex="40"
             value={gene.gene}
-            onChange={val => this._onChangeGene( idx, 'gene', val )}
+            onChange={val => this._onChangeGene( idx, gene, 'gene', val )}
           />
 
           <InlineEdit
             style={styles.allele}
             flex="60"
             value={gene.allele}
-            onChange={val => this._onChangeGene( idx, 'allele', val )}
+            onChange={val => this._onChangeGene( idx, gene, 'allele', val )}
           />
         </div>
       ))
