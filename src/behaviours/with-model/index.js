@@ -35,6 +35,8 @@ export default {
   },
 
   _onModelChange ( onChange ) {
+    if ( ! this._unmounted ) return;
+
     store.get( ...this.modelPaths() ).subscribe(
       data => this._onModelChangeSuccess( data, 'change', onChange ),
       err => this._onModelChangeError( err )
@@ -70,6 +72,7 @@ export default {
   },
 
   componentWillUnmount () {
+    this._unmounted = true;
     this._modelStoreListener();
   },
 };
