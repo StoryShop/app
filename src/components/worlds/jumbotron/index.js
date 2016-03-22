@@ -51,8 +51,8 @@ const Jumbotron = ({
       <ComponentSummary
         worldId={worldId}
         outlines={outlines}
-        elements={characters}
-        characters={elements}
+        elements={elements}
+        characters={characters}
         style={{ marginBottom: '20px' }}
       />
       <div flex />

@@ -1,11 +1,13 @@
 import reactStamp from 'react-stamp';
-import { Link } from 'react-router';
+import withShallowCompare from 'behaviours/with-shallow-compare';
+import withModel from 'behaviours/with-model';
+import withPagination from 'behaviours/with-pagination';
+import CharacterListFactory from 'components/characters/list';
 
 export default ( React, ...behaviours ) => reactStamp( React ).compose({
   propTypes: {
     params: React.PropTypes.shape({
-      world_id: React.PropTypes.string,
-      character_id: React.PropTypes.string,
+      world_id: React.PropTypes.string.isRequired,
     }),
   },
 
@@ -15,10 +17,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
   modelPaths () {
     return [
-      [ 'worldsById', this.props.params.world_id, 'characters', 0, [
-        '_id',
-        'name',
-      ]],
+      [ 'worldsById', this.props.params.world_id, 'characters', 'length' ],
     ];
   },
 
@@ -36,18 +35,17 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       return null;
     }
 
-    const { params, children } = this.props;
+    const CharacterList = CharacterListFactory(
+      React,
+      withModel,
+      withPagination,
+      withShallowCompare
+    );
+
     const { characters } = this.state;
-    const character = characters[0];
 
     return (
-      <ul>
-        <li>
-          <Link to={`/worlds/${params.world_id}/characters/${character._id}`}>
-            {character.name}
-          </Link>
-        </li>
-      </ul>
+      <CharacterList world_id={this.props.params.world_id} count={characters.length} />
     );
   },
 }, ...behaviours );

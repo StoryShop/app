@@ -23,6 +23,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         '_id',
         'name',
         'aliases',
+        'avatar',
       ]],
       [ ...path, 'attributes', 'length' ],
       [ ...path, 'genes', 'length' ],
@@ -60,7 +61,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       return null;
     }
 
-    const { _id, name, aliases } = character;
+    const { _id, name, aliases, avatar } = character;
     const numAttributes = character.attributes.length;
     const numGenes = character.genes.length;
 
@@ -79,6 +80,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         <div flex="33">
           <Avatar
             name={name}
+            avatar={avatar}
             aliases={aliases.join(', ')}
             onNameChange={name => this._onNameChange( name )}
             onAliasChange={alias => this._onAliasChange( alias )}

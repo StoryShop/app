@@ -8,6 +8,7 @@ import InlineEdit from 'components/inline-edit';
 const Avatar = ({
   name,
   aliases = '',
+  avatar,
   style = {},
   onNameChange = () => true,
   onAliasChange = () => true,
@@ -48,10 +49,12 @@ const Avatar = ({
       justifyContent="center"
       >
 
-      <MaterialAvatar
-        size={100}
-        icon={<CharacterIcon style={styles.avatar} />}
-      />
+      { avatar ?
+        <MaterialAvatar
+          src={avatar}
+          size={100}
+        /> : <MaterialAvatar icon={<CharacterIcon style={styles.avatar} />} size={100} />
+      }
 
       <h2>
         <InlineEdit value={name} onChange={onNameChange} style={styles.name} />
