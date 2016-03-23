@@ -8,9 +8,9 @@ import zIndex from 'material-ui/lib/styles/zIndex';
  */
 export const main = {
   palette: {
-    primary1Color: Colors.blueGrey500,
-    primary2Color: Colors.blueGrey700,
-    primary3Color: Colors.blueGrey800,
+    primary1Color: Colors.teal500,
+    primary2Color: Colors.teal700,
+    primary3Color: Colors.teal800,
     accent1Color: Colors.pinkA200,
     accent3Color: Colors.pink100,
     accent3Color: Colors.pink400,
