@@ -77,6 +77,7 @@ export default reactStamp( React ).compose({
       borderStyle: 'none',
       width: '100%',
       textDecoration: `underline dashed ${colours.faintBlack}`,
+      overflow: 'hidden',
 
       ...style
     };

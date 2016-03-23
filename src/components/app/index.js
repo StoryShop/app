@@ -2,6 +2,7 @@ import reactStamp from 'react-stamp';
 import DocumentTitle from 'react-document-title';
 import MainMenu from 'components/main-menu';
 import AppBar from 'components/app-bar';
+import { FlexLayout } from 'components/flex';
 import * as themes from 'themes';
 
 export default ( React, ...behaviours ) => reactStamp( React ).compose({
@@ -66,6 +67,8 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     const styles = {
       container: {
         fontFamily: 'Roboto, sans-serif',
+        width: '100%',
+        height: '100%',
       },
 
       content: {
@@ -78,7 +81,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
     return (
       <DocumentTitle title={title}>
-        <div style={styles.container}>
+        <FlexLayout direction="column" style={styles.container}>
           {/* use flex for full height */}
           <AppBar
             title={this.state.title}
@@ -90,10 +93,10 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
             worlds={worlds}
             currentWorld={currentWorld}
           />
-          <div style={styles.content}>
+          <div style={styles.content} flex>
             {this.props.children}
           </div>
-        </div>
+        </FlexLayout>
       </DocumentTitle>
     );
   }
