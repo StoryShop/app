@@ -73,7 +73,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
       content: {
         width: '100%',
-        maxWidth: '960px',
+        maxWidth: '1300px',
         margin: '0 auto',
         padding: '20px',
       },
