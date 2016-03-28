@@ -21,10 +21,15 @@ export default reactStamp( React ).compose({
     loading: true,
   },
 
+  init () {
+    this.state.character_id = this.props.id;
+  },
+
   modelPaths () {
+    const character_id = this.state.character_id;
     const pagination = { from: this.state.pagination.from, to: this.state.pagination.to };
     return [
-      [ 'charactersById', this.props.id, 'attributes', pagination ],
+      [ 'charactersById', character_id, 'attributes', pagination ],
     ];
   },
 
@@ -35,6 +40,12 @@ export default reactStamp( React ).compose({
       loading: false,
       attributes: data.charactersById[ this.props.id ].attributes,
     };
+  },
+
+  componentWillReceiveProps ( newProps ) {
+    if ( this.props.id !== newProps.id ) {
+      this.setState({ character_id: newProps.id }, () => this.modelRefetch() );
+    }
   },
 
   _onChangeAttribute ( idx, key, value ) {
@@ -53,7 +64,8 @@ export default reactStamp( React ).compose({
 
     const styles = {
       container: {
-        padding: '8px',
+        padding: '16px',
+        ...this.props.style,
       },
 
       key: {

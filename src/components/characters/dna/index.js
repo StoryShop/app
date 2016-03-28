@@ -28,9 +28,14 @@ export default reactStamp( React ).compose({
     loading: true,
   },
 
+  init () {
+    this.state.character_id = this.props.id;
+  },
+
   modelPaths () {
+    const character_id = this.state.character_id;
     const pagination = { from: this.state.pagination.from, to: this.state.pagination.to };
-    const path = [ 'charactersById', this.props.id, 'genes', pagination ];
+    const path = [ 'charactersById', character_id, 'genes', pagination ];
     return [
       [ ...path, [ 'gene', 'allele' ] ],
     ];
@@ -41,6 +46,12 @@ export default reactStamp( React ).compose({
       loading: false,
       genes: data.charactersById[ this.props.id ].genes,
     };
+  },
+
+  componentWillReceiveProps ( newProps ) {
+    if ( this.props.id !== newProps.id ) {
+      this.setState({ character_id: newProps.id }, () => this.modelRefetch() );
+    }
   },
 
   _onChangeGene ( idx, gene, field, val ) {
