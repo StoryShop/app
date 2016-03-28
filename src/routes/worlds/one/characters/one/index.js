@@ -3,6 +3,7 @@ import { FlexLayout } from 'components/flex';
 import Avatar from 'components/characters/avatar';
 import Attributes from 'components/characters/attributes';
 import Dna from 'components/characters/dna';
+import Relationships from 'components/characters/relationships';
 
 export default ( React, ...behaviours ) => reactStamp( React ).compose({
   propTypes: {
@@ -16,8 +17,13 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     loading: true,
   },
 
+  init () {
+    this.state.character_id = this.props.params.character_id;
+  },
+
   modelPaths () {
-    const path = [ 'charactersById', this.props.params.character_id ];
+    const character_id = this.state.character_id;
+    const path = [ 'charactersById', character_id ];
     return [
       [ ...path, [
         '_id',
@@ -26,6 +32,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         'avatar',
       ]],
       [ ...path, 'attributes', 'length' ],
+      [ ...path, 'relationships', 'length' ],
       [ ...path, 'genes', 'length' ],
     ];
   },
@@ -37,6 +44,12 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       loading: onChange ? this.state.loading : false,
       character: data.charactersById[ this.props.params.character_id ],
     };
+  },
+
+  componentWillReceiveProps ( newProps ) {
+    if ( this.props.params.character_id !== newProps.params.character_id ) {
+      this.setState({ character_id: newProps.params.character_id }, () => this.modelRefetch() );
+    }
   },
 
   _onNameChange ( name ) {
@@ -61,17 +74,30 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       return null;
     }
 
-    const { _id, name, aliases, avatar } = character;
-    const numAttributes = character.attributes.length;
-    const numGenes = character.genes.length;
+    const {
+      _id,
+      name,
+      avatar,
+      aliases = [],
+      attributes = [],
+      relationships = [],
+      genes = [],
+    } = character;
+    const numAttributes = attributes.length;
+    const numRelationships = relationships.length;
+    const numGenes = genes.length;
 
     const styles = {
       avatar: {
         marginBottom: '20px',
       },
 
+      relationships: {
+        marginBottom: '20px',
+      },
+
       attributes: {
-        //
+        marginBottom: '20px',
       },
     };
 
@@ -88,6 +114,13 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
           />
 
           <Attributes id={_id} style={styles.attributes} count={numAttributes} />
+
+          <Relationships
+            id={_id}
+            style={styles.relationships}
+            count={numRelationships}
+            world_id={this.props.params.world_id}
+          />
         </div>
 
         <div flex="66">
