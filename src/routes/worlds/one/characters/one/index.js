@@ -35,7 +35,8 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         'name',
         'aliases',
         'avatar',
-        'content'
+        'cover',
+        'content',
       ]],
       [ ...path, 'attributes', 'length' ],
       [ ...path, 'relationships', 'length' ],
@@ -89,6 +90,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       _id,
       name,
       avatar,
+      cover,
       aliases = [],
       attributes = [],
       relationships = [],
@@ -115,45 +117,56 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       editor: {
         marginTop: 40,
       },
+
+      cover: {
+        width: '100%',
+        height: 'auto',
+      },
     };
 
     const Editor = EditorFactory( React, withShallowCompare );
 
     return (
-      <FlexLayout direction="row" margin={16}>
-        <div flex="33">
-          <Avatar
-            name={name}
-            avatar={avatar}
-            aliases={aliases.join(', ')}
-            onNameChange={name => this._onNameChange( name )}
-            onAliasChange={alias => this._onAliasChange( alias )}
-            style={styles.avatar}
-          />
-
-          <Attributes id={_id} style={styles.attributes} count={numAttributes} />
-
-          <Relationships
-            id={_id}
-            style={styles.relationships}
-            count={numRelationships}
-            world_id={this.props.params.world_id}
-          />
+      <FlexLayout direction="column" margin={16}>
+        <div>
+          { cover ? <img src={cover} style={styles.cover} /> : null }
         </div>
 
-        <div flex="66">
-          <Dna id={_id} style={styles.dna} count={numGenes} />
+        <FlexLayout direction="row" margin={16}>
+          <div flex="33">
+            <Avatar
+              name={name}
+              avatar={avatar}
+              aliases={aliases.join(', ')}
+              onNameChange={name => this._onNameChange( name )}
+              onAliasChange={alias => this._onAliasChange( alias )}
+              style={styles.avatar}
+            />
 
-          <div style={styles.editor}>
-            <h1>Character Notes</h1>
+            <Attributes id={_id} style={styles.attributes} count={numAttributes} />
 
-            <Editor
-              ref="editor"
-              onChange={e => this._onOutlineChange( e )}
-              value={content}
+            <Relationships
+              id={_id}
+              style={styles.relationships}
+              count={numRelationships}
+              world_id={this.props.params.world_id}
             />
           </div>
-        </div>
+
+          <div flex="66">
+            <Dna id={_id} style={styles.dna} count={numGenes} />
+
+            <div style={styles.editor}>
+              <h1>Character Notes</h1>
+
+              <Editor
+                ref="editor"
+                onChange={e => this._onOutlineChange( e )}
+                value={content}
+              />
+            </div>
+          </div>
+        </FlexLayout>
       </FlexLayout>
     );
   },
