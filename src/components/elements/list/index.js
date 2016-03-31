@@ -62,7 +62,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       .map( ({ idx, element }) => (
         <div
           key={idx}
-          style={{width: '20%'}}
+          style={{width: '25%'}}
         >
           <ElementCard
             onClick={e => this._showCard( e, element )}

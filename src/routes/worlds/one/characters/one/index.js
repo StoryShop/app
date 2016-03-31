@@ -111,6 +111,10 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       attributes: {
         marginBottom: '20px',
       },
+
+      editor: {
+        marginTop: 40,
+      },
     };
 
     const Editor = EditorFactory( React, withShallowCompare );
@@ -140,11 +144,15 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         <div flex="66">
           <Dna id={_id} style={styles.dna} count={numGenes} />
 
-          <Editor
-            ref="editor"
-            onChange={e => this._onOutlineChange( e )}
-            value={content}
-          />
+          <div style={styles.editor}>
+            <h1>Character Notes</h1>
+
+            <Editor
+              ref="editor"
+              onChange={e => this._onOutlineChange( e )}
+              value={content}
+            />
+          </div>
         </div>
       </FlexLayout>
     );
