@@ -104,7 +104,11 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
   _keyBindings ( e ) {
     if ( ( e.keyCode === 49 || e.keyCode === 97 ) && hasCommandModifier( e ) ) {
-      return 'header-two';
+      return 'header';
+    }
+
+    if ( ( e.keyCode === 48 || e.keyCode === 96 ) && hasCommandModifier( e ) ) {
+      return 'unstyled';
     }
 
     return getDefaultKeyBinding( e );
@@ -115,8 +119,11 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     let newState;
 
     switch ( command ) {
-      case 'header-two':
+      case 'header':
         newState = RichUtils.toggleBlockType( this.state.editor, 'header-two' );
+        break;
+      case 'unstyled':
+        newState = RichUtils.toggleBlockType( this.state.editor, 'unstyled' );
         break;
       default:
         newState = RichUtils.handleKeyCommand( editor, command );
