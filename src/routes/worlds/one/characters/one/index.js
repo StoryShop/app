@@ -1,9 +1,14 @@
 import reactStamp from 'react-stamp';
+import withShallowCompare from 'behaviours/with-shallow-compare';
 import { FlexLayout } from 'components/flex';
 import Avatar from 'components/characters/avatar';
 import Attributes from 'components/characters/attributes';
 import Dna from 'components/characters/dna';
 import Relationships from 'components/characters/relationships';
+import EditorFactory from 'components/outlines/editor';
+import { Model } from 'falcor';
+
+const $atom = Model.atom;
 
 export default ( React, ...behaviours ) => reactStamp( React ).compose({
   propTypes: {
@@ -30,6 +35,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         'name',
         'aliases',
         'avatar',
+        'content'
       ]],
       [ ...path, 'attributes', 'length' ],
       [ ...path, 'relationships', 'length' ],
@@ -67,6 +73,11 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     this.modelSetValue([ 'charactersById', this.props.params.character_id, 'aliases' ], ref );
   },
 
+  _onOutlineChange ( raw, editorState ) {
+    console.log("save", raw);
+    this.modelSetValue([ 'charactersById', this.props.params.character_id, 'content' ], $atom( raw ) );
+  },
+
   render () {
     const { character, loading } = this.state;
 
@@ -82,6 +93,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       attributes = [],
       relationships = [],
       genes = [],
+      content,
     } = character;
     const numAttributes = attributes.length;
     const numRelationships = relationships.length;
@@ -100,6 +112,8 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         marginBottom: '20px',
       },
     };
+
+    const Editor = EditorFactory( React, withShallowCompare );
 
     return (
       <FlexLayout direction="row" margin={16}>
@@ -125,6 +139,12 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
         <div flex="66">
           <Dna id={_id} style={styles.dna} count={numGenes} />
+
+          <Editor
+            ref="editor"
+            onChange={e => this._onOutlineChange( e )}
+            value={content}
+          />
         </div>
       </FlexLayout>
     );
