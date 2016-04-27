@@ -1,5 +1,4 @@
 import React from 'react';
-import * as colours from 'material-ui/lib/styles/colors';
 import InlineEdit from 'components/inline-edit';
 import { FlexLayout } from 'components/flex';
 import ComponentSummary from 'components/worlds/component-summary';
@@ -7,7 +6,6 @@ import ComponentSummary from 'components/worlds/component-summary';
 const Jumbotron = ({
   worldId,
   title,
-  colour,
   outlines,
   characters,
   elements,
@@ -17,13 +15,10 @@ const Jumbotron = ({
 
   ...props
 }) => {
-  const colourShade = 'A100';
-
   const styles = {
     container: {
       height: '400px',
       padding: '60px 20px',
-      backgroundColor: colours[ `${colour}${colourShade}` ] || colours[ 'faintBlack' ],
       borderRadius: '4px',
       textAlign: 'center',
 
@@ -70,7 +65,6 @@ Jumbotron.propTypes = {
   characters: React.PropTypes.number.isRequired,
   elements: React.PropTypes.number.isRequired,
   onTitleChange: React.PropTypes.func,
-  colour: React.PropTypes.string,
   style: React.PropTypes.object,
 };
 
