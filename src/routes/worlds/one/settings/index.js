@@ -16,7 +16,6 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     return [
       [ 'worldsById', this.props.params.world_id, [
         'title',
-        'colour',
       ]],
       [ 'worldsById', this.props.params.world_id, 'elements', 'length' ],
       [ 'worldsById', this.props.params.world_id, 'characters', 'length' ],
@@ -46,7 +45,6 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       <div>
         <Jumbotron
           worldId={params.world_id}
-          colour={world.colour}
           title={world.title}
           outlines={world.outlines.length}
           characters={world.characters.length}

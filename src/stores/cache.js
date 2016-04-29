@@ -14,9 +14,6 @@ export default {
       title: 'Sesame Street',
       slug: 'sesame-street',
 
-      // user-assigned colour-coding
-      colour: 'yellow',
-
       owners: [
         $ref( `usersById["${ids.user1}"]` ),
       ],
@@ -243,7 +240,7 @@ export default {
       id: ids.character2,
       name: 'Snuffy',
       aliases: $atom([]),
-      
+
       genes: {
         length: 0
       },
