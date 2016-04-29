@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import Paper from 'material-ui/lib/paper';
 import { FlexLayout } from 'components/flex';
 import GoogleSignInButtonFactory from './google';
+import FacebookSignInButtonFactory from './facebook';
 import withShallowCompare from 'behaviours/with-shallow-compare';
 import { setToken } from 'stores/actions/auth';
 import store from 'stores/ui';
@@ -29,6 +30,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     };
 
     const GoogleSignInButton = GoogleSignInButtonFactory( React, withShallowCompare );
+    const FacebookSignInButton = FacebookSignInButtonFactory( React, withShallowCompare );
 
     return (
       <DocumentTitle title='Login'>
@@ -52,6 +54,9 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
             <GoogleSignInButton
               onSuccess={ t => this.onLoginSuccess( 'google', t )}
+            />
+            <FacebookSignInButton
+              onSuccess={ t => this.onLoginSuccess( 'facebook', t )}
             />
           </FlexLayout>
         </FlexLayout>
