@@ -52,6 +52,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   componentDidMount () {
     this.refs.editor.focus();
   },
+
   /**
    * When the input value changes by the user, update the state of the controlled component and
    * begin a timeout to update the model.
@@ -254,5 +255,5 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       />
     );
   },
-});
+}, ...behaviours );
 

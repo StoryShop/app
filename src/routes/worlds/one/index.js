@@ -6,7 +6,6 @@ import outlines from './outlines';
 import uiStore from 'stores/ui';
 import { setTitle, setTheme } from 'stores/actions/meta';
 import withShallowCompare from 'behaviours/with-shallow-compare';
-import withModel from 'behaviours/with-model';
 import withLocationPersistence from 'behaviours/with-location-persistence';
 
 export const World = ({ children }) => ( children );
@@ -14,7 +13,6 @@ export const World = ({ children }) => ( children );
 const WorldSettings = WorldSettingsFactory(
   React,
   withShallowCompare,
-  withModel,
   withLocationPersistence
 );
 

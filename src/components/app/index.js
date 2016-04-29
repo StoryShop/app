@@ -1,45 +1,51 @@
+import { Observable } from 'rx';
+import React from 'react';
 import reactStamp from 'react-stamp';
+import connectToModel from 'behaviours/connect-to-model';
 import DocumentTitle from 'react-document-title';
 import MainMenu from 'components/main-menu';
 import AppBar from 'components/app-bar';
 import { FlexLayout } from 'components/flex';
 import * as themes from 'themes';
 
-export default ( React, ...behaviours ) => reactStamp( React ).compose({
-  displayName: 'App',
+function modelToProps ( model, props ) {
+  const paths = [
+    [
+      'currentUser',
+      'worlds',
+      { from: 0, to: 10 },
+      [
+        '_id',
+        'title',
+        'slug',
+      ]
+    ]
+  ];
 
+  return Observable.fromPromise( model.get( ...paths ) )
+    .map( ({ json }) => {
+      const { worlds } = json.currentUser;
+
+      return {
+        worlds,
+      };
+    })
+    ;
+}
+
+function actions ( model ) {
+  return {
+  };
+}
+
+export default ( React, ...behaviours ) => connectToModel( React, modelToProps, actions, reactStamp( React ).compose({
   state: {
     mainMenuVisible: false,
-    loading: true,
     theme: themes.main,
   },
 
   muiTheme () {
     return this.state.theme;
-  },
-
-  modelPaths () {
-    return [
-      [
-        'currentUser',
-        'worlds',
-        { from: 0, to: 10 },
-        [
-          '_id',
-          'title',
-          'slug',
-        ]
-      ],
-    ];
-  },
-
-  modelToState ( data ) {
-    // TODO: handle errors
-
-    return {
-      loading: false,
-      worlds: data.currentUser.worlds,
-    };
   },
 
   mapUiState ( uiState ) {
@@ -56,7 +62,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   },
 
   render () {
-    const worlds = this.state.worlds;
+    const worlds = this.props.worlds;
 
     // TODO: Placeholder for calculated value
     const currentWorld = worlds ? worlds[0] : null;
@@ -100,5 +106,5 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       </DocumentTitle>
     );
   }
-}, ...behaviours );
+}, ...behaviours ));
 

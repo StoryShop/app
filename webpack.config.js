@@ -31,7 +31,7 @@ module.exports = [
     devtool: 'inline-source-map',
 
     output: {
-      path: __dirname + '/build',
+      path: __dirname + '/build/assets',
       publicPath: '/assets/',
       filename: 'app.js',
     },

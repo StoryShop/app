@@ -1,50 +1,15 @@
+import { Observable } from 'rx';
 import reactStamp from 'react-stamp';
-import withShallowCompare from 'behaviours/with-shallow-compare';
-import withModel from 'behaviours/with-model';
-import withPagination from 'behaviours/with-pagination';
-import ElementListFactory from 'components/elements/list';
+import connectToModel from 'behaviours/connect-to-model';
+import ElementList from 'components/elements/list';
+import modelToProps from './model-to-props';
+import actions from './actions';
 
-export default ( React, ...behaviours ) => reactStamp( React ).compose({
-  propTypes: {
-    params: React.PropTypes.shape({
-      world_id: React.PropTypes.string.isRequired,
-    }),
-  },
+export default React => connectToModel( React, modelToProps, actions, props => {
+  const { world_id, elements } = props;
 
-  state: {
-    loading: true,
-  },
-
-  modelPaths () {
-    return [
-      [ 'worldsById', this.props.params.world_id, 'elements', 'length' ],
-    ];
-  },
-
-  modelToState ( data ) {
-    return {
-      loading: false,
-      elements: data.worldsById[ this.props.params.world_id ].elements,
-    };
-  },
-
-  render () {
-    if ( ! this.state.elements ) {
-      return null;
-    }
-
-    const ElementList = ElementListFactory(
-      React,
-      withModel,
-      withPagination,
-      withShallowCompare
-    );
-
-    const { elements } = this.state;
-
-    return (
-      <ElementList world_id={this.props.params.world_id} count={elements.length} />
-    );
-  },
-}, ...behaviours );
+  return (
+    <ElementList world_id={world_id} elements={elements} />
+  );
+});
 

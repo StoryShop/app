@@ -1,50 +1,53 @@
+import { Observable } from 'rx';
 import reactStamp from 'react-stamp';
+import connectToModel from 'behaviours/connect-to-model';
 import withShallowCompare from 'behaviours/with-shallow-compare';
-import withModel from 'behaviours/with-model';
 import withPagination from 'behaviours/with-pagination';
 import OutlineListFactory from 'components/outlines/list';
 
-export default ( React, ...behaviours ) => reactStamp( React ).compose({
-  propTypes: {
-    params: React.PropTypes.shape({
-      world_id: React.PropTypes.string.isRequired,
-    }),
-  },
+export function modelToProps ( model, props ) {
+  const { world_id } = props.params;
+  const path = [ 'worldsById', world_id, 'outlines' ];
 
-  state: {
-    loading: true,
-  },
+  return Observable.fromPromise( model.get([ ...path, 'length' ]) )
+    .flatMap( ({ json }) => {
+      const length = json.worldsById[ world_id ].outlines.length;
+      const paths = [
+        [ ...path, { pagination: { from: 0, to: length } }, [ '_id', 'title' ] ],
+      ];
 
-  modelPaths () {
-    return [
-      [ 'worldsById', this.props.params.world_id, 'outlines', 'length' ],
-    ];
-  },
+      return model.get( ...paths );
+    })
+    .map( ({ json }) => {
+      const world = json.worldsById[ world_id ];
 
-  modelToState ( data ) {
-    return {
-      loading: false,
-      outlines: data.worldsById[ this.props.params.world_id ].outlines,
-    };
-  },
+      return {
+        world_id,
+        path,
+        outlines: world.outlines,
+      };
+    })
+    ;
+};
 
-  render () {
-    if ( ! this.state.outlines ) {
-      return null;
-    }
+export function actions ( model ) {
+  return {
+  };
+}
 
-    const OutlineList = OutlineListFactory(
-      React,
-      withModel,
-      withPagination,
-      withShallowCompare
-    );
+export default React => {
+  const OutlineList = OutlineListFactory(
+    React,
+    withPagination,
+    withShallowCompare
+  );
 
-    const { outlines } = this.state;
+  return connectToModel( React, modelToProps, actions, props => {
+    const { outlines, world_id } = props;
 
     return (
-      <OutlineList world_id={this.props.params.world_id} count={outlines.length} />
+      <OutlineList world_id={world_id} outlines={outlines} />
     );
-  },
-}, ...behaviours );
+  });
+};
 

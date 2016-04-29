@@ -1,7 +1,6 @@
 import React from 'react';
 import OutlineListFactory from './';
 import withShallowCompare from 'behaviours/with-shallow-compare';
-import withModel from 'behaviours/with-model';
 import withLocationPersistence from 'behaviours/with-location-persistence';
 import uiStore from 'stores/ui';
 import { setTitle } from 'stores/actions/meta';
@@ -9,7 +8,6 @@ import { setTitle } from 'stores/actions/meta';
 const OutlineList = OutlineListFactory(
   React,
   withShallowCompare,
-  withModel,
   withLocationPersistence
 );
 

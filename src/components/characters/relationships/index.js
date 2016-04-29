@@ -9,114 +9,60 @@ import ListItem from 'material-ui/lib/lists/list-item';
 import Avatar from 'material-ui/lib/avatar';
 import CharacterIcon from 'material-ui/lib/svg-icons/social/person';
 import AddIcon from 'material-ui/lib/svg-icons/content/add';
-import withShallowCompare from 'behaviours/with-shallow-compare';
-import withModel from 'behaviours/with-model';
-import withPagination from 'behaviours/with-pagination';
 import { FlexLayout } from 'components/flex';
 import InlineEdit from 'components/inline-edit';
 
-export default reactStamp( React ).compose({
-  displayName: 'CharacterRelationships',
+const Relationships = ({
+  world_id,
+  relationships,
+  style = {},
+  ...props
+}) => {
+  const styles = {
+    container: {
+      padding: '16px',
+      ...style,
+    },
+  };
 
-  propTypes: {
-    id: React.PropTypes.string.isRequired,
-    world_id: React.PropTypes.string.isRequired,
-  },
+  const relationshipEls = Object.getOwnPropertyNames( relationships )
+    .filter( k => k.match( /^\d+$/ ) )
+    .sort()
+    .reverse()
+    .map( k => ({ idx: k, rel: relationships[ k ] }) )
+    .map( ({ idx, rel }) => (
+      <ListItem
+        key={idx}
+        primaryText={rel.name}
+        secondaryText={rel.description}
+        leftAvatar={rel.avatar ? <Avatar src={rel.avatar} /> : <Avatar icon={<CharacterIcon />} />}
+        containerElement={<Link to={`/worlds/${world_id}/characters/${rel._id}`} />}
+      />
+    ))
+    ;
 
-  state: {
-    loading: true,
-  },
+  return (
+    <FlexLayout
+      element={<Paper style={styles.container} />}
+      direction="column"
+      >
 
-  init () {
-    this.state.character_id = this.props.id;
-  },
+      <h2 style={{margin: 0}}>
+        Relationships
+      </h2>
 
-  modelPaths () {
-    const character_id = this.state.character_id;
-    const pagination = { from: this.state.pagination.from, to: this.state.pagination.to };
-    return [
-      [ 'charactersById', character_id, 'relationships', pagination ],
-    ];
-  },
+      <List flex>
+        {relationshipEls}
+      </List>
+    </FlexLayout>
+  );
+};
 
-  modelToState ( data ) {
-    // TODO: handle errors
+Relationships.modelPaths = function ( conf ) {
+  return [
+    [ 'relationships', conf.pagination ],
+  ];
+};
 
-    return {
-      loading: false,
-      relationships: data.charactersById[ this.props.id ].relationships,
-    };
-  },
-
-  componentWillReceiveProps ( newProps ) {
-    if ( this.props.id !== newProps.id ) {
-      this.setState({ character_id: newProps.id }, () => this.modelRefetch() );
-    }
-  },
-
-  // _onChangeRelationship ( idx, key, value ) {
-  //   this.modelSetValue([
-  //     'charactersById',
-  //     this.props.id,
-  //     'relationships',
-  //     idx
-  //   ], { $type: 'atom', value: [ key, value ] } );
-  // },
-
-  render () {
-    if ( this.state.loading ) {
-      return null;
-    }
-
-    const styles = {
-      container: {
-        padding: '16px',
-        ...this.props.style,
-      },
-    };
-
-    const relationshipEls = Object.getOwnPropertyNames( this.state.relationships )
-      .filter( k => k.match( /^\d+$/ ) )
-      .map( k => ({ idx: k, rel: this.state.relationships[ k ] }) )
-      .map( ({ idx, rel }) => (
-        <ListItem
-          key={idx}
-          primaryText={rel.name}
-          secondaryText={rel.description}
-          leftAvatar={rel.avatar ? <Avatar src={rel.avatar} /> : <Avatar icon={<CharacterIcon />} />}
-          containerElement={<Link to={`/worlds/${this.props.world_id}/characters/${rel._id}`} />}
-        />
-      ))
-      ;
-
-    const numLoaded = this.state.pagination.to - this.state.pagination.from + 1;
-    const loadMoreCount = this.props.count - numLoaded;
-
-    return (
-      <FlexLayout
-        element={<Paper style={styles.container} />}
-        direction="column"
-        >
-
-        <h2 style={{margin: 0}}>
-          Relationships
-        </h2>
-
-        <List flex>
-          {relationshipEls}
-        </List>
-
-        <FlexLayout style={styles.footer}>
-          <span flex></span>
-
-          { this.state.pagination.disabled ? null : <FlatButton
-            label={`Load More (${loadMoreCount})`}
-            disabled={this.state.pagination.disabled}
-            onClick={() => this.paginate()}
-          /> }
-        </FlexLayout>
-      </FlexLayout>
-    );
-  },
-}, withShallowCompare, withModel, withPagination );
+export default Relationships;
 

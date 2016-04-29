@@ -5,14 +5,12 @@ import login from './login';
 import { model } from 'stores/model';
 import uiStore from 'stores/ui';
 import { setTheme } from 'stores/actions/meta';
-import withModel from 'behaviours/with-model';
 import withUiStore from 'behaviours/with-ui-store';
 import withTheme from 'behaviours/with-theme';
 import withShallowCompare from 'behaviours/with-shallow-compare';
 
 const App = AppFactory(
   React,
-  withModel,
   withShallowCompare,
   withTheme,
   withUiStore
@@ -24,7 +22,7 @@ export default {
   indexRoute: {
     onEnter ( nextState, replace ) {
       if ( uiStore.getState().auth.token ) {
-        replace( '/redirect' );
+        // replace( '/redirect' );
       } else {
         replace( '/login' );
       }

@@ -1,3 +1,4 @@
+import React from 'react';
 import reactStamp from 'react-stamp';
 import Card from 'material-ui/lib/card/card';
 import CardTitle from 'material-ui/lib/card/card-title';
@@ -18,13 +19,7 @@ import {
 } from 'draft-js';
 import { FlexLayout } from 'components/flex';
 
-export default ( React, ...behaviours ) => reactStamp( React ).compose({
-  propTypes: {
-    title: React.PropTypes.string,
-    content: React.PropTypes.object,
-    style: React.PropTypes.object,
-  },
-
+export default reactStamp( React ).compose({
   state: {
     hover: false,
   },
@@ -129,5 +124,5 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       </Card>
     );
   },
-}, ...behaviours );
+});
 

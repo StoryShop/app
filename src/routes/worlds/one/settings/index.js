@@ -1,60 +1,68 @@
+import { Observable } from 'rx';
 import reactStamp from 'react-stamp';
+import connectToModel from 'behaviours/connect-to-model';
 import Jumbotron from 'components/worlds/jumbotron';
 
-export default ( React, ...behaviours ) => reactStamp( React ).compose({
-  propTypes: {
-    params: React.PropTypes.shape({
-      world_id: React.PropTypes.string,
-    }),
-  },
+function modelToProps ( model, props ) {
+  const { world_id } = props.params;
+  const paths = [
+    [ 'worldsById', world_id, [
+      'title',
+      'colour',
+    ]],
+    [ 'worldsById', world_id, 'elements', 'length' ],
+    [ 'worldsById', world_id, 'characters', 'length' ],
+    [ 'worldsById', world_id, 'outlines', 'length' ],
+  ];
 
-  state: {
-    loading: true,
-  },
+  return Observable.fromPromise( model.get( ...paths ) )
+    .map( ({ json }) => {
+      const world = json.worldsById[ world_id ];
 
-  modelPaths () {
-    return [
-      [ 'worldsById', this.props.params.world_id, [
-        'title',
-        'colour',
-      ]],
-      [ 'worldsById', this.props.params.world_id, 'elements', 'length' ],
-      [ 'worldsById', this.props.params.world_id, 'characters', 'length' ],
-      [ 'worldsById', this.props.params.world_id, 'outlines', 'length' ],
-    ];
-  },
+      return {
+        world_id,
+        ...world,
+      };
+    })
+    ;
+}
 
-  modelToState ( data ) {
-    // TODO: handle errors
+function actions ( model ) {
+  return {
+    setTitle ( id, title ) {
+      model.setValue( [ 'worldsById', id, 'title' ], title );
+    },
+  };
+}
 
-    return {
-      loading: false,
-      world: data.worldsById[ this.props.params.world_id ],
-    };
-  },
+export default ( React, ...behaviours ) => {
+  return connectToModel( React, modelToProps, actions, props => {
+    const {
+      world_id,
+      children,
 
-  _onTitleChange ( title ) {
-    this.modelSetValue( [ 'worldsById', this.props.params.world_id, 'title' ], title );
-  },
+      colour,
+      title,
+      outlines,
+      elements,
+      characters,
 
-  render () {
-    const { params, children } = this.props;
-    const { world } = this.state;
-    const isLoaded = world && world.outlines && world.characters && world.elements;
+      setTitle,
+    } = props;
 
-    return isLoaded ? (
+    return (
       <div>
         <Jumbotron
-          worldId={params.world_id}
-          colour={world.colour}
-          title={world.title}
-          outlines={world.outlines.length}
-          characters={world.characters.length}
-          elements={world.elements.length}
-          onTitleChange={title => this._onTitleChange( title )}
+          worldId={world_id}
+          colour={colour}
+          title={title}
+          outlines={outlines.length}
+          characters={characters.length}
+          elements={elements.length}
+          onTitleChange={title => setTitle( world_id, title )}
         />
       </div>
-    ) : null;
-  },
-}, ...behaviours );
+    );
+  });
+};
 

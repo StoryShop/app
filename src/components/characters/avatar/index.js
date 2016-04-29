@@ -76,5 +76,13 @@ Avatar.propTypes = {
   onNameChange: React.PropTypes.func,
 };
 
+Avatar.modelPaths = conf => {
+  return [
+    'name',
+    'aliases',
+    'avatar',
+  ];
+};
+
 export default Avatar;
 
