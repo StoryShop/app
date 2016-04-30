@@ -4,9 +4,17 @@ import CharacterList from 'components/characters/list';
 import modelToProps from './model-to-props';
 import actions from './actions';
 
-export const CharacterListRoute = React => ({ characters, world_id }) => {
+export const CharacterListRoute = React => ({
+  characters,
+  world_id,
+  addCharacter,
+}) => {
   return (
-    <CharacterList world_id={world_id} characters={characters} />
+    <CharacterList
+      world_id={world_id}
+      characters={characters}
+      addCharacter={addCharacter}
+    />
   );
 };
 

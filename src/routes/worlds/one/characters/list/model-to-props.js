@@ -11,7 +11,7 @@ export default function ( model, props ) {
   return Observable.fromPromise( model.get([ ...path, 'length' ]) )
     .concatMap( ({ json }) => {
       const length = json.worldsById[ world_id ].characters.length;
-      const paths = CharacterList.modelPaths({ pagination: { from: 0, to: length } })
+      const paths = CharacterList.modelPaths({ pagination: { from: 0, to: length - 1 } })
         .map( p => [ ...path, ...p ])
         ;
 
