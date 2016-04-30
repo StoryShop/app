@@ -52,6 +52,15 @@ export default {
       ],
     },
 
+    {
+      path: 'beta',
+      component: () => {
+        return (
+          <p>StoryShop is currently in private beta.</p>
+        );
+      },
+    },
+
     login,
   ],
 };
