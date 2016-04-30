@@ -8,7 +8,7 @@ import AppBar from 'components/app-bar';
 import { FlexLayout } from 'components/flex';
 import * as themes from 'themes';
 
-function modelToProps ( model, props ) {
+export function modelToProps ( model, props ) {
   const paths = [
     [
       'currentUser',
@@ -33,12 +33,12 @@ function modelToProps ( model, props ) {
     ;
 }
 
-function actions ( model ) {
+export function actions ( model ) {
   return {
   };
 }
 
-export default ( React, ...behaviours ) => connectToModel( React, modelToProps, actions, reactStamp( React ).compose({
+export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
   state: {
     mainMenuVisible: false,
     theme: themes.main,
@@ -106,5 +106,7 @@ export default ( React, ...behaviours ) => connectToModel( React, modelToProps, 
       </DocumentTitle>
     );
   }
-}, ...behaviours ));
+}, ...behaviours );
+
+export default ( React, ...behaviours ) => connectToModel( React, modelToProps, actions, App( React, ...behaviours ) );
 

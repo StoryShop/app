@@ -1,6 +1,6 @@
 import React from 'react';
 import test from 'tape';
-import AppFactory from './';
+import { App as AppFactory } from './';
 import getShallowInstance from 'utils/shallow';
 
 test( 'App Render Method', t => {
