@@ -1,4 +1,4 @@
-import { Observable } from 'rx';
+import { Observable } from 'rxjs/Observable';
 import reactStamp from 'react-stamp';
 import connectToModel from 'behaviours/connect-to-model';
 import ElementList from 'components/elements/list';

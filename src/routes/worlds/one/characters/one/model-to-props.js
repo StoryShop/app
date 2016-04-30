@@ -1,4 +1,7 @@
-import { Observable } from 'rx';
+import { Observable } from 'rxjs/Observable';
+import map from 'rxjs/add/operator/map';
+import concatMap from 'rxjs/add/operator/concatMap';
+import fromPromise from 'rxjs/add/observable/fromPromise';
 import Avatar from 'components/characters/avatar';
 import Attributes from 'components/characters/attributes';
 import Dna from 'components/characters/dna';
@@ -15,7 +18,7 @@ export default function modelToProps ( model, props ) {
   ];
 
   return Observable.fromPromise( model.get( ...prefetchPaths ) )
-    .flatMap( data => {
+    .concatMap( data => {
       const { json } = data;
       const {
         attributes,
@@ -46,7 +49,7 @@ export default function modelToProps ( model, props ) {
           .map( p => [ ...path, ...p ])
       );
 
-      return model.get( ...paths, ...prefetchPaths );
+      return model.get( ...paths, ...prefetchPaths ).then( v => v );
     })
     .map( ({ json }) => {
       const character = json.charactersById[ character_id ];

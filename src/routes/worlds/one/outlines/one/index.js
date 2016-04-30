@@ -1,4 +1,7 @@
-import { Observable } from 'rx';
+import { Observable } from 'rxjs/Observable';
+import fromPromise from 'rxjs/add/observable/fromPromise';
+import map from 'rxjs/add/operator/map';
+import concatMap from 'rxjs/add/operator/concatMap';
 import reactStamp from 'react-stamp';
 import IconButton from 'material-ui/lib/icon-button';
 import ExportIcon from 'material-ui/lib/svg-icons/file/cloud-download';

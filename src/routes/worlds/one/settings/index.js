@@ -1,4 +1,7 @@
-import { Observable } from 'rx';
+import { Observable } from 'rxjs/Observable';
+import map from 'rxjs/add/operator/map';
+import concatMap from 'rxjs/add/operator/concatMap';
+import fromPromise from 'rxjs/add/observable/fromPromise';
 import reactStamp from 'react-stamp';
 import connectToModel from 'behaviours/connect-to-model';
 import Jumbotron from 'components/worlds/jumbotron';
