@@ -10,8 +10,11 @@ import { FlexLayout } from 'components/flex';
 import InlineEdit from 'components/inline-edit';
 
 export default reactStamp( React ).compose({
-  state: {
-    newGene: {},
+  init  () {
+    this.state = {
+      newGene: this.props.randomGene,
+      adding: true,
+    };
   },
 
   _add () {
@@ -29,6 +32,8 @@ export default reactStamp( React ).compose({
   componentWillReceiveProps ( newProps ) {
     if ( newProps.genes.length !== this.props.genes.length ) {
       this.setState({ adding: false });
+    } else {
+      this.setState({ newGene: newProps.randomGene });
     }
   },
 
@@ -36,7 +41,8 @@ export default reactStamp( React ).compose({
     const {
       id,
       genes,
-      changeGene
+      changeGene,
+      getRandomGene,
     } = this.props;
 
     const {
@@ -138,7 +144,7 @@ export default reactStamp( React ).compose({
 
           <span flex />
 
-          <IconButton onClick={e => this._add()}>
+          <IconButton onClick={e => getRandomGene()}>
             <PlayIcon />
           </IconButton>
           <IconButton onClick={e => this._add()}>
@@ -155,10 +161,11 @@ export default reactStamp( React ).compose({
 
   statics: {
     modelPaths ( conf ) {
-      const { pagination } = conf;
+      const { prefix, pagination } = conf;
 
       return [
-        [ 'genes', pagination, [ 'gene', 'allele' ] ],
+        [ ...prefix, 'genes', pagination, [ 'gene', 'allele' ] ],
+        [ 'genes', 'random' ],
       ];
     },
   },

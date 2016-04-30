@@ -25,6 +25,7 @@ export default ( React, ...behaviours ) => {
       genes = [],
       content,
       attributes,
+      randomGene,
 
       setName,
       setAliases,
@@ -33,6 +34,7 @@ export default ( React, ...behaviours ) => {
       addAttribute,
       changeGene,
       addGene,
+      getRandomGene,
     } = props;
 
     const styles = {
@@ -99,6 +101,8 @@ export default ( React, ...behaviours ) => {
               genes={genes}
               changeGene={changeGene}
               addGene={addGene}
+              randomGene={randomGene}
+              getRandomGene={getRandomGene}
             />
 
             <div style={styles.editor}>

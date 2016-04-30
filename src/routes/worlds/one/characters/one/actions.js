@@ -62,6 +62,10 @@ export default function ( model ) {
         'push'
       ], [ gene ] );
     },
+
+    getRandomGene ( _id, gene ) {
+      model.get([ 'genes', 'random' ]);
+    },
   };
 }
 

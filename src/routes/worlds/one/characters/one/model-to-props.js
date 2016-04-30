@@ -38,8 +38,7 @@ export default function modelToProps ( model, props ) {
       );
 
       paths = paths.concat(
-        Dna.modelPaths({ pagination: { from: 0, to: genes.length } })
-          .map( p => [ ...path, ...p ])
+        Dna.modelPaths({ prefix: path, pagination: { from: 0, to: genes.length } })
       );
 
       paths = paths.concat(
@@ -57,6 +56,7 @@ export default function modelToProps ( model, props ) {
         world_id,
         path,
         ...character,
+        randomGene: json.genes.random,
       };
     })
     ;
