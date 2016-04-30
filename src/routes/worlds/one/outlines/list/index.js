@@ -6,7 +6,7 @@ import reactStamp from 'react-stamp';
 import connectToModel from 'behaviours/connect-to-model';
 import withShallowCompare from 'behaviours/with-shallow-compare';
 import withPagination from 'behaviours/with-pagination';
-import OutlineListFactory from 'components/outlines/list';
+import OutlineList from 'components/outlines/list';
 
 export function modelToProps ( model, props ) {
   const { world_id } = props.params;
@@ -16,7 +16,7 @@ export function modelToProps ( model, props ) {
     .concatMap( ({ json }) => {
       const length = json.worldsById[ world_id ].outlines.length;
       const paths = [
-        [ ...path, { pagination: { from: 0, to: length } }, [ '_id', 'title' ] ],
+        [ ...path, { from: 0, to: length - 1 }, [ '_id', 'title' ] ],
       ];
 
       return model.get( ...paths ).then( v => v );
@@ -35,22 +35,30 @@ export function modelToProps ( model, props ) {
 
 export function actions ( model ) {
   return {
+    addOutline ( world_id, title ) {
+      model.call([
+        'worldsById',
+        world_id,
+        'outlines',
+        'push',
+      ], [ title ]);
+    },
   };
 }
 
-export default React => {
-  const OutlineList = OutlineListFactory(
-    React,
-    withPagination,
-    withShallowCompare
+export default React => connectToModel( React, modelToProps, actions, props => {
+  const {
+    outlines,
+    world_id,
+    addOutline,
+  } = props;
+
+  return (
+    <OutlineList
+      world_id={world_id}
+      outlines={outlines}
+      addOutline={addOutline}
+    />
   );
-
-  return connectToModel( React, modelToProps, actions, props => {
-    const { outlines, world_id } = props;
-
-    return (
-      <OutlineList world_id={world_id} outlines={outlines} />
-    );
-  });
-};
+});
 

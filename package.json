@@ -12,7 +12,7 @@
     "pretest": "npm run build",
     "test": "npm run test:unit && echo SKIPPING: e2e tests",
     "start": "node server.js",
-    "dev": "BUILD_ENV=production npm run build:html && webpack-dev-server --hot --inline --config webpack.config.js --content-base build --port 8888 --host 0.0.0.0 --history-api-fallback",
+    "dev": "npm run build:html && BUILD_ENV=development webpack-dev-server --hot --inline --config webpack.config.js --content-base build --port 8888 --host 0.0.0.0 --history-api-fallback",
     "selenium:install": "selenium-standalone install",
     "selenium:start": "selenium-standalone start &> /dev/null &",
     "selenium": "npm run selenium:install && npm run selenium:start",

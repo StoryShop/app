@@ -12,7 +12,7 @@ import Prompt from 'components/prompt';
 import { FlexLayout } from 'components/flex';
 import * as paths from 'utils/paths';
 
-const CharacterList = reactStamp( React ).compose({
+export default reactStamp( React ).compose({
   state: {
     addingCharacter: false,
   },
@@ -52,7 +52,6 @@ const CharacterList = reactStamp( React ).compose({
 
         <span flex />
 
-
         <FlexLayout direction="row">
           <span flex />
           <FloatingActionButton onClick={e => this._promptForCharacter()}>
@@ -85,7 +84,4 @@ const CharacterList = reactStamp( React ).compose({
     },
   },
 });
-
-
-export default CharacterList;
 
