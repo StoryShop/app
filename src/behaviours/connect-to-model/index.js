@@ -21,8 +21,11 @@ export default ( React, modelToProps, dispatchToProps, Component ) => reactStamp
   init () {
     const modelWrapper = {
       get ( ...args ) {
-        model.get( ...args ).subscribe(
-          res => log.debug( 'get success', res ),
+        return model.get( ...args ).then(
+          res => {
+            log.debug( 'get success', res );
+            return res;
+          },
           err => log.error( 'get error', err )
         );
       },

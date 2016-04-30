@@ -1,6 +1,7 @@
 import { Observable } from 'rx';
 import reactStamp from 'react-stamp';
-import RaisedButton from 'material-ui/lib/raised-button';
+import IconButton from 'material-ui/lib/icon-button';
+import ExportIcon from 'material-ui/lib/svg-icons/file/cloud-download';
 import connectToModel from 'behaviours/connect-to-model';
 import withShallowCompare from 'behaviours/with-shallow-compare';
 import { FlexLayout } from 'components/flex';
@@ -39,6 +40,17 @@ export function actions ( model ) {
     setOutline ( _id, raw ) {
       model.setValue([ 'outlinesById', _id, 'content' ], raw );
     },
+
+    download ( _id ) {
+      model.get([ 'outlinesById', _id, 'opml' ])
+        .then( ({ json }) => {
+          const opml = json.outlinesById[ _id ].opml;
+          const link = document.createElement( 'a' );
+          link.setAttribute( 'href', `data:Application/octet-stream,${encodeURIComponent(opml)}` );
+          link.setAttribute( 'download', 'export.opml' );
+          link.click();
+        });
+    },
   };
 }
 
@@ -53,6 +65,7 @@ export default React => {
 
       setTitle,
       setOutline,
+      download,
     } = props;
 
     const styles = {
@@ -69,7 +82,18 @@ export default React => {
 
     return (
       <FlexLayout direction="column" style={styles.container}>
-        <InlineEdit value={title} onChange={title => setTitle( _id, title )} style={styles.title} />
+        <FlexLayout direction="row">
+          <InlineEdit value={title} onChange={title => setTitle( _id, title )} style={styles.title} />
+          <span flex></span>
+
+          <IconButton
+            tooltip='Export to Scrivener'
+            tooltipPosition='bottom-center'
+            onClick={e => download( _id )}
+          >
+            <ExportIcon />
+          </IconButton>
+        </FlexLayout>
 
         <Editor
           onChange={e => setOutline( _id, e )}

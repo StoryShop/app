@@ -4,14 +4,18 @@ import FlatButton from 'material-ui/lib/flat-button';
 import ElementCard from 'components/elements/card';
 import { FlexLayout } from 'components/flex';
 
-const ElementList = ({ elements }) => {
+const ElementList = ({
+  world_id,
+  elements,
+  setContent,
+  setTitle,
+  deleteElement,
+}) => {
   const styles = {
     card: {
-      cursor: 'pointer',
+      // cursor: 'pointer',
     },
   };
-
-  const showCard = ( e, element ) => console.log("show card", element);
 
   const elementEls = Object.getOwnPropertyNames( elements )
     .filter( k => k.match( /^\d+$/ ) )
@@ -22,7 +26,10 @@ const ElementList = ({ elements }) => {
         style={{width: '25%'}}
       >
         <ElementCard
-          onClick={e => showCard( e, element )}
+          world_id={world_id}
+          setTitle={setTitle}
+          setContent={setContent}
+          deleteElement={deleteElement}
           style={styles.card}
           {...element}
         />

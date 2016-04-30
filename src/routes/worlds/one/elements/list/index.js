@@ -6,10 +6,23 @@ import modelToProps from './model-to-props';
 import actions from './actions';
 
 export default React => connectToModel( React, modelToProps, actions, props => {
-  const { world_id, elements } = props;
+  const {
+    world_id,
+    elements,
+
+    setTitle,
+    setContent,
+    deleteElement,
+  } = props;
 
   return (
-    <ElementList world_id={world_id} elements={elements} />
+    <ElementList
+      world_id={world_id}
+      elements={elements}
+      setTitle={setTitle}
+      setContent={setContent}
+      deleteElement={deleteElement}
+    />
   );
 });
 

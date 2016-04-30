@@ -9,15 +9,11 @@ import IconButton from 'material-ui/lib/icon-button';
 import ActionLabel from 'material-ui/lib/svg-icons/action/label';
 import ActionDelete from 'material-ui/lib/svg-icons/action/delete';
 import ImageColorLens from 'material-ui/lib/svg-icons/image/color-lens';
-import {
-  Editor,
-  ContentState,
-  EditorState,
-  createFromBlockArray,
-  createFromText,
-  convertFromRaw,
-} from 'draft-js';
+import EditorFactory from 'components/outlines/editor';
+import InlineEdit from 'components/inline-edit';
 import { FlexLayout } from 'components/flex';
+
+const Editor = EditorFactory( React );
 
 export default reactStamp( React ).compose({
   state: {
@@ -34,27 +30,19 @@ export default reactStamp( React ).compose({
 
   render () {
     const {
+      _id,
       title,
       content,
       cover,
+      world_id,
       tags = [],
 
       style,
+      setTitle,
+      setContent,
+      deleteElement,
       ...props
     } = this.props;
-    let contentState;
-
-    if ( content ) {
-      const { entityMap, blocks } = content;
-      contentState = ContentState.createFromBlockArray( convertFromRaw({
-        entityMap,
-        blocks: blocks.slice( 0, 2 ),
-      }));
-    } else {
-      contentState = ContentState.createFromText( '' );
-    }
-
-    const editorState = EditorState.createWithContent( contentState );
 
     const styles = {
       card: {
@@ -98,26 +86,29 @@ export default reactStamp( React ).compose({
         { cover ? <CardMedia><img src={cover} /></CardMedia> : null }
 
         <CardTitle
-          title={title}
+          title={<InlineEdit value={title} onChange={val => setTitle( _id, val )} />}
         />
 
         { content ? <CardText>
           <Editor
-            readOnly={true}
-            editorState={editorState}
+            readOnly={false}
+            value={content}
+            onChange={e => setContent( _id, e )}
           />
         </CardText> : null }
 
-        { tags.length ? <div style={styles.tagList}> { tagEls } </div> : null }
+        {/*
+          { tags.length ? <div style={styles.tagList}> { tagEls } </div> : null }
+        */}
 
         <CardActions style={styles.actions}>
-          <IconButton>
+          {/* <IconButton>
             <ActionLabel color='#666' hoverColor='#000' />
           </IconButton>
           <IconButton>
             <ImageColorLens color='#666' hoverColor='#000' />
-          </IconButton>
-          <IconButton>
+          </IconButton> */}
+          <IconButton onClick={e => deleteElement( world_id, _id )}>
             <ActionDelete color='#666' hoverColor='#000' />
           </IconButton>
         </CardActions>
