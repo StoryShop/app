@@ -30,6 +30,7 @@ export default ( React, ...behaviours ) => {
       setAliases,
       setOutline,
       changeAttribute,
+      addAttribute,
     } = props;
 
     const styles = {
@@ -78,6 +79,7 @@ export default ( React, ...behaviours ) => {
               count={attributes.length}
               attributes={attributes}
               onChange={(...args) => changeAttribute( _id, ...args )}
+              addAttribute={addAttribute}
             />
 
             <Relationships

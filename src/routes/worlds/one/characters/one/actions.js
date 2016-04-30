@@ -27,6 +27,15 @@ export default function ( model ) {
       ], [ key, value ] );
     },
 
+    addAttribute ( id, attribute ) {
+      model.call([
+        'charactersById',
+        id,
+        'attributes',
+        'push'
+      ], [ attribute ] );
+    },
+
     createRelationship ( _id, rel_id, description ) {
       model.call([
         'charactersById',
