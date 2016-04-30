@@ -10,5 +10,14 @@ export default model => ({
   deleteElement ( world_id, id ) {
     model.call([ 'worldsById', world_id, 'elements', 'delete' ], [ id ] );
   },
+
+  addElement ( world_id, title ) {
+    model.call([
+      'worldsById',
+      world_id,
+      'elements',
+      'push'
+    ], [{ title }] );
+  },
 });
 

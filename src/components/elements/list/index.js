@@ -1,63 +1,106 @@
 import React from 'react';
-import { Link } from 'react-router';
+import reactStamp from 'react-stamp';
+import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import AddIcon from 'material-ui/lib/svg-icons/content/add';
 import FlatButton from 'material-ui/lib/flat-button';
 import ElementCard from 'components/elements/card';
+import Prompt from 'components/prompt';
 import { FlexLayout } from 'components/flex';
+import * as paths from 'utils/paths';
 
-const ElementList = ({
-  world_id,
-  elements,
-  setContent,
-  setTitle,
-  deleteElement,
-}) => {
-  const styles = {
-    card: {
-      // cursor: 'pointer',
-    },
-  };
+export default reactStamp( React ).compose({
+  state: {
+    addingElement: false,
+  },
 
-  const elementEls = Object.getOwnPropertyNames( elements )
-    .filter( k => k.match( /^\d+$/ ) )
-    .map( k => ({ idx: k, element: elements[ k ] }) )
-    .map( ({ idx, element }) => (
-      <div
-        key={idx}
-        style={{width: '25%'}}
-      >
-        <ElementCard
-          world_id={world_id}
-          setTitle={setTitle}
-          setContent={setContent}
-          deleteElement={deleteElement}
-          style={styles.card}
-          {...element}
-        />
-      </div>
-    ));
+  _promptForElement () {
+    this.setState({ addingElement: true });
+  },
 
-  return (
-    <div>
-      <FlexLayout direction="row" wrap padding={10} style={{marginBottom: 10}}>
-        { elementEls }
+  _addElement ( name ) {
+    this.props.addElement( this.props.world_id, name );
+  },
+
+  render () {
+    const {
+      world_id,
+      elements,
+      setContent,
+      setTitle,
+      deleteElement,
+    } = this.props;
+
+    const styles = {
+      card: {
+        // cursor: 'pointer',
+      },
+    };
+
+    const elementEls = Object.getOwnPropertyNames( elements )
+      .filter( k => k.match( /^\d+$/ ) )
+      .sort()
+      .reverse()
+      .map( k => ({ idx: k, element: elements[ k ] }) )
+      .map( ({ idx, element }) => (
+        <div
+          key={idx}
+          style={{width: '25%'}}
+        >
+          <ElementCard
+            world_id={world_id}
+            setTitle={setTitle}
+            setContent={setContent}
+            deleteElement={deleteElement}
+            style={styles.card}
+            {...element}
+          />
+        </div>
+      ));
+
+    return (
+      <FlexLayout direction="column">
+        {
+          elementEls.length
+            ? <FlexLayout direction="row" wrap padding={10} style={{marginBottom: 10}}>
+                { elementEls }
+              </FlexLayout>
+            : <p>You have no elements. Click the "+" button to create one.</p>
+        }
+
+        <span flex />
+
+        <FlexLayout direction="row">
+          <span flex />
+          <FloatingActionButton onClick={e => this._promptForElement()}>
+            <AddIcon />
+          </FloatingActionButton>
+          <Prompt
+            okLabel='Create'
+            label='Element Title'
+            title='Create a New Element'
+            setValue={val=>this._addElement( val )}
+            open={this.state.addingElement}
+            onClose={e=>this.setState({ addingElement: false })}
+          />
+        </FlexLayout>
       </FlexLayout>
-    </div>
-  );
-};
+    );
+  },
 
-ElementList.modelPaths = function ( conf ) {
-  const pagination = conf.pagination;
+  statics: {
+    modelPaths ( conf ) {
+      const pagination = conf.pagination;
 
-  return [
-    [ pagination, [
-      '_id',
-      'title',
-      'content',
-      'cover',
-      'tags',
-    ]],
-  ];
-};
-
-export default ElementList;
+      return [
+        [ pagination, [
+          '_id',
+          'title',
+          'content',
+          'cover',
+          'tags',
+        ]],
+      ];
+    },
+  },
+})
 

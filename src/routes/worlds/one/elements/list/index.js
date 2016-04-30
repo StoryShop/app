@@ -13,6 +13,7 @@ export default React => connectToModel( React, modelToProps, actions, props => {
     setTitle,
     setContent,
     deleteElement,
+    addElement,
   } = props;
 
   return (
@@ -22,6 +23,7 @@ export default React => connectToModel( React, modelToProps, actions, props => {
       setTitle={setTitle}
       setContent={setContent}
       deleteElement={deleteElement}
+      addElement={addElement}
     />
   );
 });
