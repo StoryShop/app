@@ -84,11 +84,13 @@ export default reactStamp( React ).compose({
           placeholder='key'
           autoFocus
           onBlur={e => this._onNewKeyBlur( e.target.value )}
+          onChange={val => this.setState({ newAttribute: [ val, this.state.newAttribute[1] ] })}
         />
 
         <InlineEdit
           style={styles.value}
           placeholder='value'
+          onChange={val => this.setState({ newAttribute: [ this.state.newAttribute[0], val ] })}
         />
       </FlexLayout>
     );

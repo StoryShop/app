@@ -9,97 +9,158 @@ import * as colours from 'material-ui/lib/styles/colors';
 import { FlexLayout } from 'components/flex';
 import InlineEdit from 'components/inline-edit';
 
-const Dna = ({ genes }) => {
-  const styles = {
-    container: {
-      padding: '16px',
-    },
+export default reactStamp( React ).compose({
+  state: {
+    newGene: {},
+  },
 
-    header: {
-      marginBottom: '16px',
-    },
+  _add () {
+    this.setState({ adding: true, newGene: { gene: '', allele: '' } });
+  },
 
-    rows: {
-      marginBottom: '8px',
-    },
+  _onNewBlur ( newGene ) {
+    if ( newGene.gene === '' ) {
+      this.setState({ adding: false });
+    } else {
+      this.props.addGene( this.props.id, newGene );
+    }
+  },
 
-    row: {
-      margin: '0 0 16px 0',
-    },
+  componentWillReceiveProps ( newProps ) {
+    if ( newProps.genes.length !== this.props.genes.length ) {
+      this.setState({ adding: false });
+    }
+  },
 
-    gene: {
-      marginBottom: 0,
-      color: '#999',
-      fontSize: '0.85em',
-    },
+  render () {
+    const {
+      id,
+      genes,
+      changeGene
+    } = this.props;
 
-    allele: {
-    },
+    const {
+      newGene,
+    } = this.state;
+    
+    const styles = {
+      container: {
+        padding: '16px',
+      },
 
-    footer: {
-    },
-  };
+      header: {
+        marginBottom: '16px',
+      },
 
-  const rows = Object.getOwnPropertyNames( genes )
-    .filter( k => k.match( /^\d+$/ ) )
-    .sort()
-    .reverse()
-    .map( k => ({ idx: k, gene: genes[ k ] }) )
-    .map( ({ idx, gene }) => (
-      <div key={idx} style={styles.row} direction="column">
+      rows: {
+        marginBottom: '8px',
+      },
+
+      row: {
+        margin: '0 0 16px 0',
+      },
+
+      gene: {
+        marginBottom: 0,
+        color: '#999',
+        fontSize: '0.85em',
+      },
+
+      allele: {
+      },
+
+      footer: {
+      },
+    };
+
+    const rows = Object.getOwnPropertyNames( genes )
+      .filter( k => k.match( /^\d+$/ ) )
+      .map( k => parseInt( k, 10 ) )
+      .sort()
+      .reverse()
+      .map( k => ({ idx: k, gene: genes[ k ] }) )
+      .map( ({ idx, gene }) => (
+        <div key={idx} style={styles.row} direction="column">
+          <InlineEdit
+            style={styles.gene}
+            flex="40"
+            value={gene.gene}
+            onChange={val => changeGene( id, idx, gene, 'gene', val )}
+          />
+
+          <InlineEdit
+            style={styles.allele}
+            flex="60"
+            value={gene.allele}
+            onChange={val => changeGene( id, idx, gene, 'allele', val )}
+          />
+        </div>
+      ))
+      ;
+
+    const newRow = (
+      <div key={rows.length} style={styles.row} direction="column">
         <InlineEdit
-          style={styles.gene}
           flex="40"
-          value={gene.gene}
-          onChange={val => this._onChangeGene( idx, gene, 'gene', val )}
+          style={styles.gene}
+          autoFocus
+          value={newGene.gene}
+          placeholder='Question'
+          onChange={val => this.setState({ newGene: { ...newGene, gene: val } })}
+          onBlur={e => this._onNewBlur( newGene )}
         />
 
         <InlineEdit
-          style={styles.allele}
           flex="60"
-          value={gene.allele}
-          onChange={val => this._onChangeGene( idx, gene, 'allele', val )}
+          style={styles.allele}
+          value={newGene.allele}
+          placeholder='Answer'
+          onChange={val => this.setState({ newGene: { ...newGene, allele: val } })}
+          onBlur={e => this._onNewBlur( newGene )}
         />
       </div>
-    ))
-    ;
+    );
 
-  return (
-    <FlexLayout
-      element={<Paper style={styles.container} />}
-      direction="column"
-      >
+    if ( this.state.adding ) {
+      rows.unshift( newRow );
+    }
 
-      <FlexLayout style={styles.header}>
-        <h2 style={{ margin: 0, lineHeight: '48px' }}>
-          Character DNA
-        </h2>
+    return (
+      <FlexLayout
+        element={<Paper style={styles.container} />}
+        direction="column"
+        >
 
-        <span flex />
+        <FlexLayout style={styles.header}>
+          <h2 style={{ margin: 0, lineHeight: '48px' }}>
+            Character DNA
+          </h2>
 
-        <IconButton>
-          <PlayIcon />
-        </IconButton>
-        <IconButton>
-          <AddIcon />
-        </IconButton>
+          <span flex />
+
+          <IconButton onClick={e => this._add()}>
+            <PlayIcon />
+          </IconButton>
+          <IconButton onClick={e => this._add()}>
+            <AddIcon />
+          </IconButton>
+        </FlexLayout>
+
+        <FlexLayout direction="column" flex style={styles.rows}>
+          {rows}
+        </FlexLayout>
       </FlexLayout>
+    );
+  },
 
-      <FlexLayout direction="column" flex style={styles.rows}>
-        {rows}
-      </FlexLayout>
-    </FlexLayout>
-  );
-};
+  statics: {
+    modelPaths ( conf ) {
+      const { pagination } = conf;
 
-
-Dna.modelPaths = function ( conf ) {
-  const { pagination } = conf;
-
-  return [
-    [ 'genes', pagination, [ 'gene', 'allele' ] ],
-  ];
-}
-
-export default Dna;
+      return [
+        [ 'genes', pagination, [ 'gene', 'allele' ] ],
+      ];
+    },
+  },
+});
 

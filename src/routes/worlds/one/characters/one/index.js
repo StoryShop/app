@@ -31,6 +31,8 @@ export default ( React, ...behaviours ) => {
       setOutline,
       changeAttribute,
       addAttribute,
+      changeGene,
+      addGene,
     } = props;
 
     const styles = {
@@ -91,7 +93,13 @@ export default ( React, ...behaviours ) => {
           </div>
 
           <div flex="66">
-            <Dna id={_id} style={styles.dna} genes={genes} />
+            <Dna
+              id={_id}
+              style={styles.dna}
+              genes={genes}
+              changeGene={changeGene}
+              addGene={addGene}
+            />
 
             <div style={styles.editor}>
               <h1>Character Notes</h1>

@@ -44,15 +44,24 @@ export default function ( model ) {
         'push'
       ], [ rel_id, description ] );
     },
-    
-    // changeGene ( _id, idx, gene, field, val ) {
-    //   model.setValue([
-    //     'charactersById',
-    //     _id,
-    //     'genes',
-    //     idx
-    //   ], { ...gene, [field]: val } );
-    // },
+
+    changeGene ( _id, idx, gene, field, val ) {
+      model.setValue([
+        'charactersById',
+        _id,
+        'genes',
+        idx
+      ], { ...gene, [field]: val } );
+    },
+
+    addGene ( _id, gene ) {
+      model.call([
+        'charactersById',
+        _id,
+        'genes',
+        'push'
+      ], [ gene ] );
+    },
   };
 }
 
