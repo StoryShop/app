@@ -27,8 +27,11 @@ export const setToken = ( provider, token ) => dispatch => {
   })
   .then( res => res.json() )
   .then( data => dispatch( setTokenSuccess( provider, data.token ) ) )
-  .then( () => history.push( '/redirect' ) )
-  .catch( err => dispatch( setTokenError( err ) ) )
+  .then( () => history.push( '/app' ) )
+  .catch( err => {
+    dispatch( setTokenError( err ) );
+    history.push( '/beta' );
+  })
   ;
 };
 

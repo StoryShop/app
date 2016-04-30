@@ -85,13 +85,6 @@ export default ( React, ...behaviours ) => {
               onChange={(...args) => changeAttribute( _id, ...args )}
               addAttribute={addAttribute}
             />
-
-            <Relationships
-              id={_id}
-              style={styles.relationships}
-              relationships={relationships}
-              world_id={world_id}
-            />
           </div>
 
           <div flex="66">
@@ -117,6 +110,13 @@ export default ( React, ...behaviours ) => {
         </FlexLayout>
       </FlexLayout>
     );
+
+            // <Relationships
+            //   id={_id}
+            //   style={styles.relationships}
+            //   relationships={relationships}
+            //   world_id={world_id}
+            // />
   });
 };
 

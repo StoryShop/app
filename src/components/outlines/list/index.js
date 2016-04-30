@@ -6,6 +6,7 @@ import Avatar from 'material-ui/lib/avatar';
 import OutlineIcon from 'material-ui/lib/svg-icons/editor/format-list-numbered';
 import FlatButton from 'material-ui/lib/flat-button';
 import { FlexLayout } from 'components/flex';
+import * as paths from 'utils/paths';
 
 export default React => ({
   world_id,
@@ -19,7 +20,7 @@ export default React => ({
     .map( ({ idx, outline }) => (
       <ListItem key={idx}
         leftAvatar={<Avatar icon={<OutlineIcon />} />}
-        containerElement={<Link to={`/worlds/${world_id}/outlines/${outline._id}`} />}
+        containerElement={<Link to={paths.outline(world_id,outline._id)} />}
         primaryText={outline.title}
       />
     ));

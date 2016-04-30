@@ -17,7 +17,7 @@ export default reactStamp( React ).compose({
   displayName: 'MainMenu',
 
   propTypes: {
-    worlds: React.PropTypes.object,
+    worlds: React.PropTypes.array,
     currentWorld: React.PropTypes.object,
   },
 

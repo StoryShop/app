@@ -6,6 +6,7 @@ import Avatar from 'material-ui/lib/avatar';
 import CharacterIcon from 'material-ui/lib/svg-icons/social/person';
 import FlatButton from 'material-ui/lib/flat-button';
 import { FlexLayout } from 'components/flex';
+import * as paths from 'utils/paths';
 
 const CharacterList = ({ characters, world_id }) => {
   const characterEls = Object.getOwnPropertyNames( characters )
@@ -16,7 +17,7 @@ const CharacterList = ({ characters, world_id }) => {
     .map( ({ idx, character }) => (
       <ListItem key={idx}
         leftAvatar={character.avatar ? <Avatar src={character.avatar} /> : <Avatar icon={<CharacterIcon />} />}
-        containerElement={<Link to={`/worlds/${world_id}/characters/${character._id}`} />}
+        containerElement={<Link to={paths.character( world_id, character._id )} />}
         primaryText={character.name}
       />
     ))

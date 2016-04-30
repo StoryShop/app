@@ -4,14 +4,21 @@ import map from 'rxjs/add/operator/map';
 import concatMap from 'rxjs/add/operator/concatMap';
 import React from 'react';
 import reactStamp from 'react-stamp';
+import { Link } from 'react-router';
+import List from 'material-ui/lib/lists/list';
+import ListItem from 'material-ui/lib/lists/list-item';
+import WorldIcon from 'material-ui/lib/svg-icons/social/public';
+import Avatar from 'material-ui/lib/avatar';
 import connectToModel from 'behaviours/connect-to-model';
 import DocumentTitle from 'react-document-title';
 import MainMenu from 'components/main-menu';
 import AppBar from 'components/app-bar';
 import { FlexLayout } from 'components/flex';
 import * as themes from 'themes';
+import * as paths from 'utils/paths';
 
 export function modelToProps ( model, props ) {
+  const { world_id } = props.params;
   const paths = [
     [
       'currentUser',
@@ -30,6 +37,7 @@ export function modelToProps ( model, props ) {
       const { worlds } = json.currentUser;
 
       return {
+        world_id,
         worlds,
       };
     })
@@ -65,13 +73,21 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
   },
 
   render () {
-    const worlds = this.props.worlds;
+    let {
+      worlds = {},
+      world_id,
+      children,
+    } = this.props;
 
-    // TODO: Placeholder for calculated value
-    const currentWorld = worlds ? worlds[0] : null;
+    worlds = Object.getOwnPropertyNames( worlds ).map( k => worlds[k] );
 
-    // const activeItem = menuItems.find( item => item.active );
-    const title = `${this.state.title} | StoryShop`;
+    let currentWorld;
+
+    if ( world_id ) {
+      currentWorld = worlds.find( w => w._id === world_id );
+    }
+
+    const title = currentWorld ? this.state.title : 'My Worlds';
 
     const styles = {
       container: {
@@ -88,12 +104,21 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
       },
     };
 
+    const worldEls = worlds.map( world => (
+      <ListItem key={world._id}
+        leftAvatar={<Avatar icon={<WorldIcon />} />}
+        containerElement={<Link to={paths.world(world._id)} />}
+        primaryText={world.title}
+      />
+    ));
+
     return (
-      <DocumentTitle title={title}>
+      <DocumentTitle title={`${title} | StoryShop`}>
         <FlexLayout direction="column" style={styles.container}>
           {/* use flex for full height */}
           <AppBar
-            title={this.state.title}
+            title={title}
+            currentWorld={currentWorld}
             onLeftIconButtonTouchTap={() => this._toggleMenu( true )}
           />
           <MainMenu
@@ -103,7 +128,7 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
             currentWorld={currentWorld}
           />
           <div style={styles.content} flex>
-            {this.props.children}
+            {children || <List>{ worldEls }</List>}
           </div>
         </FlexLayout>
       </DocumentTitle>
