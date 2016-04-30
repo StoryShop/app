@@ -1,6 +1,8 @@
 var webpack = require( 'webpack' );
 var path = require( 'path' );
 
+var dev = process.env.BUILD_ENV === 'development' ? true : false;
+
 var shared = {
   context: __dirname + '/src',
 
@@ -9,6 +11,12 @@ var shared = {
       path.resolve( './src' ),
     ],
   },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      STORYSHOP_API_URI: dev ? "'http://localhost:9999'" : "'http://api.storyshopapp.com'",
+    }),
+  ],
 
   module: {
     loaders: [
@@ -28,7 +36,7 @@ var shared = {
 module.exports = [
   Object.assign( {}, shared, {
     entry: './index.js',
-    devtool: 'inline-source-map',
+    devtool: dev ? 'inline-source-map' : undefined,
 
     output: {
       path: __dirname + '/build/assets',

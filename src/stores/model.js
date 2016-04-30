@@ -35,7 +35,7 @@ const store = {
 const ModelFactory = ( onChange, cache ) => new Model({
   onChange,
   cache,
-  source: new DataSource( 'http://localhost:9999/api/model.json', uiStore ),
+  source: new DataSource( STORYSHOP_API_URI + '/api/model.json', uiStore ),
 });
 
 /**
