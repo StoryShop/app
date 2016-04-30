@@ -7,13 +7,16 @@ import reactStamp from 'react-stamp';
 import { Link } from 'react-router';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
+import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import WorldIcon from 'material-ui/lib/svg-icons/social/public';
+import AddIcon from 'material-ui/lib/svg-icons/content/add';
 import Avatar from 'material-ui/lib/avatar';
 import connectToModel from 'behaviours/connect-to-model';
 import DocumentTitle from 'react-document-title';
 import MainMenu from 'components/main-menu';
 import AppBar from 'components/app-bar';
 import { FlexLayout } from 'components/flex';
+import Prompt from 'components/prompt';
 import * as themes from 'themes';
 import * as paths from 'utils/paths';
 
@@ -46,6 +49,13 @@ export function modelToProps ( model, props ) {
 
 export function actions ( model ) {
   return {
+    addWorld ( title ) {
+      model.call([
+        'currentUser',
+        'worlds',
+        'push',
+      ], [ title ]);
+    },
   };
 }
 
@@ -53,6 +63,7 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
   state: {
     mainMenuVisible: false,
     theme: themes.main,
+    addingWorld: false,
   },
 
   muiTheme () {
@@ -70,6 +81,14 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
     this.setState({
       mainMenuVisible: state,
     });
+  },
+
+  _promptForWorld () {
+    this.setState({ addingWorld: true });
+  },
+
+  _addWorld ( title ) {
+    this.props.addWorld( title );
   },
 
   render () {
@@ -112,6 +131,33 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
       />
     ));
 
+    const worldList = (
+      <FlexLayout direction="column" flex>
+        {
+          worldEls.length
+            ? <List>{ worldEls }</List>
+            : <p>You have no worlds. Click the "+" button to create one.</p>
+        }
+
+        <span flex />
+
+        <FlexLayout direction="row">
+          <span flex />
+          <FloatingActionButton onClick={e => this._promptForWorld()}>
+            <AddIcon />
+          </FloatingActionButton>
+          <Prompt
+            okLabel='Create World'
+            label='World Title'
+            title='Create a New World'
+            setValue={val=>this._addWorld( val )}
+            open={this.state.addingWorld}
+            onClose={e=>this.setState({ addingWorld: false })}
+          />
+        </FlexLayout>
+      </FlexLayout>
+    );
+
     return (
       <DocumentTitle title={`${title} | StoryShop`}>
         <FlexLayout direction="column" style={styles.container}>
@@ -127,9 +173,9 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
             worlds={worlds}
             currentWorld={currentWorld}
           />
-          <div style={styles.content} flex>
-            {children || <List>{ worldEls }</List>}
-          </div>
+          <FlexLayout direction="column" element={<div style={styles.content} />} flex>
+            {children || worldList }
+          </FlexLayout>
         </FlexLayout>
       </DocumentTitle>
     );
