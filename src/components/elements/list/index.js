@@ -17,10 +17,6 @@ export default reactStamp( React ).compose({
     this.setState({ addingElement: true });
   },
 
-  _addElement ( name ) {
-    this.props.addElement( this.props.world_id, name );
-  },
-
   render () {
     const {
       world_id,
@@ -28,6 +24,7 @@ export default reactStamp( React ).compose({
       setContent,
       setTitle,
       deleteElement,
+      addElement,
     } = this.props;
 
     const styles = {
@@ -78,7 +75,7 @@ export default reactStamp( React ).compose({
             okLabel='Create'
             label='Element Title'
             title='Create a New Element'
-            setValue={val=>this._addElement( val )}
+            setValue={val=>addElement( world_id, val )}
             open={this.state.addingElement}
             onClose={e=>this.setState({ addingElement: false })}
           />
