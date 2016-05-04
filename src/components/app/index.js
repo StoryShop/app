@@ -22,20 +22,33 @@ import * as paths from 'utils/paths';
 
 export function modelToProps ( model, props ) {
   const { world_id } = props.params;
-  const paths = [
+  const path = [ 'currentUser', 'worlds' ];
+
+  const prefetchPaths = [
     [
-      'currentUser',
-      'worlds',
-      { from: 0, to: 10 },
-      [
-        '_id',
-        'title',
-        'slug',
-      ]
+      ...path,
+      'length',
     ]
   ];
 
-  return Observable.fromPromise( model.get( ...paths ) )
+  return Observable.fromPromise( model.get( ...prefetchPaths ) )
+    .concatMap( ({ json }) => {
+      const { worlds } = json.currentUser;
+
+      const paths = [
+        [
+          ...path,
+          { from: 0, to: worlds.length },
+          [
+            '_id',
+            'title',
+            'slug',
+          ]
+        ]
+      ];
+
+      return model.get( ...paths, ...prefetchPaths ).then( v => v );
+    })
     .map( ({ json }) => {
       const { worlds } = json.currentUser;
 
@@ -98,7 +111,12 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
       children,
     } = this.props;
 
-    worlds = Object.getOwnPropertyNames( worlds ).map( k => worlds[k] );
+    worlds = Object.getOwnPropertyNames( worlds )
+      .filter( k => k.match( /^\d+$/ ) )
+      .sort()
+      .reverse()
+      .map( k => worlds[k] )
+      ;
 
     let currentWorld;
 

@@ -11,15 +11,16 @@ import OutlineList from 'components/outlines/list';
 export function modelToProps ( model, props ) {
   const { world_id } = props.params;
   const path = [ 'worldsById', world_id, 'outlines' ];
+  const prefetchPath = [ ...path, 'length' ];
 
-  return Observable.fromPromise( model.get([ ...path, 'length' ]) )
+  return Observable.fromPromise( model.get( prefetchPath ) )
     .concatMap( ({ json }) => {
       const length = json.worldsById[ world_id ].outlines.length;
       const paths = [
         [ ...path, { from: 0, to: length - 1 }, [ '_id', 'title' ] ],
       ];
 
-      return model.get( ...paths ).then( v => v );
+      return model.get( prefetchPath, ...paths ).then( v => v );
     })
     .map( ({ json }) => {
       const world = json.worldsById[ world_id ];
