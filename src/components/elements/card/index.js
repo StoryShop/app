@@ -35,6 +35,7 @@ export default reactStamp( React ).compose({
       content,
       cover,
       world_id,
+      readOnly = false,
       tags = [],
 
       style,
@@ -74,8 +75,10 @@ export default reactStamp( React ).compose({
       <span key={idx} style={styles.tag}>{tag}</span>
     ));
 
+    const Component = readOnly ? Card : 'div';
+
     return (
-      <Card
+      <Component
         flex
         style={styles.card}
         onMouseEnter={() => this.onMouseEnter()}
@@ -86,16 +89,16 @@ export default reactStamp( React ).compose({
         { cover ? <CardMedia><img src={cover} /></CardMedia> : null }
 
         <CardTitle
-          title={<InlineEdit value={title} onChange={val => setTitle( _id, val )} />}
+          title={readOnly ? title : <InlineEdit value={title} onChange={val => setTitle( _id, val )} />}
         />
 
-        { content ? <CardText>
+        { readOnly && ! content ? null : <CardText>
           <Editor
-            readOnly={false}
+            readOnly={readOnly}
             value={content}
             onChange={e => setContent( _id, e )}
           />
-        </CardText> : null }
+        </CardText> }
 
         {/*
           { tags.length ? <div style={styles.tagList}> { tagEls } </div> : null }
@@ -112,7 +115,7 @@ export default reactStamp( React ).compose({
             <ActionDelete color='#666' hoverColor='#000' />
           </IconButton>
         </CardActions>
-      </Card>
+      </Component>
     );
   },
 });

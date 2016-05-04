@@ -1,4 +1,5 @@
 export const elementList = world_id => `/app/worlds/${world_id}/elements`;
+export const element = ( wid, eid ) => `/app/worlds/${wid}/elements/${eid}`;
 
 export const characterList = world_id => `/app/worlds/${world_id}/characters`;
 export const character = ( wid, cid ) => `/app/worlds/${wid}/characters/${cid}`;

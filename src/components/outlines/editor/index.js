@@ -58,6 +58,10 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
    * begin a timeout to update the model.
    */
   _onChange ( editor ) {
+    if ( this.props.readOnly ) {
+      return;
+    }
+
     this.setState({ editor });
 
     this._endTimeout();
