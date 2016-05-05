@@ -50,6 +50,20 @@ export default reactStamp( React ).compose({
         ...style
       },
 
+      content: {
+      },
+
+      contentGhost: {
+        display: 'block',
+        position: 'absolute',
+        height: 75,
+        top: 125,
+        left: 0,
+        right: 0,
+        backgroundImage: 'linear-gradient( to bottom, transparent, white )',
+        zIndex: 10,
+      },
+
       tagList: {
         padding: 16,
         fontSize: 14,
@@ -70,6 +84,17 @@ export default reactStamp( React ).compose({
         opacity: this.state.hover ? '100' : 0,
       },
     };
+
+    if ( readOnly ) {
+      styles.content = {
+        ...styles.content,
+
+        maxHeight: 200,
+        height: 200,
+        overflow: 'hidden',
+        position: 'relative', // to use absolute positioning on the ghost
+      };
+    }
 
     const tagEls = tags.map( ( tag, idx ) => (
       <span key={idx} style={styles.tag}>{tag}</span>
@@ -92,7 +117,9 @@ export default reactStamp( React ).compose({
           title={readOnly ? title : <InlineEdit value={title} onChange={val => setTitle( _id, val )} />}
         />
 
-        { readOnly && ! content ? null : <CardText>
+        { readOnly && ! content ? null : <CardText style={styles.content}>
+          { readOnly ? <span style={styles.contentGhost} /> : null }
+
           <Editor
             readOnly={readOnly}
             value={content}

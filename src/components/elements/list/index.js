@@ -71,7 +71,7 @@ export default reactStamp( React ).compose({
 
     const styles = {
       card: {
-        // cursor: 'pointer',
+        cursor: 'pointer',
       },
 
       floatingCard: {
@@ -115,6 +115,7 @@ export default reactStamp( React ).compose({
         <Dialog
           open={viewingElement}
           onRequestClose={e => this._closeElement()}
+          autoScrollBodyContent={true}
         >
           <ElementCard
             readOnly={false}
