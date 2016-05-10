@@ -57,8 +57,10 @@ export default reactStamp( React ).compose({
       elements,
       setContent,
       setTitle,
+      setCover,
       deleteElement,
       addElement,
+      addAttachment,
     } = this.props;
 
     const { viewingElement, currentElement } = this.state;
@@ -75,12 +77,6 @@ export default reactStamp( React ).compose({
       },
 
       floatingCard: {
-        position: 'fixed',
-        margin: 'auto',
-        maxHeight: '80%',
-        maxWidth: '80%',
-        height: 'auto',
-        width: 1200,
       },
     };
 
@@ -120,10 +116,14 @@ export default reactStamp( React ).compose({
           <ElementCard
             readOnly={false}
             world_id={world_id}
+
             setTitle={setTitle}
             setContent={setContent}
+            setCover={setCover}
             deleteElement={deleteElement}
-            style={styles.card}
+            addAttachment={addAttachment}
+
+            style={styles.floatingCard}
             {...currentElement}
           />
         </Dialog>
@@ -157,9 +157,9 @@ export default reactStamp( React ).compose({
           '_id',
           'title',
           'content',
-          'cover',
           'tags',
         ]],
+        [ pagination, 'cover', 'url' ],
       ];
     },
   },

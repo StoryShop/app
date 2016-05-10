@@ -9,8 +9,10 @@ import IconButton from 'material-ui/lib/icon-button';
 import ActionLabel from 'material-ui/lib/svg-icons/action/label';
 import ActionDelete from 'material-ui/lib/svg-icons/action/delete';
 import ImageColorLens from 'material-ui/lib/svg-icons/image/color-lens';
+import AttachFileIcon from 'material-ui/lib/svg-icons/editor/attach-file';
 import EditorFactory from 'components/outlines/editor';
 import InlineEdit from 'components/inline-edit';
+import { UploadDialog } from 'components/files/upload';
 import { FlexLayout } from 'components/flex';
 
 const Editor = EditorFactory( React );
@@ -18,14 +20,36 @@ const Editor = EditorFactory( React );
 export default reactStamp( React ).compose({
   state: {
     hover: false,
+    uploadDialogVisible: false,
   },
 
   onMouseEnter () {
+    if ( ! this.props.readOnly ) return;
+
     this.setState({ hover: true });
   },
 
   onMouseLeave () {
+    if ( ! this.props.readOnly ) return;
+
     this.setState({ hover: false });
+  },
+
+  _showUploadDialog () {
+    this.setState({ uploadDialogVisible: true });
+  },
+
+  _hideUploadDialog () {
+    this.setState({ uploadDialogVisible: false });
+  },
+
+  attachFile ( ref ) {
+    this._hideUploadDialog();
+    this.props.addAttachment( this.props._id, ref );
+
+    if ( ! this.props.cover ) {
+      this.props.setCover( this.props._id, ref );
+    }
   },
 
   render () {
@@ -37,6 +61,7 @@ export default reactStamp( React ).compose({
       world_id,
       readOnly = false,
       tags = [],
+      files = [],
 
       style,
       setTitle,
@@ -81,7 +106,7 @@ export default reactStamp( React ).compose({
 
       actions: {
         transition: 'all 250ms linear',
-        opacity: this.state.hover ? '100' : 0,
+        opacity: ! readOnly || this.state.hover ? '100' : 0,
       },
     };
 
@@ -94,6 +119,10 @@ export default reactStamp( React ).compose({
         overflow: 'hidden',
         position: 'relative', // to use absolute positioning on the ghost
       };
+    }
+
+    if ( ! readOnly ) {
+      console.log("cover", cover)
     }
 
     const tagEls = tags.map( ( tag, idx ) => (
@@ -111,7 +140,7 @@ export default reactStamp( React ).compose({
 
         {...props}
       >
-        { cover ? <CardMedia><img src={cover} /></CardMedia> : null }
+        { cover ? <CardMedia><img src={cover.url} /></CardMedia> : null }
 
         <CardTitle
           title={readOnly ? title : <InlineEdit value={title} onChange={val => setTitle( _id, val )} />}
@@ -132,6 +161,9 @@ export default reactStamp( React ).compose({
         */}
 
         <CardActions style={styles.actions}>
+          <IconButton onTouchTap={e => this._showUploadDialog()}>
+            <AttachFileIcon color='#666' hoverColor='#000' />
+          </IconButton>
           {/* <IconButton>
             <ActionLabel color='#666' hoverColor='#000' />
           </IconButton>
@@ -142,6 +174,12 @@ export default reactStamp( React ).compose({
             <ActionDelete color='#666' hoverColor='#000' />
           </IconButton>
         </CardActions>
+
+        <UploadDialog
+          open={this.state.uploadDialogVisible}
+          onRequestClose={e => this._hideUploadDialog()}
+          onSelect={ref => this.attachFile( ref )}
+        />
       </Component>
     );
   },

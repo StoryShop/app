@@ -38,7 +38,7 @@ export default ( React, modelToProps, dispatchToProps, Component ) => reactStamp
       },
 
       setValue ( path, val ) {
-        if ( typeof val === 'object' ) {
+        if ( typeof val === 'object' && ! val.$type ) {
           val = $atom( val );
         }
 

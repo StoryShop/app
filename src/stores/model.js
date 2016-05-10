@@ -27,6 +27,14 @@ const store = {
 
     return this._localModel.get( ...args );
   },
+
+  set ( ...args ) {
+    if ( ! this._localModel ) {
+      this._localModel = model.withoutDataSource();
+    }
+
+    return this._localModel.set( ...args );
+  },
 };
 
 /**
