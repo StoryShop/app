@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/lib/flat-button';
 import FromComputer from 'components/files/upload/from-computer';
 import store from 'stores/ui';
 import model from 'stores/model';
+import isImage from 'utils/is-image';
 
 const $ref = Model.ref;
 
@@ -22,12 +23,17 @@ export default reactStamp( React ).compose({
   },
 
   _upload ( files ) {
-    // TODO: ensure file is an image
+    // FIXME(jdm): The backend is expecting a single file to be uploaded.
+    const [ file ] = files;
+
+    if ( ! isImage( file.type ) ) {
+      console.log( 'FIXME(jdm): not an image toast' );
+      return;
+    }
 
     const jwt = store.getState().auth.token;
     const body = new FormData();
-    // FIXME(jdm): The backend is expecting a single file to be uploaded.
-    body.append( 'file', files[0] );
+    body.append( 'file', file );
 
     return fetch( STORYSHOP_API_URI + '/api/upload', {
       method: 'POST',
