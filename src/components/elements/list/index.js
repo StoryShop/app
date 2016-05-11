@@ -22,7 +22,7 @@ export default reactStamp( React ).compose({
     const { currentElementId, elements } = props;
 
     if ( ! currentElementId ) {
-      return { viewingElement: false, currentElement: null };
+      return { viewingElement: false, currentElementIdx: null };
     }
 
     const elementList = Object.getOwnPropertyNames( elements )
@@ -32,9 +32,9 @@ export default reactStamp( React ).compose({
       ;
 
     const currentElementIdx = elementList.find( k => elements[ k ]._id === currentElementId );
-    const currentElement = currentElementIdx ? elements[ currentElementIdx ] : null;
+    // const currentElement = currentElementIdx ? elements[ currentElementIdx ] : null;
 
-    return { viewingElement: true, currentElement };
+    return { viewingElement: true, currentElementIdx };
   },
 
   _closeElement () {
@@ -63,13 +63,15 @@ export default reactStamp( React ).compose({
       addAttachment,
     } = this.props;
 
-    const { viewingElement, currentElement } = this.state;
+    const { viewingElement, currentElementIdx } = this.state;
 
     const elementList = Object.getOwnPropertyNames( elements )
       .filter( k => k.match( /^\d+$/ ) )
       .sort()
       .reverse()
       ;
+
+    const currentElement = elements[ currentElementIdx ];
 
     const styles = {
       card: {
@@ -113,7 +115,7 @@ export default reactStamp( React ).compose({
           onRequestClose={e => this._closeElement()}
           autoScrollBodyContent={true}
         >
-          <ElementCard
+          { currentElement ? <ElementCard
             readOnly={false}
             world_id={world_id}
 
@@ -125,7 +127,7 @@ export default reactStamp( React ).compose({
 
             style={styles.floatingCard}
             {...currentElement}
-          />
+          /> : null }
         </Dialog>
 
         <span flex />

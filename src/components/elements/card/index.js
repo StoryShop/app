@@ -121,10 +121,6 @@ export default reactStamp( React ).compose({
       };
     }
 
-    if ( ! readOnly ) {
-      console.log("cover", cover)
-    }
-
     const tagEls = tags.map( ( tag, idx ) => (
       <span key={idx} style={styles.tag}>{tag}</span>
     ));
