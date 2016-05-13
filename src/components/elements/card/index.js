@@ -12,7 +12,7 @@ import ImageColorLens from 'material-ui/lib/svg-icons/image/color-lens';
 import AttachFileIcon from 'material-ui/lib/svg-icons/editor/attach-file';
 import EditorFactory from 'components/outlines/editor';
 import InlineEdit from 'components/inline-edit';
-import { UploadDialog } from 'components/files/upload';
+import { UploadDropzone } from 'components/files/upload';
 import { FlexLayout } from 'components/flex';
 
 const Editor = EditorFactory( React );
@@ -35,16 +35,11 @@ export default reactStamp( React ).compose({
     this.setState({ hover: false });
   },
 
-  _showUploadDialog () {
-    this.setState({ uploadDialogVisible: true });
+  _upload () {
+    this.refs.dropzone.upload();
   },
 
-  _hideUploadDialog () {
-    this.setState({ uploadDialogVisible: false });
-  },
-
-  attachFile ( ref ) {
-    this._hideUploadDialog();
+  _attachFile ( ref ) {
     this.props.addAttachment( this.props._id, ref );
 
     if ( ! this.props.cover ) {
@@ -136,46 +131,49 @@ export default reactStamp( React ).compose({
 
         {...props}
       >
-        { cover ? <CardMedia><img src={cover.url} /></CardMedia> : null }
+        <UploadDropzone
+          ref="dropzone"
+          disableClick={true}
+          onUpload={ref => this._attachFile( ref )}
+          >
 
-        <CardTitle
-          title={readOnly ? title : <InlineEdit value={title} onChange={val => setTitle( _id, val )} />}
-        />
+          { cover ? <CardMedia><img src={cover.url} /></CardMedia> : null }
 
-        { readOnly && ! content ? null : <CardText style={styles.content}>
-          { readOnly ? <span style={styles.contentGhost} /> : null }
-
-          <Editor
-            readOnly={readOnly}
-            value={content}
-            onChange={e => setContent( _id, e )}
+          <CardTitle
+            title={readOnly ? title : <InlineEdit value={title} onChange={val => setTitle( _id, val )} />}
           />
-        </CardText> }
 
-        {/*
-          { tags.length ? <div style={styles.tagList}> { tagEls } </div> : null }
-        */}
+          <CardText style={styles.content}>
+            { readOnly && content ? <span style={styles.contentGhost} /> : null }
 
-        <CardActions style={styles.actions}>
-          <IconButton onTouchTap={e => this._showUploadDialog()}>
-            <AttachFileIcon color='#666' hoverColor='#000' />
-          </IconButton>
-          {/* <IconButton>
-            <ActionLabel color='#666' hoverColor='#000' />
-          </IconButton>
-          <IconButton>
-            <ImageColorLens color='#666' hoverColor='#000' />
-          </IconButton> */}
-          <IconButton onClick={e => deleteElement( world_id, _id )}>
-            <ActionDelete color='#666' hoverColor='#000' />
-          </IconButton>
-        </CardActions>
+            { ! readOnly || content ? <Editor
+              readOnly={readOnly}
+              value={content}
+              onChange={e => setContent( _id, e )}
+            /> : null }
+          </CardText>
 
-        <UploadDialog
-          open={this.state.uploadDialogVisible}
-          onRequestClose={e => this._hideUploadDialog()}
-          onSelect={ref => this.attachFile( ref )}
-        />
+          {/*
+            { tags.length ? <div style={styles.tagList}> { tagEls } </div> : null }
+          */}
+
+          { readOnly ? null :
+            <CardActions style={styles.actions}>
+              <IconButton onTouchTap={e => this._upload()}>
+                <AttachFileIcon color='#666' hoverColor='#000' />
+              </IconButton>
+              {/* <IconButton>
+                <ActionLabel color='#666' hoverColor='#000' />
+              </IconButton>
+              <IconButton>
+                <ImageColorLens color='#666' hoverColor='#000' />
+              </IconButton> */}
+              <IconButton onClick={e => deleteElement( world_id, _id )}>
+                <ActionDelete color='#666' hoverColor='#000' />
+              </IconButton>
+            </CardActions>
+          }
+        </UploadDropzone>
       </Component>
     );
   },

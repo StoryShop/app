@@ -94,6 +94,8 @@ export default reactStamp( React ).compose({
             readOnly={true}
             world_id={world_id}
             deleteElement={deleteElement}
+            setCover={setCover}
+            addAttachment={addAttachment}
             style={styles.card}
             {...element}
           /> }

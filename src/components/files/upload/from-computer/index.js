@@ -1,38 +1,96 @@
 import React from 'react';
+import reactStamp from 'react-stamp';
 import DropZone from 'react-dropzone';
+import { Model } from 'falcor';
+import store from 'stores/ui';
+import model from 'stores/model';
+import isImage from 'utils/is-image';
 
-const UploadFromComputer = ({
-  onDrop,
-  style,
+const $ref = Model.ref;
 
-  ...props
-}) => {
-  const styles = {
-    dropzone: {
-      width: '100%',
-      border: '1px dashed #666',
-      borderRadius: 5,
-
-      ...style
+export default reactStamp( React ).compose({
+  statics: {
+    propTypes: {
+      onUpload: React.PropTypes.func.isRequired,
     },
+  },
 
-    content: {
-      margin: 'auto',
-    },
-  };
+  _upload ( files ) {
+    // FIXME(jdm): The backend is expecting a single file to be uploaded.
+    const [ file ] = files;
 
-  return (
-    <DropZone onDrop={ onDrop } style={styles.dropzone}>
-      <div style={styles.content}>
-        Drop some bitches up in here!
-      </div>
-    </DropZone>
-  );
-};
+    if ( ! isImage( file.type ) ) {
+      console.log( 'FIXME(jdm): not an image toast' );
+      return;
+    }
 
-UploadFromComputer.propTypes = {
-  onDrop: React.PropTypes.func.isRequired,
-};
+    const jwt = store.getState().auth.token;
+    const body = new FormData();
+    body.append( 'file', file );
 
-export default UploadFromComputer;
+    return fetch( STORYSHOP_API_URI + '/api/upload', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `JWT ${jwt}`,
+      },
+      body
+    })
+    .then( res => {
+      return res.json();
+    })
+    .then( pv => {
+      return model.set( ...pv ).then( () => this.props.onUpload( $ref( pv[ 1 ].path ) ) );
+    })
+    ;
+  },
+
+  upload () {
+    this.refs.dropzone.open();
+  },
+
+  render () {
+    const {
+      style,
+      disableClick = false,
+
+      children,
+        ...props
+    } = this.props;
+
+    const styles = {
+      dropzone: {
+        width: '100%',
+
+        ...style
+      },
+
+      content: {
+        margin: 'auto',
+      },
+    };
+
+    if ( ! children ) {
+      styles.dropzone = {
+        ...styles.dropzone,
+
+        border: '1px dashed #666',
+        borderRadius: 5,
+      };
+    }
+
+    return (
+      <DropZone
+        ref="dropzone"
+        onDrop={files => this._upload( files )}
+        disableClick={disableClick}
+        style={styles.dropzone}
+        >
+        <div style={styles.content}>
+          { children ? children : 'Drop files here to upload.' }
+        </div>
+      </DropZone>
+    );
+  }
+});
 
