@@ -33,11 +33,11 @@ export default reactStamp( React ).compose({
       .sort()
       .reverse()
       .map( k => ({ idx: k, character: characters[ k ] }) )
-      .map( ({ idx, character }) => (
+      .map( ({ idx, character: { avatar, _id, name } }) => (
         <ListItem key={idx}
-          leftAvatar={character.avatar ? <Avatar src={character.avatar} /> : <Avatar icon={<CharacterIcon />} />}
-          containerElement={<Link to={paths.character( world_id, character._id )} />}
-          primaryText={character.name}
+          leftAvatar={avatar && avatar.url ? <Avatar src={avatar.url} /> : <Avatar icon={<CharacterIcon />} />}
+          containerElement={<Link to={paths.character( world_id, _id )} />}
+          primaryText={name}
         />
       ))
       ;
@@ -71,15 +71,18 @@ export default reactStamp( React ).compose({
   },
 
   statics: {
-    modelPaths: function ( conf ) {
-      const pagination = conf.pagination;
-
+    modelPaths: function () {
       return [
-        [ pagination, [
-          '_id',
-          'name',
+        [
+          [
+            '_id',
+            'name',
+          ],
+        ],
+        [
           'avatar',
-        ]],
+          'url',
+        ],
       ];
     },
   },
