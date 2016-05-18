@@ -7,6 +7,7 @@ import Attributes from 'components/characters/attributes';
 import Dna from 'components/characters/dna';
 import Relationships from 'components/characters/relationships';
 import EditorFactory from 'components/outlines/editor';
+import { UploadDropzone } from 'components/files/upload';
 import modelToProps from './model-to-props';
 import actions from './actions';
 
@@ -30,6 +31,7 @@ export default ( React, ...behaviours ) => {
       setName,
       setAliases,
       setAvatar,
+      setCover,
       setOutline,
       changeAttribute,
       addAttribute,
@@ -59,13 +61,31 @@ export default ( React, ...behaviours ) => {
         width: '100%',
         height: 'auto',
       },
+
+      coverDropzone: {
+        width: undefined,
+        margin: '0 32px',
+      },
     };
+
+    if ( ! cover || ! cover.url ) {
+      styles.coverDropzone = {
+        ...styles.coverDropzone,
+
+        padding: 10,
+        border: '1px dashed #666',
+        borderRadius: 5,
+      };
+    }
 
     return (
       <FlexLayout direction="column" margin={16}>
-        <div>
-          { cover ? <img src={cover} style={styles.cover} /> : null }
-        </div>
+        <UploadDropzone onUpload={ref => setCover( _id, ref )} style={styles.coverDropzone}>
+          { cover ?
+            <img src={cover.url} style={styles.cover} /> :
+            <span>Drag and drop a file to upload a cover image.</span>
+          }
+        </UploadDropzone>
 
         <FlexLayout direction="row" margin={16}>
           <div flex="33">

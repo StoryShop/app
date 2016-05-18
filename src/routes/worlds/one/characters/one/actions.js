@@ -14,6 +14,10 @@ export default function ( model ) {
       model.setValue([ 'charactersById', id, 'aliases' ], aliases );
     },
 
+    setCover ( id, ref ) {
+      model.call([ 'charactersById', id, 'cover' ], [ ref ], [ 'url' ] );
+    },
+
     setAvatar ( id, ref ) {
       model.call([ 'charactersById', id, 'avatar' ], [ ref ], [ 'url' ] );
     },

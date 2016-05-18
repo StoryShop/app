@@ -27,10 +27,8 @@ export default function modelToProps ( model, props ) {
       } = json.charactersById[ character_id ];
 
       let paths = [
-        [ ...path, [
-          'cover',
-          'content',
-        ]],
+        [ ...path, 'content' ],
+        [ ...path, 'cover', 'url' ],
       ];
 
       paths = paths.concat(
