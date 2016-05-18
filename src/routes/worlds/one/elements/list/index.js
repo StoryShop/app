@@ -9,6 +9,7 @@ export default React => connectToModel( React, modelToProps, actions, props => {
   const {
     world_id,
     elements,
+    currentElement,
     params: { id },
 
     setTitle,
@@ -23,6 +24,7 @@ export default React => connectToModel( React, modelToProps, actions, props => {
     <ElementList
       world_id={world_id}
       elements={elements}
+      currentElement={currentElement}
       currentElementId={id}
       setTitle={setTitle}
       setContent={setContent}

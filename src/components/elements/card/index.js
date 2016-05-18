@@ -5,10 +5,15 @@ import CardTitle from 'material-ui/lib/card/card-title';
 import CardMedia from 'material-ui/lib/card/card-media';
 import CardText from 'material-ui/lib/card/card-text';
 import CardActions from 'material-ui/lib/card/card-actions';
+import Avatar from 'material-ui/lib/avatar';
+import List from 'material-ui/lib/lists/list';
+import ListItem from 'material-ui/lib/lists/list-item';
+import ElementsIcon from 'material-ui/lib/svg-icons/action/dashboard';
 import IconButton from 'material-ui/lib/icon-button';
 import ActionLabel from 'material-ui/lib/svg-icons/action/label';
 import ActionDelete from 'material-ui/lib/svg-icons/action/delete';
 import ImageColorLens from 'material-ui/lib/svg-icons/image/color-lens';
+import ImageIcon from 'material-ui/lib/svg-icons/image/image';
 import AttachFileIcon from 'material-ui/lib/svg-icons/editor/attach-file';
 import EditorFactory from 'components/outlines/editor';
 import InlineEdit from 'components/inline-edit';
@@ -68,6 +73,14 @@ export default reactStamp( React ).compose({
     const styles = {
       card: {
         ...style
+      },
+
+      header: {
+        padding: '0 16px',
+      },
+
+      headerIcon: {
+        marginRight: 16,
       },
 
       content: {
@@ -139,9 +152,12 @@ export default reactStamp( React ).compose({
 
           { cover ? <CardMedia><img src={cover.url} /></CardMedia> : null }
 
-          <CardTitle
-            title={readOnly ? title : <InlineEdit value={title} onChange={val => setTitle( _id, val )} />}
-          />
+          { readOnly ? <CardTitle title={title} /> :
+            <FlexLayout element={<h3 style={styles.header} />}>
+              <ElementsIcon style={styles.headerIcon} />
+              <InlineEdit value={title} onChange={val => setTitle( _id, val )} flex />
+            </FlexLayout>
+          }
 
           <CardText style={styles.content}>
             { readOnly && content ? <span style={styles.contentGhost} /> : null }
@@ -157,24 +173,40 @@ export default reactStamp( React ).compose({
             { tags.length ? <div style={styles.tagList}> { tagEls } </div> : null }
           */}
 
+          { readOnly || ! files.length ? null : [
+            <FlexLayout element={<h3 style={styles.header} />}>
+              <AttachFileIcon style={styles.headerIcon} />
+              <span>Images</span>
+            </FlexLayout>,
+            <List>
+              { files.map( file => (
+                <ListItem
+                  primaryText={file.name}
+                  leftAvatar={<Avatar icon={<ImageIcon />} />}
+                  href={file.url}
+                />
+              ))}
+            </List>
+          ]}
+
           { readOnly ? null :
             <CardActions style={styles.actions}>
               <IconButton onTouchTap={e => this._upload()}>
                 <AttachFileIcon color='#666' hoverColor='#000' />
               </IconButton>
               {/* <IconButton>
-                <ActionLabel color='#666' hoverColor='#000' />
-              </IconButton>
-              <IconButton>
-                <ImageColorLens color='#666' hoverColor='#000' />
-              </IconButton> */}
-              <IconButton onClick={e => deleteElement( world_id, _id )}>
-                <ActionDelete color='#666' hoverColor='#000' />
-              </IconButton>
-            </CardActions>
-          }
-        </UploadDropzone>
-      </Component>
+                  <ActionLabel color='#666' hoverColor='#000' />
+                  </IconButton>
+                  <IconButton>
+                  <ImageColorLens color='#666' hoverColor='#000' />
+                  </IconButton> */}
+                  <IconButton onClick={e => deleteElement( world_id, _id )}>
+                    <ActionDelete color='#666' hoverColor='#000' />
+                  </IconButton>
+                </CardActions>
+                }
+          </UploadDropzone>
+          </Component>
     );
   },
 });

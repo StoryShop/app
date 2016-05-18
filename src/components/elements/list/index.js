@@ -9,41 +9,26 @@ import ElementCard from 'components/elements/card';
 import Prompt from 'components/prompt';
 import { FlexLayout } from 'components/flex';
 import * as paths from 'utils/paths';
+import keys from 'utils/model-to-array';
 
 export default reactStamp( React ).compose({
   init ( props ) {
     this.state = {
       addingElement: false,
-      ...this._setElementViewing( props ),
+      viewingElement: props.currentElement ? true : false,
     }
-  },
-
-  _setElementViewing ( props ) {
-    const { currentElementId, elements } = props;
-
-    if ( ! currentElementId ) {
-      return { viewingElement: false, currentElementIdx: null };
-    }
-
-    const elementList = Object.getOwnPropertyNames( elements )
-      .filter( k => k.match( /^\d+$/ ) )
-      .sort()
-      .reverse()
-      ;
-
-    const currentElementIdx = elementList.find( k => elements[ k ]._id === currentElementId );
-    // const currentElement = currentElementIdx ? elements[ currentElementIdx ] : null;
-
-    return { viewingElement: true, currentElementIdx };
   },
 
   _closeElement () {
-    this.setState( this._setElementViewing({}), () => setTimeout( () => hashHistory.push( paths.elementList( this.props.world_id ) ), 1 ) );
+    this.setState(
+      this.setState({ viewingElement: false }),
+      () => setTimeout( () => hashHistory.push( paths.elementList( this.props.world_id ) ), 1 )
+    );
   },
 
   componentWillReceiveProps ( newProps ) {
-    if ( newProps.currentElementId !== this.props.currentElementId ) {
-      this.setState( this._setElementViewing( newProps ) );
+    if ( newProps.currentElement !== this.props.currentElement ) {
+      this.setState({ viewingElement: newProps.currentElement ? true : false });
     }
   },
 
@@ -55,6 +40,7 @@ export default reactStamp( React ).compose({
     const {
       world_id,
       elements,
+      currentElement,
       setContent,
       setTitle,
       setCover,
@@ -63,15 +49,12 @@ export default reactStamp( React ).compose({
       addAttachment,
     } = this.props;
 
-    const { viewingElement, currentElementIdx } = this.state;
+    const { viewingElement } = this.state;
 
-    const elementList = Object.getOwnPropertyNames( elements )
-      .filter( k => k.match( /^\d+$/ ) )
+    const elementList = keys( elements )
       .sort()
       .reverse()
       ;
-
-    const currentElement = elements[ currentElementIdx ];
 
     const styles = {
       card: {
@@ -102,6 +85,12 @@ export default reactStamp( React ).compose({
         </div>
       ));
 
+    if ( currentElement ) {
+      currentElement.files = keys( currentElement.files )
+        .map( k => currentElement.files[ k ] )
+        ;
+    }
+
     return (
       <FlexLayout direction="column">
         {
@@ -116,6 +105,7 @@ export default reactStamp( React ).compose({
           open={viewingElement}
           onRequestClose={e => this._closeElement()}
           autoScrollBodyContent={true}
+          bodyStyle={{padding:0}}
         >
           { currentElement ? <ElementCard
             readOnly={false}
@@ -153,17 +143,15 @@ export default reactStamp( React ).compose({
   },
 
   statics: {
-    modelPaths ( conf ) {
-      const pagination = conf.pagination;
-
+    modelPaths () {
       return [
-        [ pagination, [
+        [[
           '_id',
           'title',
           'content',
           'tags',
         ]],
-        [ pagination, 'cover', 'url' ],
+        [ 'cover', 'url' ],
       ];
     },
   },
