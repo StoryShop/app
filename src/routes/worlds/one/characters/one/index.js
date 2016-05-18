@@ -29,6 +29,7 @@ export default ( React, ...behaviours ) => {
 
       setName,
       setAliases,
+      setAvatar,
       setOutline,
       changeAttribute,
       addAttribute,
@@ -74,6 +75,7 @@ export default ( React, ...behaviours ) => {
               aliases={aliases.join(', ')}
               onNameChange={name => setName( _id, name )}
               onAliasChange={alias => setAliases( _id, alias )}
+              onAvatarChange={ref => setAvatar( _id, ref )}
               style={styles.avatar}
             />
 

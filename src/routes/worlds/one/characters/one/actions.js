@@ -14,6 +14,10 @@ export default function ( model ) {
       model.setValue([ 'charactersById', id, 'aliases' ], aliases );
     },
 
+    setAvatar ( id, ref ) {
+      model.call([ 'charactersById', id, 'avatar' ], [ ref ], [ 'url' ] );
+    },
+
     setOutline ( id, raw, editorState ) {
       model.setValue([ 'charactersById', id, 'content' ], raw );
     },

@@ -31,9 +31,12 @@ export default function modelToProps ( model, props ) {
           'cover',
           'content',
         ]],
-
-        [ ...path, Avatar.modelPaths() ],
       ];
+
+      paths = paths.concat(
+        Avatar.modelPaths({ pagination: { from: 0, to: attributes.length } })
+          .map( p => [ ...path, ...p ])
+      );
 
       paths = paths.concat(
         Attributes.modelPaths({ pagination: { from: 0, to: attributes.length } })

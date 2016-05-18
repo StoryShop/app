@@ -3,6 +3,7 @@ import Paper from 'material-ui/lib/paper';
 import MaterialAvatar from 'material-ui/lib/avatar';
 import CharacterIcon from 'material-ui/lib/svg-icons/social/person';
 import { FlexLayout } from 'components/flex';
+import { UploadDropzone } from 'components/files/upload';
 import InlineEdit from 'components/inline-edit';
 
 const Avatar = ({
@@ -12,6 +13,7 @@ const Avatar = ({
   style = {},
   onNameChange = () => true,
   onAliasChange = () => true,
+  onAvatarChange = () => true,
   ...props
 }) => {
   const styles = {
@@ -49,12 +51,19 @@ const Avatar = ({
       justifyContent="center"
       >
 
-      { avatar ?
-        <MaterialAvatar
-          src={avatar}
-          size={100}
-        /> : <MaterialAvatar icon={<CharacterIcon style={styles.avatar} />} size={100} />
-      }
+      <FlexLayout
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        element={<UploadDropzone onUpload={ref => onAvatarChange( ref )} />}
+      >
+        { avatar && avatar.url ?
+          <MaterialAvatar
+            src={avatar.url}
+            size={100}
+          /> : <MaterialAvatar icon={<CharacterIcon style={styles.avatar} />} size={100} />
+        }
+      </FlexLayout>
 
       <h2>
         <InlineEdit value={name} onChange={onNameChange} style={styles.name} />
@@ -76,11 +85,16 @@ Avatar.propTypes = {
   onNameChange: React.PropTypes.func,
 };
 
-Avatar.modelPaths = conf => {
+Avatar.modelPaths = () => {
   return [
-    'name',
-    'aliases',
-    'avatar',
+    [
+      'name',
+      'aliases',
+    ],
+    [
+      'avatar',
+      [ 'url' ],
+    ],
   ];
 };
 
