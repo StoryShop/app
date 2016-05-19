@@ -52,6 +52,14 @@ export default reactStamp( React ).compose({
     }
   },
 
+  _deleteFile ( e, idx ) {
+    // mui will not prevent the href for secondary actions
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.props.deleteAttachment( this.props._id, idx );
+  },
+
   render () {
     const {
       _id,
@@ -135,6 +143,24 @@ export default reactStamp( React ).compose({
 
     const Component = readOnly ? Card : 'div';
 
+    const fileList = (
+      <List>
+        { files.map( ( file, idx ) => (
+          <ListItem
+            key={idx}
+            primaryText={file.name}
+            leftAvatar={<Avatar icon={<ImageIcon />} />}
+            rightIconButton={
+              <IconButton onClick={e => this._deleteFile( e, idx )}>
+                <ActionDelete color='#999' hoverColor='#000' />
+              </IconButton>
+            }
+            href={file.url}
+          />
+        ))}
+      </List>
+    );
+
     return (
       <Component
         flex
@@ -173,21 +199,13 @@ export default reactStamp( React ).compose({
             { tags.length ? <div style={styles.tagList}> { tagEls } </div> : null }
           */}
 
-          { readOnly || ! files.length ? null : [
+          { readOnly || ! files.length ? null :
             <FlexLayout element={<h3 style={styles.header} />}>
               <AttachFileIcon style={styles.headerIcon} />
               <span>Images</span>
-            </FlexLayout>,
-            <List>
-              { files.map( file => (
-                <ListItem
-                  primaryText={file.name}
-                  leftAvatar={<Avatar icon={<ImageIcon />} />}
-                  href={file.url}
-                />
-              ))}
-            </List>
-          ]}
+            </FlexLayout>
+          }
+          { readOnly || ! files.length ? null : fileList }
 
           { readOnly ? null :
             <CardActions style={styles.actions}>

@@ -18,6 +18,7 @@ export default React => connectToModel( React, modelToProps, actions, props => {
     deleteElement,
     addElement,
     addAttachment,
+    deleteAttachment,
   } = props;
 
   return (
@@ -32,6 +33,7 @@ export default React => connectToModel( React, modelToProps, actions, props => {
       deleteElement={deleteElement}
       addElement={addElement}
       addAttachment={addAttachment}
+      deleteAttachment={deleteAttachment}
     />
   );
 });

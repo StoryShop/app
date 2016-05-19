@@ -47,6 +47,7 @@ export default reactStamp( React ).compose({
       deleteElement,
       addElement,
       addAttachment,
+      deleteAttachment,
     } = this.props;
 
     const { viewingElement } = this.state;
@@ -116,6 +117,7 @@ export default reactStamp( React ).compose({
             setCover={setCover}
             deleteElement={deleteElement}
             addAttachment={addAttachment}
+            deleteAttachment={deleteAttachment}
 
             style={styles.floatingCard}
             {...currentElement}

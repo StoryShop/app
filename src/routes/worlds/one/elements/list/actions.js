@@ -32,5 +32,9 @@ export default model => ({
       'push'
     ], [ ref ], [ 'name', 'url' ] );
   },
+
+  deleteAttachment ( eid, idx ) {
+    model.call([ 'elementsById', eid, 'files', 'delete' ], [ idx ] );
+  },
 });
 
