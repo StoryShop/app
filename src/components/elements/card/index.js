@@ -83,6 +83,15 @@ export default reactStamp( React ).compose({
         ...style
       },
 
+      cover: {
+        height: 200,
+        maxHeight: 200,
+        backgroundImage: cover && `url(${cover.url})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'top center',
+      },
+
       header: {
         padding: '0 16px',
       },
@@ -176,7 +185,7 @@ export default reactStamp( React ).compose({
           onUpload={ref => this._attachFile( ref )}
           >
 
-          { cover ? <CardMedia><img src={cover.url} /></CardMedia> : null }
+          { cover ? <CardMedia style={styles.cover}></CardMedia> : null }
 
           { readOnly ? <CardTitle title={title} /> :
             <FlexLayout element={<h3 style={styles.header} />}>
