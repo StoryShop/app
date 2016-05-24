@@ -35,11 +35,11 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     if ( this.props.value && this.props.value.blocks[0].text != '' ) {
       content = ContentState.createFromBlockArray( convertFromRaw( this.props.value ) );
     } else {
-      const text = 'Section Header';
+      const text = 'enter text here';
       content = ContentState.createFromBlockArray([
         new ContentBlock({
           key: genKey(),
-          type: 'header-two',
+          type: 'unstyled',
           text,
           characterList: List( Repeat( CharacterMetadata.EMPTY, text.length ) )
         }),
