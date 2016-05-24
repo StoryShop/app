@@ -10,18 +10,26 @@ import InlineEdit from 'components/inline-edit';
 export default reactStamp( React ).compose({
   state: {
     newAttribute: [],
+    adding: false,
   },
 
   _add () {
     this.setState({ adding: true, newAttribute: [ '', '' ] });
   },
 
-  _onNewKeyBlur ( val ) {
-    if ( val && val !== '' ) {
-      this.props.addAttribute( this.props.id, [ val, '' ] );
+  _onNewKeyBlur () {
+    const [ key, val ] = this.state.newAttribute;
+
+    if ( key && key !== '' && val && val !== '' ) {
+      this.props.addAttribute( this.props.id, [ key, val ] );
     }
 
-    return this.setState({ adding: false });
+  },
+
+  componentWillReceiveProps ( newProps ) {
+    this.setState({
+      adding: newProps.attributes.length === this.props.attributes.length ? this.state.adding : false,
+    });
   },
 
   render () {
@@ -53,6 +61,12 @@ export default reactStamp( React ).compose({
       },
     };
 
+    styles.newRow = {
+      ...styles.row,
+      border: '1px dashed #ccc',
+      padding: 5,
+    };
+
     const attrs = Object.getOwnPropertyNames( attributes )
       .filter( k => k.match( /^\d+$/ ) )
       .sort()
@@ -77,19 +91,19 @@ export default reactStamp( React ).compose({
     ));
 
     const newRow = (
-      <FlexLayout key={rows.length} direction="column" style={styles.row}>
+      <FlexLayout key={rows.length} direction="column" style={styles.newRow}>
         <InlineEdit
           style={styles.key}
           value={this.state.newAttribute[0]}
-          placeholder='key'
           autoFocus
-          onBlur={e => this._onNewKeyBlur( e.target.value )}
+          placeholder='key'
           onChange={val => this.setState({ newAttribute: [ val, this.state.newAttribute[1] ] })}
         />
 
         <InlineEdit
           style={styles.value}
           placeholder='value'
+          onBlur={e => this._onNewKeyBlur()}
           onChange={val => this.setState({ newAttribute: [ this.state.newAttribute[0], val ] })}
         />
       </FlexLayout>
