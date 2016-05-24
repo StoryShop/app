@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import reactStamp from 'react-stamp';
 import Paper from 'material-ui/lib/paper';
 import FlatButton from 'material-ui/lib/flat-button';
@@ -22,18 +23,25 @@ export default reactStamp( React ).compose({
   },
 
   _onNewBlur ( newGene ) {
-    if ( newGene.gene === '' ) {
-      this.setState({ adding: false });
-    } else {
+    if ( newGene.allele && newGene.allele !== '' ) {
       this.props.addGene( this.props.id, newGene );
     }
   },
 
   componentWillReceiveProps ( newProps ) {
-    if ( newProps.genes.length !== this.props.genes.length ) {
-      this.setState({ adding: false });
-    } else {
-      this.setState({ newGene: newProps.randomGene });
+    this.setState({
+      adding: newProps.genes.length === this.props.genes.length,
+      newGene: newProps.randomGene,
+    });
+  },
+
+  componentDidUpdate () {
+    if ( this.state.adding ) {
+      if ( this.state.newGene.gene && this.state.newGene.gene !== '' ) {
+        ReactDOM.findDOMNode( this.refs.newAllele ).focus();
+      } else {
+        ReactDOM.findDOMNode( this.refs.newGene ).focus();
+      }
     }
   },
 
@@ -79,6 +87,12 @@ export default reactStamp( React ).compose({
       },
     };
 
+    styles.newRow = {
+      ...styles.row,
+      border: '1px dashed #ccc',
+      padding: 5,
+    };
+
     const rows = Object.getOwnPropertyNames( genes )
       .filter( k => k.match( /^\d+$/ ) )
       .map( k => parseInt( k, 10 ) )
@@ -105,21 +119,22 @@ export default reactStamp( React ).compose({
       ;
 
     const newRow = (
-      <div key={rows.length} style={styles.row} direction="column">
+      <div key={rows.length} style={styles.newRow} direction="column">
         <InlineEdit
+          ref="newGene"
           flex="40"
           style={styles.gene}
-          autoFocus
           value={newGene.gene}
           placeholder='Question'
           onChange={val => this.setState({ newGene: { ...newGene, gene: val } })}
-          onBlur={e => this._onNewBlur( newGene )}
         />
 
         <InlineEdit
+          ref="newAllele"
           flex="60"
           style={styles.allele}
           value={newGene.allele}
+          autoFocus
           placeholder='Answer'
           onChange={val => this.setState({ newGene: { ...newGene, allele: val } })}
           onBlur={e => this._onNewBlur( newGene )}
