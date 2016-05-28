@@ -1,9 +1,8 @@
 import reactStamp from 'react-stamp';
-import * as draft from 'draft-js';
-import { List, Repeat } from 'immutable';
-import insertFragmentIntoContentState from 'draft-js/lib/insertFragmentIntoContentState'
+import { fromJS, List, Repeat } from 'immutable';
+import Editor from 'draft-js-plugins-editor';
+import 'draft-js-mention-plugin/lib/plugin.css';
 import {
-  Editor,
   EditorState,
   ContentState,
   ContentBlock,
@@ -17,22 +16,29 @@ import {
   genKey,
   CharacterMetadata,
 } from 'draft-js';
+import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 
 const { hasCommandModifier } = KeyBindingUtil;
+const mentionPlugin = createMentionPlugin();
+const { MentionSuggestions } = mentionPlugin;
+
 
 export default ( React, ...behaviours ) => reactStamp( React ).compose({
   propTypes: {
     placeholder: React.PropTypes.string,
     delay: React.PropTypes.number,
-  },
-
-  defaultProps: {
+    characters: React.PropTypes.array,
   },
 
   init () {
     let content;
 
     if ( this.props.value && this.props.value.blocks[0].text != '' ) {
+      const em = this.props.value.entityMap;
+      Object.getOwnPropertyNames( em ).forEach( k => {
+        em[ k ].data.mention = fromJS( em[ k ].data.mention );
+      });
+
       content = ContentState.createFromBlockArray( convertFromRaw( this.props.value ) );
     } else {
       const text = 'enter text here';
@@ -46,12 +52,15 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       ]);
     }
 
-    this.state = { editor: EditorState.createWithContent( content ) };
+    this.state = {
+      editor: EditorState.createWithContent( content ),
+      characters: fromJS(this.props.characters || []),
+    };
   },
 
-  componentDidMount () {
-    this.refs.editor.focus();
-  },
+  // componentDidMount () {
+  //   this.refs.editor.focus();
+  // },
 
   /**
    * When the input value changes by the user, update the state of the controlled component and
@@ -233,9 +242,20 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     this.setState({ editor: newState });
   },
 
+  onSearchChange ({ value }) {
+    console.log("fire",value, this.props.characters.toJS())
+    this.setState({
+      characters: defaultSuggestionsFilter(value, fromJS( this.props.characters || [])),
+      // characters: this.props.characters,
+    });
+  },
+
   render () {
     const { onChange, value, ...props } = this.props;
-    const { editor } = this.state;
+    const { editor, characters } = this.state;
+    // const plugins = characters.size() ? [ mentionPlugin ] : [];
+    const plugins = [ mentionPlugin ];
+    // console.log("char",characters)
 
     const styles = {
       unstyled: {
@@ -243,20 +263,22 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
       },
     };
 
-    window.editor = editor;
-    window.draft = draft;
-
     return (
-      <Editor
-        ref="editor"
-        editorState={editor}
-        onChange={e => this._onChange( e )}
-        keyBindingFn={ e => this._keyBindings( e ) }
-        handleKeyCommand={c => this._handleKeyCommand( c )}
-        handleReturn={e => this._handleReturn( e )}
-
-        {...props}
-      />
+      <div>
+        <Editor
+          ref="editor"
+          editorState={editor}
+          plugins={plugins}
+          onChange={e => this._onChange( e )}
+          keyBindingFn={ e => this._keyBindings( e ) }
+          handleKeyCommand={c => this._handleKeyCommand( c )}
+          handleReturn={e => this._handleReturn( e )}
+        />
+        <MentionSuggestions
+          onSearchChange={ o => this.onSearchChange(o) }
+          suggestions={ characters }
+        />
+      </div>
     );
   },
 }, ...behaviours );

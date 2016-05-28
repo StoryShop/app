@@ -10,24 +10,51 @@ import withShallowCompare from 'behaviours/with-shallow-compare';
 import { FlexLayout } from 'components/flex';
 import InlineEdit from 'components/inline-edit';
 import EditorFactory from 'components/outlines/editor';
+import CharacterList from 'components/characters/list';
+import modelToArray from 'utils/model-to-array';
+import * as paths from 'utils/paths';
+import { fromJS } from 'immutable';
 
 export function modelToProps ( model, props ) {
   const { world_id, outline_id } = props.params;
-  const path = [ 'outlinesById', outline_id ];
-  const paths = [
-    [ ...path, [
-      '_id',
-      'title',
-      'content'
-    ]],
-  ];
+  const charsPath = [ 'worldsById', world_id, 'characters' ];
+  const prefetchPath = [ ...charsPath, 'length' ];
 
-  return Observable.fromPromise( model.get( ...paths ) )
+  return Observable.fromPromise( model.get( prefetchPath ) )
+    .concatMap( ({ json }) => {
+      const path = [ 'outlinesById', outline_id ];
+      const length = json.worldsById[ world_id ].characters.length;
+      const charsPaths = CharacterList.modelPaths()
+        .map( p => [ ...charsPath, { from: 0, to: length - 1 }, ...p ])
+        ;
+
+      const paths = [
+        [ ...path, [
+          '_id',
+          'title',
+          'content'
+        ]],
+
+        ...charsPaths,
+      ];
+
+      return model.get( prefetchPath, ...paths ).then( v => v );
+    })
     .map( ({ json }) => {
+      const world = json.worldsById[ world_id ];
       const outline = json.outlinesById[ outline_id ];
+
+      const characters = modelToArray( world.characters )
+        .map( k => ({
+          ...world.characters[ k ],
+          avatar: world.characters[ k ].avatar ? world.characters[ k ].avatar.url : undefined,
+          link: paths.character( world_id, world.characters[ k ]._id ),
+        }))
+        ;
 
       return {
         world_id,
+        characters,
         ...outline,
       };
     })
@@ -65,6 +92,7 @@ export default React => {
       _id,
       title,
       content,
+      characters,
 
       setTitle,
       setOutline,
@@ -101,6 +129,7 @@ export default React => {
         <Editor
           onChange={e => setOutline( _id, e )}
           value={content}
+          characters={fromJS( characters )}
         />
       </FlexLayout>
     );
