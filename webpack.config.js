@@ -29,6 +29,12 @@ var shared = {
         test: /\.json$/,
         loader: 'json-loader',
       },
+      {
+        test: /plugin\.css$/,
+        loaders: [
+          'style', 'css',
+        ],
+      },
     ],
   },
 };
