@@ -85,7 +85,7 @@ export function actions ( model ) {
 }
 
 export default React => {
-  const Editor = EditorFactory( React, withShallowCompare );
+  const Editor = EditorFactory( React );
 
   return connectToModel( React, modelToProps, actions, props => {
     const {
