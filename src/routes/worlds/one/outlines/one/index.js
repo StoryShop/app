@@ -13,20 +13,32 @@ import EditorFactory from 'components/outlines/editor';
 import CharacterList from 'components/characters/list';
 import modelToArray from 'utils/model-to-array';
 import * as paths from 'utils/paths';
-import { fromJS } from 'immutable';
 
+let count = 1;
 export function modelToProps ( model, props ) {
+  const c = count++;
   const { world_id, outline_id } = props.params;
   const charsPath = [ 'worldsById', world_id, 'characters' ];
-  const prefetchPath = [ ...charsPath, 'length' ];
+  const elementsPath = [ 'worldsById', world_id, 'elements' ];
+  const prefetchPaths = [
+    [ ...elementsPath, 'length' ],
+    [ ...charsPath, 'length' ],
+  ];
 
-  return Observable.fromPromise( model.get( prefetchPath ) )
+  return Observable.fromPromise( model.get( ...prefetchPaths ) )
     .concatMap( ({ json }) => {
       const path = [ 'outlinesById', outline_id ];
-      const length = json.worldsById[ world_id ].characters.length;
+      const charLength = json.worldsById[ world_id ].characters.length;
+      const elementLength = json.worldsById[ world_id ].elements.length;
+
       const charsPaths = CharacterList.modelPaths()
-        .map( p => [ ...charsPath, { from: 0, to: length - 1 }, ...p ])
+        .map( p => [ ...charsPath, { from: 0, to: charLength - 1 }, ...p ])
         ;
+      const elementsPaths = [
+        ...elementsPath,
+        { from: 0, to: elementLength - 1 },
+        [ '_id', 'title' ],
+      ];
 
       const paths = [
         [ ...path, [
@@ -35,10 +47,11 @@ export function modelToProps ( model, props ) {
           'content'
         ]],
 
+        elementsPaths,
         ...charsPaths,
       ];
 
-      return model.get( prefetchPath, ...paths ).then( v => v );
+      return model.get( ...prefetchPaths, ...paths ).then( v => v );
     })
     .map( ({ json }) => {
       const world = json.worldsById[ world_id ];
@@ -52,9 +65,32 @@ export function modelToProps ( model, props ) {
         }))
         ;
 
+      const elements = modelToArray( world.elements )
+        .map( k => ({
+          ...world.elements[ k ],
+          name: world.elements[ k ].title,
+          link: paths.element( world_id, world.elements[ k ]._id ),
+        }))
+        ;
+
+      const suggestions = characters.concat( elements ).sort( ( a, b ) => {
+        const na = a.name.toUpperCase();
+        const nb = b.name.toUpperCase();
+
+        if ( a < b ) {
+          return -1;
+        }
+
+        if ( a > b ) {
+          return 1;
+        }
+
+        return 0;
+      });
+
       return {
         world_id,
-        characters,
+        suggestions,
         ...outline,
       };
     })
@@ -92,7 +128,7 @@ export default React => {
       _id,
       title,
       content,
-      characters,
+      suggestions,
 
       setTitle,
       setOutline,
@@ -129,7 +165,7 @@ export default React => {
         <Editor
           onChange={e => setOutline( _id, e )}
           value={content}
-          characters={fromJS( characters )}
+          suggestions={suggestions}
         />
       </FlexLayout>
     );
