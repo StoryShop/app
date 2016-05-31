@@ -154,7 +154,7 @@ export default React => {
           <span flex></span>
 
           <IconButton
-            tooltip='Export to Scrivener'
+            tooltip='Export to OPML'
             tooltipPosition='bottom-center'
             onClick={e => download( _id )}
           >
