@@ -48,6 +48,7 @@
     "css-loader": "^0.23.1",
     "debug": "^2.2.0",
     "draft-js": "^0.3.0",
+    "draft-js-mention-plugin": "^1.1.0",
     "draft-js-plugins-editor": "^1.0.1",
     "express": "^4.13.4",
     "falcor": "^0.1.16",
