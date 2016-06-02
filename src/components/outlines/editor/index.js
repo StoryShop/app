@@ -27,7 +27,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   propTypes: {
     placeholder: React.PropTypes.string,
     delay: React.PropTypes.number,
-    characters: React.PropTypes.array,
+    suggestions: React.PropTypes.array,
   },
 
   init () {
@@ -54,7 +54,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
     this.state = {
       editor: EditorState.createWithContent( content ),
-      characters: fromJS(this.props.characters || []),
+      suggestions: fromJS(this.props.suggestions || []),
     };
   },
 
@@ -243,19 +243,15 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
   },
 
   onSearchChange ({ value }) {
-    console.log("fire",value, this.props.characters.toJS())
     this.setState({
-      characters: defaultSuggestionsFilter(value, fromJS( this.props.characters || [])),
-      // characters: this.props.characters,
+      suggestions: defaultSuggestionsFilter(value, fromJS( this.props.suggestions || [])),
     });
   },
 
   render () {
     const { onChange, value, ...props } = this.props;
-    const { editor, characters } = this.state;
-    // const plugins = characters.size() ? [ mentionPlugin ] : [];
-    const plugins = [ mentionPlugin ];
-    // console.log("char",characters)
+    const { editor, suggestions } = this.state;
+    const plugins = suggestions.size ? [ mentionPlugin ] : [];
 
     const styles = {
       unstyled: {
@@ -276,7 +272,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         />
         <MentionSuggestions
           onSearchChange={ o => this.onSearchChange(o) }
-          suggestions={ characters }
+          suggestions={ suggestions }
         />
       </div>
     );

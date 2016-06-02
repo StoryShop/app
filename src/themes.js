@@ -1,19 +1,21 @@
-import Colors from 'material-ui/lib/styles/colors';
+import Colors from 'colors';
 import ColorManipulator from 'material-ui/lib/utils/color-manipulator';
 import Spacing from 'material-ui/lib/styles/spacing';
 import zIndex from 'material-ui/lib/styles/zIndex';
 
 /**
  * Default theme
+ *
+ * FIXME: main.palette colors not working as expected
  */
 export const main = {
   palette: {
-    primary1Color: Colors.blueGrey500,
-    primary2Color: Colors.blueGrey700,
-    primary3Color: Colors.blueGrey800,
-    accent1Color: Colors.pinkA200,
-    accent3Color: Colors.pink100,
-    accent3Color: Colors.pink400,
+    primary1Color: Colors.dusk500,
+    primary2Color: Colors.dusk700,
+    primary3Color: Colors.dusk800,
+    accent1Color: Colors.berry500,
+    accent2Color: Colors.grey100,
+    accent3Color: Colors.grey500,
     textColor: Colors.darkBlack,
     alternativeTextColor: Colors.white,
     canvasColor: Colors.white,
@@ -27,7 +29,7 @@ export default main;
  */
 export const characters = {
   palette: {
-    primary1Color: Colors.blue500,
+    primary1Color: Colors.aqua500,
   },
 };
 
@@ -36,7 +38,7 @@ export const characters = {
  */
 export const elements = {
   palette: {
-    primary1Color: Colors.green500,
+    primary1Color: Colors.grass500,
   },
 };
 
@@ -45,7 +47,7 @@ export const elements = {
  */
 export const outlines = {
   palette: {
-    primary1Color: Colors.purple500,
+    primary1Color: Colors.grape500,
   },
 };
 
