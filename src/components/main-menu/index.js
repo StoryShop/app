@@ -3,11 +3,14 @@ import reactStamp from 'react-stamp';
 import LeftNav from 'material-ui/lib/left-nav';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
+import Divider from 'material-ui/lib/divider';
 import Avatar from 'material-ui/lib/avatar';
+import WorldListIcon from 'material-ui/lib/svg-icons/places/all-inclusive';
 import WorldIcon from 'material-ui/lib/svg-icons/social/public';
 import CharacterIcon from 'material-ui/lib/svg-icons/social/person';
 import ElementsIcon from 'material-ui/lib/svg-icons/action/dashboard';
 import OutlineIcon from 'material-ui/lib/svg-icons/editor/format-list-numbered';
+import FeedbackIcon from 'material-ui/lib/svg-icons/action/feedback';
 import { ColorManipulator } from 'material-ui/lib/utils';
 import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
 import * as themes from 'themes';
@@ -44,6 +47,12 @@ export default reactStamp( React ).compose({
 
   render () {
     const { worlds, currentWorld, open, ...props } = this.props;
+    const styles = {
+      link: {
+        color: 'rgba(0, 0, 0, 0.870588)',
+        textDecoration: 'none',
+      },
+    };
 
     /**
      * If there is no current world, there is nothing to render.
@@ -57,11 +66,11 @@ export default reactStamp( React ).compose({
 
     const menuItems = [
       {
-        slug: '',
-        label: 'World Settings',
-        icon: <WorldIcon />,
-        uri: paths.world( currentWorld._id ),
-        colour: themes.main.palette.primary1Color,
+        slug: 'characters',
+        label: 'Characters',
+        icon: <CharacterIcon />,
+        uri: paths.characterList( currentWorld._id ),
+        colour: themes.characters.palette.primary1Color,
       },
       {
         slug: 'elements',
@@ -71,18 +80,18 @@ export default reactStamp( React ).compose({
         colour: themes.elements.palette.primary1Color,
       },
       {
-        slug: 'characters',
-        label: 'Characters',
-        icon: <CharacterIcon />,
-        uri: paths.characterList( currentWorld._id ),
-        colour: themes.characters.palette.primary1Color,
-      },
-      {
         slug: 'outlines',
         label: 'Outlines',
         icon: <OutlineIcon />,
         uri: paths.outlineList( currentWorld._id ),
         colour: themes.outlines.palette.primary1Color,
+      },
+      {
+        slug: '',
+        label: 'World Settings',
+        icon: <WorldIcon />,
+        uri: paths.world( currentWorld._id ),
+        colour: themes.main.palette.primary1Color,
       },
     ]
     .map( item => {
@@ -130,6 +139,23 @@ export default reactStamp( React ).compose({
           {menuItems}
           {/* TODO: flex spacing */}
           {/* TODO: <ListItem insetChildren={true} onTouchTap={() => false}>Your Account</ListItem> */}
+          <Divider />
+          <ListItem
+            className='main-menu__item-worlds'
+            linkButton={true}
+            insetChildren={true}
+            leftAvatar={<Avatar backgroundColor={themes.main.palette.primary1Color} icon={<WorldListIcon />} />}
+            primaryText='All Worlds'
+            onTouchTap = { e => this._go( paths.worldList() ) }
+          />
+          <Divider />
+          <ListItem
+            className='main-menu__item-feedback'
+            linkButton={true}
+            insetChildren={true}
+            leftAvatar={<Avatar backgroundColor={themes.main.palette.accent1Color} icon={<FeedbackIcon />} />}
+            primaryText={<a href={paths.feedback()} target="_blank" style={styles.link}>Give Feedback</a>}
+          />
         </List>
       </LeftNav>
     );
