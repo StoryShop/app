@@ -9,7 +9,6 @@ const Login = LoginFactory(
 );
 
 export default {
-  path: 'login',
   component: Login,
 };
 

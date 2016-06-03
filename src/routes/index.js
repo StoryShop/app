@@ -19,39 +19,16 @@ const App = AppFactory(
 
 export default {
   path: '/',
-  component: Main,
+  component: ({ children }) => children,
+  indexRoute: login,
   childRoutes: [
-    // {
-    //   path: 'redirect',
-    //   onEnter ( nextState, replace, callback ) {
-    //     // TODO: move to react-side-effect to allow nesting
-    //     uiStore.dispatch( setTheme( 'main' ) );
-    //     model.getValue( 'currentUser.ux.lastVisited' )
-    //       .subscribe( path => {
-    //         replace( path );
-    //         callback()
-    //       })
-    //       ;
-    //   },
-    // },
-
     {
       path: 'app',
       component: App,
-      onEnter ( nextState, replace ) {
-        if ( ! uiStore.getState().auth.token ) {
-          replace({
-            pathname: '/login',
-            // TODO: redirect to last page
-            state: { nextPathname: nextState.location.pathname },
-          });
-        }
-      },
       childRoutes: [
         worlds,
       ],
     },
-
     {
       path: 'beta',
       component: () => {
@@ -60,8 +37,6 @@ export default {
         );
       },
     },
-
-    login,
   ],
 };
 
