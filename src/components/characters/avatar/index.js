@@ -69,10 +69,6 @@ const Avatar = ({
         <InlineEdit value={name} onChange={onNameChange} style={styles.name} />
       </h2>
 
-      <div style={styles.akaLabel}>aka</div>
-      <div>
-        <InlineEdit value={aliases} onChange={onAliasChange} style={styles.aliases} />
-      </div>
     </FlexLayout>
   );
 };
