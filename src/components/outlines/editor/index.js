@@ -41,11 +41,11 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
       content = ContentState.createFromBlockArray( convertFromRaw( this.props.value ) );
     } else {
-      const text = 'enter text here';
+      const text = 'First Header';
       content = ContentState.createFromBlockArray([
         new ContentBlock({
           key: genKey(),
-          type: 'unstyled',
+          type: 'header-two',
           text,
           characterList: List( Repeat( CharacterMetadata.EMPTY, text.length ) )
         }),
