@@ -134,7 +134,6 @@ export default reactStamp( React ).compose({
           flex="60"
           style={styles.allele}
           value={newGene.allele}
-          autoFocus
           placeholder='Answer'
           onChange={val => this.setState({ newGene: { ...newGene, allele: val } })}
           onBlur={e => this._onNewBlur( newGene )}
