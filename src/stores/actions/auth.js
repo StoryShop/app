@@ -25,7 +25,13 @@ export const setToken = ( provider, token ) => dispatch => {
     },
     body: JSON.stringify({ token, provider }),
   })
-  .then( res => res.json() )
+  .then( res => {
+    if ( res.status !== 200 ) {
+      return Promise.reject();
+    }
+
+    return res.json();
+  })
   .then( data => dispatch( setTokenSuccess( provider, data.token ) ) )
   .then( () => history.push( '/app' ) )
   .catch( err => {

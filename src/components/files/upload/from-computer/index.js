@@ -37,10 +37,19 @@ export default reactStamp( React ).compose({
       body
     })
     .then( res => {
+      if ( res.status < 200 || res.status >= 300 ) {
+        const err = new Error( res.statusText );
+        error.response = res;
+        throw err;
+      }
+
       return res.json();
     })
     .then( pv => {
       return model.set( ...pv ).then( () => this.props.onUpload( $ref( pv[ 1 ].path ) ) );
+    })
+    .catch( err => {
+      console.log( 'Error uploading file:', err );
     })
     ;
   },
