@@ -35,16 +35,6 @@ export default reactStamp( React ).compose({
     });
   },
 
-  componentDidUpdate () {
-    if ( this.state.adding ) {
-      if ( this.state.newGene.gene && this.state.newGene.gene !== '' ) {
-        ReactDOM.findDOMNode( this.refs.newAllele ).focus();
-      } else {
-        ReactDOM.findDOMNode( this.refs.newGene ).focus();
-      }
-    }
-  },
-
   render () {
     const {
       id,
@@ -56,7 +46,7 @@ export default reactStamp( React ).compose({
     const {
       newGene,
     } = this.state;
-    
+
     const styles = {
       container: {
         padding: '16px',
