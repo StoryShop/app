@@ -161,7 +161,10 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
 
         <FlexLayout direction="row">
           <span flex />
-          <FloatingActionButton onClick={e => this._promptForWorld()}>
+          <FloatingActionButton
+            onClick={e => this._promptForWorld()}
+            disableTouchRipple={true}
+          >
             <AddIcon />
           </FloatingActionButton>
           <Prompt

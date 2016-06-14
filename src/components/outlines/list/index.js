@@ -56,7 +56,10 @@ export default reactStamp( React ).compose({
 
         <FlexLayout direction="row">
           <span flex />
-          <FloatingActionButton onClick={e => this._promptForOutline()}>
+          <FloatingActionButton
+            onClick={e => this._promptForOutline()}
+            disableTouchRipple={true}
+          >
             <AddIcon />
           </FloatingActionButton>
           <Prompt
