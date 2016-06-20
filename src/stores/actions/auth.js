@@ -13,6 +13,10 @@ export const setTokenError = error => ({
   error,
 });
 
+export const clearAuthToken = () => ({
+  type: 'CLEAR_AUTH_TOKEN',
+});
+
 export const setToken = ( provider, token ) => dispatch => {
   dispatch({
     type: 'SET_AUTH_TOKEN_START'

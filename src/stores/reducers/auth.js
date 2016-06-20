@@ -7,6 +7,11 @@ export default ( state = {}, action ) => {
         token: action.token,
       };
       break;
+
+    case 'CLEAR_AUTH_TOKEN':
+      return {};
+      break;
+
     default:
       return state;
   }
