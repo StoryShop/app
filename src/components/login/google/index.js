@@ -1,4 +1,5 @@
 import reactStamp from 'react-stamp';
+import GoogleLogin from 'react-google-login';
 import Logger from 'utils/logger';
 
 const log = Logger( 'GoogleSignInButton' );
@@ -8,26 +9,13 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     onSuccess: React.PropTypes.func.isRequired,
   },
 
-  componentDidMount () {
-    window.onGoogleSignInSuccess = user => this.onLoginSuccess( user );
-    window.onGoogleSignInFailure = err => this.onLoginError( err );
-  },
-
-  componentWillUnmount () {
-    delete window.onGoogleSignInSuccess;
-    delete window.onGoogleSignInFailure;
-  },
-
   render () {
     return (
-      <div
-        className='g-signin2'
-        data-longtitle={ true }
-        data-width={ 240 }
-        data-height={ 50 }
-        data-theme='dark'
-        data-onsuccess='onGoogleSignInSuccess'
-        data-onfailure='onGoogleSignInFailure'
+      <GoogleLogin
+        clientId="193808009792-mfs2m81hl3t3s6154sqt028r2g7j4724.apps.googleusercontent.com"
+        scope="profile email"
+        buttonText="Login with Google"
+        callback={u => this.onLoginSuccess( u )}
       />
     );
   },
@@ -38,10 +26,6 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
 
     log.debug( `Logged in as: ${profile.getName()} with token ${token}` );
     this.props.onSuccess( token );
-  },
-
-  onLoginError ( error ) {
-    log.warn( 'Something went horribly wrong', error );
   },
 }, ...behaviours );
 
