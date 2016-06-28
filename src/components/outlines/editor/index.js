@@ -113,7 +113,10 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
    * Ensure we clean up the timeout.
    */
   componentWillUnmount () {
-    this._endTimeout();
+    if ( this._changeTimeout ) {
+      this._endTimeout();
+      this._save( this.state.editor );
+    }
   },
 
   _keyBindings ( e ) {
