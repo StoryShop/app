@@ -37,11 +37,10 @@ export const setToken = ( provider, token ) => dispatch => {
     return res.json();
   })
   .then( data => dispatch( setTokenSuccess( provider, data.token ) ) )
-  .then( () => history.push( '/app' ) )
+  .then( () => history.push( '/worlds' ) )
   .catch( err => {
     dispatch( setTokenError( err ) );
     history.push( '/beta' );
   })
   ;
 };
-

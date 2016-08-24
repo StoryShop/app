@@ -1,14 +1,15 @@
-export const elementList = world_id => `/app/worlds/${world_id}/elements`;
-export const element = ( wid, eid ) => `/app/worlds/${wid}/elements/${eid}`;
+import slugify from './slugify'
 
-export const characterList = world_id => `/app/worlds/${world_id}/characters`;
-export const character = ( wid, cid ) => `/app/worlds/${wid}/characters/${cid}`;
+export const elementList = ( world_id, slug ) => `/worlds/${world_id}/${slugify(slug)}/elements`;
+export const element = ( wid, eid ) => `/worlds/${wid}/elements/${eid}`;
 
-export const outlineList = world_id => `/app/worlds/${world_id}/outlines`;
-export const outline = ( wid, oid ) => `/app/worlds/${wid}/outlines/${oid}`;
+export const characterList = ( world_id, slug ) => `/worlds/${world_id}/${slugify(slug)}/characters`;
+export const character = ( cid, slug ) => `/characters/${cid}/${slugify(slug)}`;
 
-export const worldList = () => `/app`;
-export const world = world_id => `/app/worlds/${world_id}`;
+export const outlineList = world_id => `/worlds/${world_id}/outlines`;
+export const outline = ( wid, oid ) => `/worlds/${wid}/outlines/${oid}`;
+
+export const worldList = () => `/worlds`;
+export const world = ( world_id, slug ) => `/worlds/${world_id}/${slugify(slug)}`;
 
 export const feedback = () => 'http://feedback.storyshopapp.com/';
-

@@ -69,14 +69,14 @@ export default reactStamp( React ).compose({
         slug: 'characters',
         label: 'Characters',
         icon: <CharacterIcon />,
-        uri: paths.characterList( currentWorld._id ),
+        uri: paths.characterList( currentWorld._id, currentWorld.title ),
         colour: themes.characters.palette.primary1Color,
       },
       {
         slug: 'elements',
         label: 'Elements',
         icon: <ElementsIcon />,
-        uri: paths.elementList( currentWorld._id ),
+        uri: paths.elementList( currentWorld._id, currentWorld.title ),
         colour: themes.elements.palette.primary1Color,
       },
       {
@@ -90,7 +90,7 @@ export default reactStamp( React ).compose({
         slug: '',
         label: 'World Settings',
         icon: <WorldIcon />,
-        uri: paths.world( currentWorld._id ),
+        uri: paths.world( currentWorld._id, currentWorld.title ),
         colour: themes.main.palette.primary1Color,
       },
     ]
@@ -161,4 +161,3 @@ export default reactStamp( React ).compose({
     );
   },
 });
-

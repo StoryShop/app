@@ -49,6 +49,7 @@ const Jumbotron = ({
       justifyContent='center'
       >
       <ComponentSummary
+        title={title}
         worldId={worldId}
         outlines={outlines}
         elements={elements}
@@ -75,4 +76,3 @@ Jumbotron.propTypes = {
 };
 
 export default Jumbotron;
-
