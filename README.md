@@ -35,3 +35,7 @@ $ npm run dev
 ```
 
 Then access the site on `dev.storyshopapp.com:8888`
+
+## Routing
+
+The directory structure mirrors the URL structure. So if we change the URL structure, we need to change the directory structure.
