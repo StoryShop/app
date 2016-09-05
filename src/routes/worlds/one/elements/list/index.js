@@ -37,4 +37,3 @@ export default React => connectToModel( React, modelToProps, actions, props => {
     />
   );
 });
-

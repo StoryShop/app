@@ -61,7 +61,7 @@ export function modelToProps ( model, props ) {
         .map( k => ({
           ...world.characters[ k ],
           avatar: world.characters[ k ].avatar ? world.characters[ k ].avatar.url : undefined,
-          link: paths.character( world_id, world.characters[ k ]._id ),
+          link: paths.character( world.characters[ k ]._id, world.characters[ k ].name ),
         }))
         ;
 
@@ -171,4 +171,3 @@ export default React => {
     );
   });
 };
-

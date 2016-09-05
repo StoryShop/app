@@ -74,7 +74,7 @@ export default reactStamp( React ).compose({
           style={{width: '25%'}}
         >
           { currentElement && element._id === currentElement._id ? null : <ElementCard
-            onClick={e => hashHistory.push( paths.element( world_id, element._id ) )}
+            onClick={e => hashHistory.push( paths.element( world_id, element.title, element._id ) )}
             readOnly={true}
             world_id={world_id}
             deleteElement={deleteElement}
@@ -161,4 +161,3 @@ export default reactStamp( React ).compose({
     },
   },
 })
-

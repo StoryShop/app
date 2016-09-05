@@ -36,7 +36,7 @@ export default reactStamp( React ).compose({
       .map( ({ idx, character: { avatar, _id, name } }) => (
         <ListItem key={idx}
           leftAvatar={avatar && avatar.url ? <Avatar src={avatar.url} /> : <Avatar icon={<CharacterIcon />} />}
-          containerElement={<Link to={paths.character( _id, "foobar" )} />}
+          containerElement={<Link to={paths.character( _id, name )} />}
           primaryText={name}
         />
       ))
