@@ -26,7 +26,7 @@ export default {
   indexRoute: login,
   childRoutes: [
     {
-      path: 'app',
+      path: 'worlds',
       component: App,
       childRoutes: [
         worlds,
@@ -38,4 +38,3 @@ export default {
     },
   ],
 };
-

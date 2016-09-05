@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { Link } from 'react-router';
 import { FlexLayout } from 'components/flex';
 import * as themes from 'themes';
@@ -28,6 +28,7 @@ export default ({
   elements = 0,
   characters = 0,
   worldId,
+  title,
 
   style = {},
   circleStyle = {},
@@ -89,7 +90,7 @@ export default ({
         <Link
           className='component-summary--link elements'
           style={{textDecoration: 'none'}}
-          to={paths.elementList( worldId )}
+          to={paths.elementList( worldId, title )}
           >
           <Circle fillColour={themes.elements.palette.primary1Color} style={styles.circle1}>
             {elements}
@@ -98,7 +99,7 @@ export default ({
         <Link
           className='component-summary--link characters'
           style={{textDecoration: 'none'}}
-          to={paths.characterList( worldId )}
+          to={paths.characterList( worldId, title )}
           >
           <Circle fillColour={themes.characters.palette.primary1Color} style={styles.circle2}>
             {characters}
@@ -108,4 +109,3 @@ export default ({
     </FlexLayout>
   );
 };
-

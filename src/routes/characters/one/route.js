@@ -13,7 +13,7 @@ const Character = CharacterFactory(
 );
 
 export default {
-  path: ':character_id',
+  path: 'characters/:character_id/:slug',
   component: Character,
   onEnter ( routerState ) {
     // TODO: move to react-side-effect implementation in route components
@@ -26,4 +26,3 @@ export default {
     });
   },
 };
-

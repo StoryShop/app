@@ -144,7 +144,7 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
     const worldEls = worlds.map( world => (
       <ListItem key={world._id}
         leftAvatar={<Avatar icon={<WorldIcon />} />}
-        containerElement={<Link to={paths.world(world._id)} />}
+        containerElement={<Link to={paths.world(world._id, world.title)} />}
         primaryText={world.title}
       />
     ));
@@ -204,4 +204,3 @@ export const App = ( React, ...behaviours ) => reactStamp( React ).compose({
 }, ...behaviours );
 
 export default ( React, ...behaviours ) => connectToModel( React, modelToProps, actions, App( React, ...behaviours ) );
-

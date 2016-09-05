@@ -59,4 +59,3 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     );
   },
 }, ...behaviours );
-

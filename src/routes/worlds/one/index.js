@@ -17,7 +17,7 @@ const WorldSettings = WorldSettingsFactory(
 );
 
 export default {
-  path: ':world_id',
+  path: ':world_id/:slug',
   component: World,
   indexRoute: {
     component: WorldSettings,
@@ -33,4 +33,3 @@ export default {
     characters,
   ],
 };
-

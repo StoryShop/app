@@ -19,4 +19,3 @@ export const CharacterListRoute = React => ({
 };
 
 export default ( React ) => connectToModel( React, modelToProps, actions, CharacterListRoute( React ) );
-

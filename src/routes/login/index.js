@@ -11,4 +11,3 @@ const Login = LoginFactory(
 export default {
   component: Login,
 };
-

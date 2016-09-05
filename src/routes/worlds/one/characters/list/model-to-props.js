@@ -5,6 +5,7 @@ import fromPromise from 'rxjs/add/observable/fromPromise';
 import CharacterList from 'components/characters/list';
 
 export default function ( model, props ) {
+  console.log(props.params)
   const { world_id } = props.params;
   const path = [ 'worldsById', world_id, 'characters' ];
   const prefetchPath = [ ...path, 'length' ];
@@ -29,4 +30,3 @@ export default function ( model, props ) {
     })
     ;
 };
-
