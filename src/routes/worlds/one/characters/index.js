@@ -2,6 +2,7 @@ import uiStore from 'stores/ui';
 import { setTheme } from 'stores/actions/meta';
 import characterListRoute from './list/route';
 import characterRoute from './one/route';
+import itemsRoute from './one/items/route';
 
 export default {
   path: 'characters',
@@ -11,6 +12,7 @@ export default {
   },
   childRoutes: [
     characterRoute,
+    itemsRoute,
   ],
 };
 

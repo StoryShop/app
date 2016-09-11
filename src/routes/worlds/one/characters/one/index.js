@@ -9,6 +9,8 @@ import Relationships from 'components/characters/relationships';
 import EditorFactory from 'components/outlines/editor';
 import modelToProps from './model-to-props';
 import actions from './actions';
+import * as paths from 'utils/paths';
+import {Link} from 'react-router';
 
 export default ( React, ...behaviours ) => {
   const Editor = EditorFactory( React, withShallowCompare );
@@ -76,6 +78,10 @@ export default ( React, ...behaviours ) => {
               onAliasChange={alias => setAliases( _id, alias )}
               style={styles.avatar}
             />
+
+            <Link to={paths.characterItems( world_id, _id )}>
+              Items
+            </Link>
 
             <Attributes
               id={_id}
