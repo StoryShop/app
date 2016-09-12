@@ -24,13 +24,12 @@ First you need to update your `/etc/hosts` file to include `dev.storyshopapp.com
 ::1             localhost
 ```
 
-Update the `fixtures/users.json` file to include yourself. Make sure you include a unique ID. Also go ahead and add yourself as the owner of a world.
+Update the in your API `fixtures/users.json` file to include yourself. Make sure you include a unique ID. Also go ahead and add yourself as the owner of a world.
 
 Then run the following commands to install your dependencies, seed the database, and run the app in dev mode.
 
 ```bash
 $ npm install
-$ npm run data
 $ npm run dev
 ```
 
