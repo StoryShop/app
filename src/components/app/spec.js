@@ -10,7 +10,7 @@ test( 'App Render Method', t => {
   const instance = getShallowInstance( <App /> );
   
   // FIXME(jdm): This test requires knowing what DocumentTitle renders.
-  const expected = 'SideEffect(Component)';
+  const expected = 'SideEffect(DocumentTitle)';
   const actual = instance.type.displayName;
 
   t.equals( actual, expected, 'rendered the DocumentTitle element' );
