@@ -1,4 +1,4 @@
-import browser from '../../../../../wdio';
+import browser from '../../../../../conf/wdio';
 
 export default id => ({
   titleSelector: '.world-jumbotron h1 textarea',
