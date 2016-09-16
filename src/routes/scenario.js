@@ -1,5 +1,5 @@
 import test from 'tape';
-import browser from '../../wdio';
+import browser from '../../conf/wdio';
 
 test( 'Left Nav', async t => {
   let actual, expected;

@@ -13,7 +13,7 @@ test( 'autoprefix', t => {
   const actual = prefix( style );
   
   const expected = {
-    display: [ '-webkit-box', '-webkit-flex', '-ms-flexbox', 'flex' ],
+    display: [ '-webkit-box', '-ms-flexbox', 'flex' ],
   };
 
   t.deepEquals( actual, expected, 'should prefix CSS properties' );
