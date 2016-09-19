@@ -1,5 +1,6 @@
 var webpack = require( 'webpack' );
 var path = require( 'path' );
+var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 var dev = process.env.BUILD_ENV === 'development' ? true : false;
 
@@ -16,6 +17,9 @@ var shared = {
     new webpack.DefinePlugin({
       STORYSHOP_API_URI: dev ? "'http://localhost:9999'" : "'http://api.storyshopapp.com'",
     }),
+    new CleanWebpackPlugin(['build'], {
+      exclude: ['index.html']
+    })
   ],
 
   module: {
