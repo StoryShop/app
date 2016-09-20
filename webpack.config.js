@@ -62,22 +62,6 @@ module.exports = [
     //   "react-router": "ReactRouter",
     //   "history": "History",
     // },
-  }),
-
-  Object.assign( {}, shared, {
-    entry: './specs.js',
-    devtool: 'eval',
-
-    target: 'node',
-
-    plugins: [
-      new webpack.IgnorePlugin( /ReactContext/ ),
-    ],
-
-    output: {
-      path: __dirname + '/build',
-      filename: 'specs.js',
-    },
-  }),
+  })
 ];
 
