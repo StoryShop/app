@@ -34,6 +34,14 @@ module.exports = {
     }),
   ],
 
+  externals: {
+    'react/lib/ExecutionEnvironment': true
+    // 'react': 'React',
+    // 'react-dom': 'ReactDOM',
+    // 'react-router': 'ReactRouter',
+    // 'history': 'History',
+  },
+
   module: {
     loaders: [
       {
