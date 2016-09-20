@@ -3,7 +3,23 @@ var path = require( 'path' );
 
 var dev = process.env.BUILD_ENV === 'development' ? true : false;
 
-var shared = {
+
+module.exports = {
+  entry: './index.js',
+  devtool: dev ? 'inline-source-map' : undefined,
+
+  output: {
+    path: __dirname + '/build/assets',
+    publicPath: '/assets/',
+    filename: 'app.js',
+  },
+
+  target: "web",
+
+  node: {
+    fs: "empty"
+  },
+
   context: __dirname + '/src',
 
   resolve: {
@@ -38,46 +54,4 @@ var shared = {
     ],
   },
 };
-
-module.exports = [
-  Object.assign( {}, shared, {
-    entry: './index.js',
-    devtool: dev ? 'inline-source-map' : undefined,
-
-    output: {
-      path: __dirname + '/build/assets',
-      publicPath: '/assets/',
-      filename: 'app.js',
-    },
-
-    target: "web",
-
-    node: {
-      fs: "empty"
-    },
-
-    // "externals": {
-    //   "react": "React",
-    //   "react-dom": "ReactDOM",
-    //   "react-router": "ReactRouter",
-    //   "history": "History",
-    // },
-  }),
-
-  Object.assign( {}, shared, {
-    entry: './specs.js',
-    devtool: 'eval',
-
-    target: 'node',
-
-    plugins: [
-      new webpack.IgnorePlugin( /ReactContext/ ),
-    ],
-
-    output: {
-      path: __dirname + '/build',
-      filename: 'specs.js',
-    },
-  }),
-];
 
