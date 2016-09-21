@@ -21,24 +21,22 @@ export default class CharacterRelationships extends React.Component {
     render() {
         return <div className='character-relationships'>
             <List>
-                <List>
-                    {this.props.relationships.map((relationship, i) => {
-                        return <ListItem
-                                    key={i}
-                                    primaryText={relationship.name}
-                                    secondaryText={relationship.description}
-                                    leftAvatar={
-                                        relationship.avatar ? <Avatar src={relationship.avatar} /> : <Avatar icon={ <PersonIcon /> } />
-                                    }
-                                    rightIconButton={
-                                        <IconButton tooltip='Remove relationship' onClick={this.remove.bind(this, relationship)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    }
-                                    onClick={this.edit.bind(this, relationship)}
-                                />;
-                    })}
-                </List>
+                {this.props.relationships.map((relationship, i) => {
+                    return <ListItem
+                                key={i}
+                                primaryText={relationship.name}
+                                secondaryText={relationship.description}
+                                leftAvatar={
+                                    relationship.avatar ? <Avatar src={relationship.avatar} /> : <Avatar icon={ <PersonIcon /> } />
+                                }
+                                rightIconButton={
+                                    <IconButton tooltip='Remove relationship' tooltipPosition='bottom-left' onClick={this.remove.bind(this, relationship)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                }
+                                onClick={this.edit.bind(this, relationship)}
+                            />;
+                })}
             </List>
 
             <Dialog
