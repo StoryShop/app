@@ -22,8 +22,9 @@ export default class CharacterRelationships extends React.Component {
         return <div className='character-relationships'>
             <List>
                 <List>
-                    {this.props.relationships.map(relationship => {
+                    {this.props.relationships.map((relationship, i) => {
                         return <ListItem
+                                    key={i}
                                     primaryText={relationship.name}
                                     secondaryText={relationship.description}
                                     leftAvatar={
@@ -55,8 +56,8 @@ export default class CharacterRelationships extends React.Component {
     };
 
     remove(relationship, event) {
-        this.props.onDelete(relationship._id);
         event.stopPropagation();
+        this.props.onDelete(relationship._id);
     };
 
     edit(relationship) {
@@ -82,7 +83,7 @@ export default class CharacterRelationships extends React.Component {
     };
 
     validate() {
-        if (this.state.description === '') {
+        if (!this.state.description) {
             this.setState({
                 error: 'The description is required.'
             });

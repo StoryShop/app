@@ -53,6 +53,7 @@
     "draft-js": "^0.5.0",
     "draft-js-mention-plugin": "^1.1.0",
     "draft-js-plugins-editor": "^1.0.1",
+    "enzyme": "^2.4.1",
     "express": "^4.13.4",
     "falcor": "^0.1.16",
     "falcor-http-datasource": "^0.1.3",
