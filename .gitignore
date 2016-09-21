@@ -1,6 +1,5 @@
 build/
 node_modules/
 ids.json
-
 npm-debug.log
 storybook-static/
