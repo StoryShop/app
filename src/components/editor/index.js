@@ -32,21 +32,10 @@ const EditorComponent = (React, ...behaviours) => reactStamp(React).compose({
   },
 
   init() {
-    const content = convertFromRaw(this.props.content);
     this.state = {
-      editor: EditorState.createWithContent(content),
+      editor: EditorState.createWithContent( convertFromRaw( this.props.content ) ),
       readOnly: true,
     };
-
-    this.onClick = this.onClick.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onFocus = this.onFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-
-    this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    this.handleReturn = this.handleReturn.bind(this);
-
-    this.save = this.save.bind(this);
   },
 
   componentWillUnmount() {
@@ -86,7 +75,7 @@ const EditorComponent = (React, ...behaviours) => reactStamp(React).compose({
 
     if (this.props.onChange) {
       this.deleteTimeout();
-      this._timeout = setTimeout(this.save, 3000);
+      this._timeout = setTimeout(::this.save, 3000);
     }
   },
 
@@ -103,119 +92,20 @@ const EditorComponent = (React, ...behaviours) => reactStamp(React).compose({
     }
   },
 
-  handleKeyCommand(command) {
-    const { editor } = this.state;
-    const newState = RichUtils.handleKeyCommand(editor, command);
-    if (newState) {
-      this.onChange(newState);
-      return true;
-    }
-    return false;
-  },
-
-  handleReturn(e) {
-    const { editor } = this.state;
-    const selection = editor.getSelection();
-    const content = editor.getCurrentContent();
-    const block = content.getBlockForKey(selection.getStartKey());
-
-    // We only care if there is no current selection (e.g. selection is a caret).
-    if (!selection.isCollapsed()) {
-      console.log("not collapsed")
-      return;
-    }
-
-    // We only care if we're at the end of the line.
-    // TODO: implement splitting current block at selection
-    if (block.getLength() !== selection.getStartOffset()) {
-      console.log("not at end of line")
-      return;
-    }
-
-    const previousBlock = content.getBlockBefore(block.getKey());
-    if (block.getText().length === 0) {
-      if (!previousBlock || previousBlock.getText().length === 0) {
-        // no empty lines between paragraphs
-        return true;
-      } else {
-        // insert header block
-        this._insertHeader();
-        return true;
-      }
-    } else if (block.getType() === 'unstyled') {
-      // current line is non-empty and is unstyled already, so let the browser do its thing and
-      // insert another one.
-      return false;
-    } else {
-      // non-empty and not unstyled, so let's insert a new paragraph and move the cursor there.
-      this._insertParagraph();
-      return true;
-    }
-  },
-
-  _insertParagraph () {
-    return this._insertBlock({
-      key: genKey(),
-      type: 'unstyled',
-      text: '',
-      characterList: List()
-    });
-  },
-
-  _insertBlock (blockData) {
-    const { editor } = this.state;
-    const selection = editor.getSelection();
-    const content = editor.getCurrentContent();
-    const block = content.getBlockForKey(selection.getStartKey());
-
-    // Insert new unstyled block
-    const newBlock = new ContentBlock(blockData);
-
-    const blockArr = [];
-    content.getBlockMap().forEach((oldBlock, key) => {
-      blockArr.push(oldBlock);
-
-      if (key === block.getKey()) {
-        blockArr.push(newBlock);
-      }
-    });
-
-    const newBlockMap = BlockMapBuilder.createFromArray(blockArr);
-
-    const newContent = content.merge({
-      blockMap: newBlockMap,
-      selectionBefore: selection,
-      selectionAfter: selection.merge({
-        anchorKey: newBlock.getKey(),
-        anchorOffset: 0,
-        focusKey: newBlock.getKey(),
-        focusOffset: 0,
-        isBackward: false,
-      }),
-    });
-
-    const newState = EditorState.push(editor, newContent, 'insert-fragment');
-
-    this.setState({ editor: newState });
-  },
-
   render() {
+    const { plugins = [] } = this.props;
     const isReadOnly = this.props.readOnly ? true : this.state.readOnly;
-    const plugins = (this.props.plugins || []).concat([stripPastePlugin]);
+
     return (
-      <div onClick={this.onClick}>
-        <span style={{ fontSize: 12, color: '#555' }}>{isReadOnly ? 'Reading' : 'Writing'}</span>
+      <div onClick={::this.onClick}>
         <Editor
           ref="upstream"
           editorState={this.state.editor}
-          plugins={plugins}
-          onChange={this.onChange}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
+          plugins={[ ...plugins, stripPastePlugin ]}
+          onChange={::this.onChange}
+          onFocus={::this.onFocus}
+          onBlur={::this.onBlur}
           readOnly={isReadOnly}
-
-          handleKeyCommand={this.handleKeyCommand}
-          handleReturn={this.handleReturn}
         />
       </div>
     );

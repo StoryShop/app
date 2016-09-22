@@ -1,5 +1,5 @@
 import test from 'tape';
-import spy from 'utils/spy';
+import spy, { createSpy } from '../../../utils/spy';
 
 import {
   EditorState,
@@ -14,59 +14,93 @@ import { is, fromJS, List, Repeat, Record } from 'immutable';
 
 import stripPastePluginFactory from './';
 
-const genBlock = (text, { key, style, type = 'unstyled' } = {}) => {
-  let newStyle = CharacterMetadata.EMPTY;
-  if (style) {
-    newStyle = CharacterMetadata.applyStyle(newStyle, style);
+test( 'StripPastePlugin', t => {
+  let plugin, actual, expected, result, convertSpy;
+
+  const html = '<p>does not matter</p>';
+
+  const initalContentState = ContentState.createFromBlockArray([
+    new ContentBlock({
+      key: 'initial',
+      type: 'unstyled',
+      text: 'Initial',
+      characterList: List( Repeat( CharacterMetadata.EMPTY, 7 ) ),
+    }),
+  ]);
+  const initialEditorState = EditorState.createWithContent( initalContentState );
+
+  const mocks = {
+    setEditorState: () => {},
+    getEditorState: () => initialEditorState,
+  };
+  const setEditorStateSpy = spy( mocks, 'setEditorState' );
+  const getEditorStateSpy = spy( mocks, 'getEditorState' );
+
+  convertSpy = createSpy( () => [
+    new ContentBlock({
+      key: 'bold',
+      type: 'unstyled',
+      text: 'bold',
+      characterList: List( Repeat( CharacterMetadata.applyStyle( CharacterMetadata.EMPTY, 'BOLD' ), 4 ) ),
+    }),
+    new ContentBlock({
+      key: 'header',
+      type: 'header-two',
+      text: 'header',
+      characterList: List( Repeat( CharacterMetadata.EMPTY, 6 ) ),
+    }),
+  ]);
+
+  plugin = stripPastePluginFactory( convertSpy );
+
+  /**
+   * Ignore Pasted Text
+   */
+  {
+    result = plugin.handlePastedText( null, null, mocks );
+    t.notOk( result, 'should return false when no html is provided' );
   }
 
-  return new ContentBlock({
-    key,
-    type,
-    text,
-    characterList: List(Repeat(newStyle, text.length))
-  });
-};
-const genContent = (text) => {
-  const contentState = ContentState.createFromBlockArray([
-    genBlock(text, { key: 'abc' }),
-  ]);
-  return convertToRaw(contentState);
-};
+  /**
+   * Process Pasted HTML
+   */
+  {
+    result = plugin.handlePastedText( null, html, mocks );
+    t.ok( result, 'should return true' );
+    t.equal( convertSpy.calls.length, 1, 'should call convert' );
+    t.equal( convertSpy.calls[ 0 ].args[ 0 ], html, 'should call convert with the html' );
+    t.equal( setEditorStateSpy.calls.length, 1, 'should call setEditorState' );
+  }
 
-const stateFromRaw = (raw) => {
-  return EditorState.createWithContent(convertFromRaw(raw));
-}
+  /**
+   * Strip Pasted HTML
+   */
+  {
+    let blocks = setEditorStateSpy.calls[ 0 ].args[ 0 ].getCurrentContent().getBlockMap();
 
-test('StripPastePlugin strips all markup but italics and bolds', t => {
-  t.plan(1);
+    actual = blocks.count();
+    expected = 2;
+    t.equal( actual, expected, 'should result in two blocks' );
 
-  const convert = () => {
-    return ([
-      genBlock('boldy', { style: 'BOLD', key: 'b' }),
-      genBlock('yo', { type: 'header-two', key: 'h' }),
-    ]);
-  };
+    let firstBlock = blocks.first();
+    let secondBlock = blocks.last();
 
-  const stripPastePlugin = stripPastePluginFactory(convert);
+    actual = firstBlock.get( 'text' );
+    expected = 'bold';
+    t.equals( actual, expected, 'first block should be first block of pasted text' );
 
-  const initialContent = stateFromRaw(genContent('Starter'));
-  const resultingContent = stateFromRaw(convertToRaw(ContentState.createFromBlockArray([
-    genBlock('boldy', { style: 'BOLD', key: 'b' }),
-    genBlock('yoStarter', { key: 'h' }),
-  ])));
+    actual = firstBlock.getInlineStyleAt( 0 ).toJS();
+    expected = [ 'BOLD' ];
+    t.deepEquals( actual, expected, 'pasted bold text should remain bold' );
 
-  const mocks = { setState: () => {} };
-  const setEditorState = spy(mocks, 'setState');
-  const getEditorState = () => initialContent;
+    actual = secondBlock.get( 'text' );
+    expected = 'headerInitial';
+    t.equals( actual, expected, 'second block should combine pasted with intial content' );
 
-  stripPastePlugin.handlePastedText(null, 'test', { getEditorState, setEditorState: mocks.setState });
+    actual = secondBlock.get( 'type' );
+    expected = 'unstyled';
+    t.equals( actual, expected, 'second block should be unstyled' );
+  }
 
-  const blocksData = (state) => {
-    return JSON.stringify(convertToRaw(state).blocks.map(({ key, ...rest }) => rest));
-  };
-
-  const finalContent = blocksData(setEditorState.calls[0].args[0].getCurrentContent());
-  const result = blocksData(resultingContent.getCurrentContent());
-  t.equals(finalContent, result, 'Sets processed state');
+  t.end();
 });

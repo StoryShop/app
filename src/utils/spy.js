@@ -13,8 +13,27 @@ export default ( target, method ) => {
       args: args,
     });
 
-    oldMethod.apply( target, args );
+    return oldMethod.apply( target, args );
   };
+
+  return spy;
+};
+
+export const createSpy = oldMethod => {
+  let spy;
+
+  spy = function ( ...args ) {
+    spy.calls.push({
+      args: args,
+    });
+
+    if ( oldMethod ) {
+      return oldMethod( ...args );
+    }
+  };
+
+  spy.calls = [];
+  spy.reset = () => spy.calls = [];
 
   return spy;
 };

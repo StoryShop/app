@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/StoryShop/app#readme",
   "devDependencies": {
-    "@kadira/storybook": "^2.14.0",
+    "@kadira/storybook": "^2.5.2",
     "autoprefixer": "^6.3.3",
     "babel-loader": "^6.2.2",
     "babel-plugin-module-resolver": "^2.2.0",
