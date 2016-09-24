@@ -6,5 +6,15 @@ module.exports = {
       path.resolve( './src' ),
     ],
   },
+  module: {
+    loaders: [
+      {
+        test: /plugin\.css$/,
+        loaders: [
+          'style', 'css',
+        ],
+      },
+    ],
+  }
 };
 
