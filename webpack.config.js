@@ -18,6 +18,10 @@ var shared = {
     }),
   ],
 
+  externals: {
+      'react/lib/ExecutionEnvironment': true
+  },
+
   module: {
     loaders: [
       {
@@ -80,4 +84,3 @@ module.exports = [
     },
   }),
 ];
-
