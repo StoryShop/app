@@ -15,7 +15,8 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         clientId="193808009792-mfs2m81hl3t3s6154sqt028r2g7j4724.apps.googleusercontent.com"
         scope="profile email"
         buttonText="Login with Google"
-        callback={u => this.onLoginSuccess( u )}
+        onSuccess={u => this.onLoginSuccess( u )}
+        onFailure={r => this.onLoginFailure( r )}
       />
     );
   },
@@ -27,5 +28,8 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
     log.debug( `Logged in as: ${profile.getName()} with token ${token}` );
     this.props.onSuccess( token );
   },
-}, ...behaviours );
 
+  onLoginFailure ( response ) {
+    log.debug( `Login failure: [ Reason: ${response.reason} ] [ Type: ${response.type} ]` );
+  },
+}, ...behaviours );
