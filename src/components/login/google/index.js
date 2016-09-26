@@ -15,7 +15,7 @@ export default ( React, ...behaviours ) => reactStamp( React ).compose({
         clientId="193808009792-mfs2m81hl3t3s6154sqt028r2g7j4724.apps.googleusercontent.com"
         scope="profile email"
         buttonText="Login with Google"
-        callback={u => this.onLoginSuccess( u )}
+        onSuccess={u => this.onLoginSuccess( u )}
       />
     );
   },
