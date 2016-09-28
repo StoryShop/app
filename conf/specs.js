@@ -5,3 +5,4 @@ global.window = {
   }
 };
 
+require.extensions['.css'] = function() {};
