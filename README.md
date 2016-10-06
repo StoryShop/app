@@ -39,4 +39,10 @@ Then access the site on `dev.storyshopapp.com:8888`
 
 ## Contributing
 
+Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+One key point is that we would prefer all Pull Requests be submitted from branches on our main `StoryShop` repos, rather than from engineers' forks, so that we are in a better position to expedite review & approval by making small corrections if need be. If you are not already a member of the org, please let us know if you would like to be granted write access for the purpose of submitting a PR.
+
+## Getting Started
+
 Check out our [getting started guide](docs/getting_started_guide.md) to learn more about the file structure, routing, and component architecture.
